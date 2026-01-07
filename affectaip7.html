@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-br">
+
+  <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K9TFCGX9');</script>
+<!-- End Google Tag Manager -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Slide</title>
+
+    <style>
+      :root {
+        --purple: #7b73f1;
+        --bg: #F3EAF6;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background:
+          radial-gradient(700px 520px at 50% 18%,
+            rgba(255, 255, 255, 0.92) 0%,
+            rgba(255, 255, 255, 0.55) 28%,
+            rgba(255, 255, 255, 0.18) 52%,
+            rgba(243, 234, 246, 1) 100%),
+          var(--bg);
+      }
+
+      @media (min-width: 900px) {
+        body {
+          background:
+            radial-gradient(900px 620px at 50% 20%,
+              rgba(255, 255, 255, 0.92) 0%,
+              rgba(255, 255, 255, 0.52) 28%,
+              rgba(255, 255, 255, 0.16) 52%,
+              rgba(243, 234, 246, 1) 100%),
+            radial-gradient(900px 520px at 50% 30%, rgba(123, 115, 241, 0.10), transparent 60%),
+            var(--bg);
+        }
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e5e7eb;
+        z-index: 10;
+      }
+
+      .progress span {
+        display: block;
+        height: 100%;
+        width: 87.5%;
+        background: var(--purple);
+      }
+
+      .stage {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px 24px;
+      }
+
+      .column {
+        width: 100%;
+        max-width: 390px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-wrap {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 14px;
+
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+        animation: popIn 0.55s ease-out forwards 0.15s,
+          floaty 4.5s ease-in-out infinite 0.75s;
+      }
+
+      .hero {
+        width: 210px;
+        height: auto;
+        object-fit: contain;
+        filter:
+          drop-shadow(0 18px 28px rgba(15, 23, 42, 0.18)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.38));
+      }
+
+      @keyframes floaty {
+        0% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-18px);
+        }
+
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+          filter: blur(2px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      .content {
+        text-align: center;
+        margin: 30px 0 48px;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.05;
+        margin: 0 0 14px;
+      }
+
+      .features {
+        margin: 18px auto 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        width: fit-content;
+      }
+
+      .features li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        color: #374151;
+      }
+
+      .check {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        background: #d1fae5;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      }
+
+      .check svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .btn {
+        width: 100%;
+        margin-top: 40px;
+        background: var(--purple);
+        color: #fff;
+        padding: 18px;
+        border-radius: 16px;
+        font-size: 17px;
+        font-weight: 800;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0 18px 36px rgba(123, 115, 241, 0.35);
+        transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.035);
+        background-color: #8a83f6;
+        box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
+      }
+
+      .stage.slide-out {
+        animation: slideOutRight .45s ease forwards;
+      }
+
+      @keyframes slideOutRight {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    <div class="progress"><span></span></div>
+
+    <main class="stage" id="stage">
+      <div class="column">
+        <div class="hero-wrap">
+          <img class="hero" src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/7ba73aaa-3da9-4cf1-abf2-ccc85dea5875/uid_3222836/features-affectionAI.png" alt="" />
+        </div>
+
+        <section class="content">
+          <h1>Desbloqueie o AffectAI.</h1>
+
+          <ul class="features">
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M20 7L10 17l-5-5" stroke="#16a34a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sugestões personalizadas</li>
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M20 7L10 17l-5-5" stroke="#16a34a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Análise de contexto emocional</li>
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M20 7L10 17l-5-5" stroke="#16a34a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Uso ilimitado durante o plano</li>
+          </ul>
+        </section>
+
+        <a class="btn" href="affectaip8.html">
+          Retomar o Controle →
+        </a>
+      </div>
+    </main>
+
+  </body>
+
+</html>
