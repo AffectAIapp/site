@@ -16,19 +16,12 @@
   <!-- End Google Tag Manager -->
 
   <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>AffectAI Chat</title>
 
   <style>
     :root{
-      --purple:#7b73f1;
       --bg:#f6f5fa;
-      --text:#1f2937;
-      --shadow:0 20px 40px rgba(15,23,42,.12);
-      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
       --vvh: 100vh;
@@ -36,88 +29,30 @@
 
     *{ box-sizing:border-box; }
 
-    html,body{
+    html, body{
       height:100%;
       margin:0;
-      font-family:var(--font);
-      color:var(--text);
       background:var(--bg);
-      -webkit-text-size-adjust:100%;
-    }
-
-    /* Barra fina no topo */
-    .progress{
-      position:fixed;
-      top:0; left:0; right:0;
-      height:3px;
-      background:#e5e7eb;
-      z-index:50;
-    }
-    .progress span{
-      display:block;
-      height:100%;
-      width:100%;
-      background:var(--purple);
-    }
-
-    /* Palco ocupa a tela toda */
-    .stage{
-      position:fixed;
-      inset:0;
-      height:var(--vvh);
-      padding: calc(var(--safe-top) + 3px) 0 var(--safe-bottom) 0;
-      background:
-        radial-gradient(900px 560px at 50% 18%, rgba(123,115,241,.10), transparent 60%),
-        radial-gradient(860px 560px at 50% 10%, rgba(255,255,255,.92), rgba(255,255,255,0) 62%),
-        var(--bg);
-    }
-
-    /* Remove limite de largura, é fullscreen */
-    .frame{
-      position:relative;
-      width:100%;
-      height:100%;
-      border-radius:0;
       overflow:hidden;
-      background: rgba(255,255,255,.0);
-      border:0;
     }
 
-    /* Mount do chat sempre 100% */
-    #chatMount{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
+    /* Container fullscreen real */
+    .chat-full{
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: var(--vvh);
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
     }
 
-    /* Força qualquer iframe do Thinkstack a preencher a tela */
-    #chatMount iframe{
-      position:absolute !important;
-      inset:0 !important;
-      width:100% !important;
-      height:100% !important;
-      max-width:100% !important;
-      max-height:100% !important;
-      border:0 !important;
-      border-radius:0 !important;
-      display:block !important;
-      background:transparent !important;
+    .chat-full iframe{
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display:block;
+      background: transparent;
     }
-
-    /* Mata launcher/bolinha flutuante se o loader criar */
-    #chatMount [class*="launcher"],
-    #chatMount [id*="launcher"],
-    #chatMount [class*="bubble"],
-    #chatMount [class*="fab"],
-    #chatMount button[aria-label*="Open"]{
-      display:none !important;
-      opacity:0 !important;
-      pointer-events:none !important;
-    }
-
-    /* iOS: evita zoom do input no host */
-    body{ font-size:16px; }
   </style>
 </head>
 
@@ -127,22 +62,14 @@
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0"
       style="display:none;visibility:hidden"></iframe>
   </noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
-  <div class="progress"><span></span></div>
-
-  <main class="stage">
-    <section class="frame" aria-label="Chat">
-      <div id="chatMount">
-        <!-- IMPORTANTE: troque data-type para inline/fullscreen -->
-        <script
-          chatbot_id="6960ea094e96c848acd0e419"
-          data-type="inline"
-          src="https://app.thinkstack.ai/bot/thinkstackai-loader.min.js">
-        </script>
-      </div>
-    </section>
-  </main>
+  <div class="chat-full">
+    <iframe
+      src="https://app.thinkstack.ai/bot/index.html?chatbot_id=6960ea094e96c848acd0e419&type=inline"
+      allow="clipboard-read; clipboard-write"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
 
   <script>
     (function () {
@@ -152,13 +79,7 @@
       }
       setVVH();
       window.addEventListener('resize', setVVH, { passive: true });
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', setVVH, { passive: true });
-      }
-
-      /* NÃO bloquear touchmove: isso quebra o chat no mobile */
-      window.addEventListener('focusin', function () { setVVH(); setTimeout(setVVH, 80); }, true);
-      window.addEventListener('focusout', function () { setTimeout(setVVH, 120); }, true);
+      if (window.visualViewport) window.visualViewport.addEventListener('resize', setVVH, { passive: true });
     })();
   </script>
 </body>
