@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-br">
+
 <head>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -7,40 +8,356 @@
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-K9TFCGX9');</script>
+  <!-- End Google Tag Manager -->
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Obrigado</title>
+  <title>Affect AI</title>
+
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
 
   <style>
-    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial;background:#fff;color:#111827}
-    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{max-width:520px;width:100%;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 10px 24px rgba(15,23,42,.06);text-align:center}
-    h1{margin:0 0 10px;font-size:28px}
-    p{margin:0;color:#6b7280;line-height:1.5}
+    :root{
+      --purple:#7b73f1;
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --shadow:0 20px 40px rgba(15,23,42,.12);
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:var(--font);color:var(--text);
+      background:
+        radial-gradient(600px 460px at 50% 16%,
+          rgba(0,0,0,.05) 0%,
+          rgba(0,0,0,.025) 28%,
+          rgba(0,0,0,.01) 52%,
+          rgba(255,255,255,0) 72%),
+        var(--bg);
+      overflow:hidden;overscroll-behavior:none;touch-action:none;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      text-rendering:geometricPrecision;
+    }
+    @media(min-width:900px){
+      body{
+        background:
+          radial-gradient(720px 540px at 50% 16%,
+            rgba(0,0,0,.045) 0%,
+            rgba(0,0,0,.022) 30%,
+            rgba(0,0,0,.01) 54%,
+            rgba(255,255,255,0) 74%),
+          radial-gradient(900px 520px at 50% 30%,
+            rgba(123,115,241,.08), transparent 62%),
+          var(--bg);
+      }
+    }
+
+    .progress{position:fixed;top:0;left:0;right:0;height:3px;background:#e5e7eb;z-index:10}
+    .progress span{display:block;height:100%;width:100%;background:var(--purple)}
+    .stage{height:100vh;display:flex;justify-content:center;padding:18px 16px}
+    .column{width:100%;max-width:390px;display:flex;flex-direction:column;align-items:center}
+
+    .hero-wrap{
+      width:100%;display:flex;justify-content:center;margin-top:6px;
+      opacity:0;transform:translateY(12px) scale(.98);
+      animation:popIn .55s ease-out forwards .15s, floaty 4.5s ease-in-out infinite .75s;
+    }
+    .hero-img{
+      width:96px;height:auto;border-radius:12px;
+      box-shadow:0 14px 28px rgba(15,23,42,.12);
+      user-select:none;-webkit-user-drag:none;
+    }
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+    @keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.98);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+
+    .content{text-align:center;margin:14px 0 10px;width:100%}
+    h1{font-size:32px;font-weight:700;line-height:1.08;letter-spacing:-.01em;margin:0 0 10px}
+
+    .checks{margin:0;padding:0;list-style:none;color:var(--muted);font-size:16px;line-height:1.6}
+    .checks li{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0}
+    .checks svg{width:18px;height:18px;flex:0 0 18px}
+
+    .plans{width:100%;margin-top:10px;display:flex;flex-direction:column;gap:12px}
+    .plan{
+      width:100%;background:#fff;border-radius:18px;padding:14px 16px;
+      border:1.5px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 10px 24px rgba(15,23,42,.06);cursor:pointer;user-select:none;
+    }
+    .plan.selected{background:#f7f7ff;border-color:rgba(123,115,241,.85)}
+    .plan-left{display:flex;flex-direction:column;gap:4px;min-width:0;align-items:flex-start;text-align:left}
+    .plan-top{font-weight:600;color:rgba(17,24,39,.60);font-size:15px;line-height:1.1}
+    .price-row{display:flex;align-items:baseline;gap:6px;justify-content:flex-start;width:100%}
+    .price{font-size:30px;font-weight:700;letter-spacing:-.01em;color:var(--text);line-height:1.05}
+    .per{font-size:15px;color:rgba(17,24,39,.55);font-weight:500;line-height:1.1}
+    .note{font-size:14px;color:rgba(107,114,128,.85);margin-top:0;line-height:1.1}
+    .plan-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .badge{font-size:12px;font-weight:700;color:#16a34a;background:rgba(34,197,94,.14);padding:6px 10px;border-radius:999px;white-space:nowrap}
+    .radio{width:20px;height:20px;border-radius:999px;border:2px solid #d1d5db;display:grid;place-items:center}
+    .plan.selected .radio{border-color:rgba(123,115,241,.85)}
+    .dot{width:10px;height:10px;border-radius:999px;background:transparent}
+    .plan.selected .dot{background:var(--purple)}
+
+    .secure{margin-top:12px;display:flex;align-items:center;gap:10px;color:rgba(107,114,128,.78);font-size:14px;font-weight:500}
+    .secure svg{width:18px;height:18px}
+
+    .btn{
+      width:100%;margin-top:14px;background:var(--purple);color:#fff;text-align:center;
+      padding:18px;border-radius:16px;font-size:18px;font-weight:700;text-decoration:none;
+      box-shadow:0 18px 36px rgba(123,115,241,.35);
+      transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+      display:flex;align-items:center;justify-content:center;gap:12px;border:none;
+    }
+    .btn:hover{transform:scale(1.02);background-color:#8a83f6;box-shadow:0 22px 44px rgba(123,115,241,.45)}
+    .fineprint{margin-top:8px;font-size:14px;color:rgba(107,114,128,.72);text-align:center}
+
+    .modal{
+      position:fixed;inset:0;background:rgba(17,24,39,.55);
+      display:none;align-items:flex-end;justify-content:center;padding:14px;
+      z-index:50;
+    }
+    .modal.open{display:flex}
+    .sheet{
+      width:100%;max-width:420px;background:#fff;border-radius:18px;
+      box-shadow:0 20px 50px rgba(15,23,42,.22);
+      padding:14px 14px 12px;
+    }
+    .sheet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .sheet-title{font-weight:800;font-size:16px}
+    .close{
+      border:0;background:#f3f4f6;border-radius:10px;padding:8px 10px;
+      cursor:pointer;font-weight:700;
+    }
+    .mp-box{min-height:220px}
+    .hint{margin-top:8px;font-size:13px;color:rgba(107,114,128,.78);text-align:center}
   </style>
 </head>
-<body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-  <div class="wrap">
-    <div class="card">
-      <h1>Pagamento confirmado.</h1>
-      <p>Seu acesso será liberado em instantes.</p>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div class="progress"><span></span></div>
+
+  <main class="stage">
+    <div class="column">
+
+      <div class="hero-wrap" aria-hidden="true">
+        <img class="hero-img" src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/7ba73aaa-3da9-4cf1-abf2-ccc85dea5875/uid_3222836/Captura%20de%20Tela%202026-01-05%20a%CC%80s%2015.52.48.png" alt="" />
+      </div>
+
+      <section class="content">
+        <h1>Comece agora.</h1>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Leitura emocional da conversa</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Diga o que precisa ser dito</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Menos silêncio. Mais conexão.</span></li>
+        </ul>
+      </section>
+
+      <section class="plans" aria-label="Planos">
+        <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
+          <div class="plan-left">
+            <div class="plan-top">1 ano</div>
+            <div class="price-row">
+              <div class="price">R$ 9</div>
+              <div class="per">/ mês</div>
+            </div>
+            <div class="note">R$ 108 por ano</div>
+          </div>
+          <div class="plan-right">
+            <div class="badge">Desconto</div>
+            <div class="radio" aria-hidden="true"><div class="dot"></div></div>
+          </div>
+        </div>
+
+        <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
+          <div class="plan-left">
+            <div class="plan-top">1 mês</div>
+            <div class="price-row">
+              <div class="price">R$ 27</div>
+              <div class="per">/ mês</div>
+            </div>
+          </div>
+          <div class="plan-right">
+            <div class="radio" aria-hidden="true"><div class="dot"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="secure">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2 20 6v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4Z" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linejoin="round" />
+          <path d="M9.5 12.5l1.7 1.7 3.6-3.8" stroke="rgba(34,197,94,.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Pagamento 100% seguro</span>
+      </div>
+
+      <button class="btn" id="cta" type="button">
+        <span id="ctaText">Parar de Esperar</span>
+      </button>
+
+      <div class="fineprint">Garantia de 14 dias. Cancele quando quiser.</div>
+    </div>
+  </main>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Pagamento">
+      <div class="sheet-top">
+        <div class="sheet-title" id="sheetTitle">Finalizar pagamento</div>
+        <button class="close" id="closeBtn" type="button">Fechar</button>
+      </div>
+      <div class="mp-box" id="mpBrick"></div>
+      <div class="hint">Você conclui aqui mesmo, sem sair da página.</div>
     </div>
   </div>
 
   <script>
+    const MP_PUBLIC_KEY = "COLE_SUA_PUBLIC_KEY_AQUI";
+    const WORKER_PAY_URL = "https://SEU-WORKER.workers.dev/pay";
+    const SUCCESS_URL = "./obrigado.html";
+
+    const PLANS = {
+      year: { label: "Plano anual", amount: 108, plan: "year" },
+      month: { label: "Plano mensal", amount: 27, plan: "month" }
+    };
+
+    const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: "pt-BR" });
+
+    let selectedPlan = "year";
+    let brickController = null;
+
     function pushDataLayer(eventName, payload) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push(Object.assign({ event: eventName }, payload || {}));
     }
 
-    const qs = new URLSearchParams(window.location.search);
-    const plan = (qs.get("plan") || "year").toLowerCase();
-    const value = Number(qs.get("value") || 108);
+    function setPlan(plan) {
+      selectedPlan = plan;
+      document.querySelectorAll(".plan").forEach(el => {
+        const selected = el.dataset.plan === plan;
+        el.classList.toggle("selected", selected);
+        el.setAttribute("aria-pressed", selected ? "true" : "false");
+      });
+    }
 
-    pushDataLayer("purchase", { plan, value, currency: "BRL" });
+    document.querySelectorAll(".plan").forEach(el => {
+      el.addEventListener("click", () => setPlan(el.dataset.plan));
+      el.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          setPlan(el.dataset.plan);
+        }
+      });
+    });
+
+    setPlan("year");
+
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+    const cta = document.getElementById("cta");
+    const ctaText = document.getElementById("ctaText");
+    const sheetTitle = document.getElementById("sheetTitle");
+
+    function openModal() {
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+    async function mountBrick(planKey) {
+      const plan = PLANS[planKey];
+
+      sheetTitle.textContent = `${plan.label} • R$ ${plan.amount}`;
+
+      if (brickController) {
+        try { await brickController.unmount(); } catch {}
+        brickController = null;
+      }
+      document.getElementById("mpBrick").innerHTML = "";
+
+      const bricksBuilder = mp.bricks();
+
+      brickController = await bricksBuilder.create("cardPayment", "mpBrick", {
+        initialization: {
+          amount: plan.amount,
+        },
+        callbacks: {
+          onReady: () => {},
+          onError: (error) => {
+            alert("Erro ao carregar pagamento. Tente novamente.");
+          },
+          onSubmit: async (formData) => {
+            try {
+              const payload = {
+                token: formData.token,
+                payment_method_id: formData.payment_method_id,
+                issuer_id: formData.issuer_id,
+                installments: formData.installments,
+                transaction_amount: plan.amount,
+                description: `Affect AI | ${plan.label}`,
+                payer: {
+                  email: formData.payer.email,
+                  identification: formData.payer.identification || undefined
+                }
+              };
+
+              const res = await fetch(WORKER_PAY_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+              });
+
+              const data = await res.json();
+
+              if (!res.ok || !data.ok) {
+                throw new Error("Pagamento não aprovado");
+              }
+
+              if (data.status === "approved") {
+                pushDataLayer("purchase", { plan: plan.plan, value: plan.amount, currency: "BRL" });
+                window.location.href = `${SUCCESS_URL}?plan=${encodeURIComponent(plan.plan)}&value=${encodeURIComponent(plan.amount)}`;
+                return;
+              }
+
+              alert("Pagamento em análise. Você receberá confirmação.");
+              window.location.href = `${SUCCESS_URL}?plan=${encodeURIComponent(plan.plan)}&status=${encodeURIComponent(data.status || "pending")}`;
+
+            } catch (err) {
+              alert("Não foi possível concluir o pagamento. Verifique os dados e tente novamente.");
+            }
+          }
+        }
+      });
+    }
+
+    cta.addEventListener("click", async () => {
+      const plan = PLANS[selectedPlan];
+
+      pushDataLayer("initiate_checkout", { plan: plan.plan, value: plan.amount, currency: "BRL" });
+
+      cta.disabled = true;
+      ctaText.textContent = "Abrindo pagamento...";
+      openModal();
+
+      try {
+        await mountBrick(selectedPlan);
+      } finally {
+        cta.disabled = false;
+        ctaText.textContent = "Parar de Esperar";
+      }
+    });
+
+    window.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+    window.addEventListener("wheel", e => e.preventDefault(), { passive: false });
   </script>
 </body>
 </html>
