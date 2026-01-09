@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-K9TFCGX9");
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pagamento não concluído | AffectAI</title>
+
+    <style>
+      :root {
+        --purple: #7b73f1;
+        --bg: #f3eaf6;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        --radius: 22px;
+        --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background:
+          radial-gradient(700px 520px at 50% 18%,
+            rgba(255, 255, 255, 0.92) 0%,
+            rgba(255, 255, 255, 0.55) 28%,
+            rgba(255, 255, 255, 0.18) 52%,
+            rgba(243, 234, 246, 1) 100%),
+          var(--bg);
+      }
+
+      @media (min-width: 900px) {
+        body {
+          background:
+            radial-gradient(900px 620px at 50% 20%,
+              rgba(255, 255, 255, 0.92) 0%,
+              rgba(255, 255, 255, 0.52) 28%,
+              rgba(255, 255, 255, 0.16) 52%,
+              rgba(243, 234, 246, 1) 100%),
+            radial-gradient(900px 520px at 50% 30%, rgba(123, 115, 241, 0.10), transparent 60%),
+            var(--bg);
+        }
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e5e7eb;
+        z-index: 10;
+      }
+
+      .progress span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: var(--purple);
+      }
+
+      .stage {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px 24px;
+      }
+
+      .column {
+        width: 100%;
+        max-width: 390px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-wrap {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 14px;
+
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+        animation: popIn 0.55s ease-out forwards 0.15s, floaty 4.5s ease-in-out infinite 0.75s;
+      }
+
+      .hero {
+        width: 210px;
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 18px 28px rgba(15, 23, 42, 0.18)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.38));
+      }
+
+      @keyframes floaty {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-18px); }
+        100% { transform: translateY(0); }
+      }
+
+      @keyframes popIn {
+        from { opacity: 0; transform: translateY(18px) scale(0.98); filter: blur(2px); }
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+      }
+
+      .card {
+        width: 100%;
+        margin-top: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(17, 24, 39, 0.06);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+
+        opacity: 0;
+        transform: translateY(10px);
+        animation: popIn 0.55s ease-out forwards 0.22s;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.05;
+        margin: 6px 0 10px;
+        text-align: center;
+      }
+
+      p {
+        margin: 0;
+        color: #374151;
+        font-size: 15.5px;
+        line-height: 1.45;
+        text-align: center;
+      }
+
+      .muted {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
+
+      .chips {
+        margin: 14px auto 0;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(123, 115, 241, 0.10);
+        border: 1px solid rgba(123, 115, 241, 0.16);
+        color: #374151;
+        font-weight: 700;
+        font-size: 13.5px;
+      }
+
+      .xmark {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        background: rgba(239, 68, 68, 0.12);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      }
+
+      .xmark svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .btn {
+        width: 100%;
+        margin-top: 16px;
+        background: var(--purple);
+        color: #fff;
+        padding: 16px;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 800;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0 18px 36px rgba(123, 115, 241, 0.35);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+      }
+
+      .btn:hover {
+        transform: scale(1.03);
+        background-color: #8a83f6;
+        box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
+      }
+
+      .link {
+        margin-top: 12px;
+        font-size: 13.5px;
+        color: #4b5563;
+        text-decoration: none;
+      }
+
+      .link:hover {
+        text-decoration: underline;
+      }
+
+      .tiny {
+        margin-top: 10px;
+        font-size: 12.5px;
+        color: #6b7280;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="progress"><span></span></div>
+
+    <main class="stage">
+      <div class="column">
+        <div class="hero-wrap">
+          <img
+            class="hero"
+            src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/7ba73aaa-3da9-4cf1-abf2-ccc85dea5875/uid_3222836/features-affectionAI.png"
+            alt=""
+          />
+        </div>
+
+        <section class="card" aria-live="polite">
+          <h1>Pagamento não concluído</h1>
+
+          <p>
+            Parece que o pagamento <strong>não foi finalizado</strong>.
+            Você pode tentar novamente agora mesmo.
+          </p>
+
+          <div class="chips">
+            <div class="chip">
+              <span class="xmark">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M18 6L6 18M6 6l12 12"
+                    stroke="#ef4444"
+                    stroke-width="2.6"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              Status: falhou
+            </div>
+            <div class="chip">Tente outro método</div>
+          </div>
+
+          <p class="muted">
+            Às vezes o banco bloqueia por segurança ou faltou confirmação no app.
+            Reabra e conclua o pagamento.
+          </p>
+
+          <a class="btn" href="../checkout/">Tentar novamente</a>
+          <a class="link" href="../p8/">Voltar ao site</a>
+
+          <div class="tiny" id="ref"></div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var ref =
+          params.get("external_reference") ||
+          params.get("reference") ||
+          params.get("preference_id") ||
+          params.get("payment_id");
+
+        if (ref) {
+          var el = document.getElementById("ref");
+          el.textContent = "Referência: " + ref;
+        }
+      })();
+    </script>
+  </body>
+</html>
