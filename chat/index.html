@@ -1,86 +1,148 @@
 <!doctype html>
 <html lang="pt-br">
-<head>
-  <!-- Google Tag Manager -->
-  <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-K9TFCGX9');
-  </script>
-  <!-- End Google Tag Manager -->
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>AffectAI Chat</title>
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-K9TFCGX9');
+    </script>
+    <!-- End Google Tag Manager -->
 
-  <style>
-    :root{
-      --bg:#f6f5fa;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --vvh: 100vh;
-    }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>AffectAI | Chat</title>
 
-    *{ box-sizing:border-box; }
-
-    html, body{
-      height:100%;
-      margin:0;
-      background:var(--bg);
-      overflow:hidden;
-    }
-
-    /* Container fullscreen real */
-    .chat-full{
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: var(--vvh);
-      padding-top: var(--safe-top);
-      padding-bottom: var(--safe-bottom);
-    }
-
-    .chat-full iframe{
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display:block;
-      background: transparent;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe>
-  </noscript>
-
-  <div class="chat-full">
-    <iframe
-      src="https://app.thinkstack.ai/bot/index.html?chatbot_id=6960ea094e96c848acd0e419&type=inline"
-      allow="clipboard-read; clipboard-write"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-
-  <script>
-    (function () {
-      function setVVH() {
-        var h = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
-        document.documentElement.style.setProperty('--vvh', h + 'px');
+    <style>
+      :root {
+        --purple: #7b73f1;
+        --bg: #f6f5fa;
+        --text: #1f2937;
+        --shadow: 0 20px 40px rgba(15, 23, 42, .12);
+        --radius: 22px;
+        --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
-      setVVH();
-      window.addEventListener('resize', setVVH, { passive: true });
-      if (window.visualViewport) window.visualViewport.addEventListener('resize', setVVH, { passive: true });
-    })();
-  </script>
-</body>
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Sem scroll, sempre travado na altura da tela */
+      body {
+        font-family: var(--font);
+        color: var(--text);
+        background:
+          radial-gradient(800px 520px at 50% 26%,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(255, 255, 255, 0.75) 26%,
+            rgba(255, 255, 255, 0.30) 52%,
+            rgba(246, 245, 250, 1) 100%),
+          radial-gradient(900px 520px at 50% 30%, rgba(123, 115, 241, 0.10), transparent 60%),
+          var(--bg);
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
+      }
+
+      /* Barra fininha de topo (branding) */
+      .topline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: rgba(229, 231, 235, 0.9);
+        z-index: 10;
+      }
+
+      .topline span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: var(--purple);
+      }
+
+      /* Layout */
+      .stage {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        padding: 14px;
+        padding-top: calc(14px + 3px);
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 430px;
+        height: 100%;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: rgba(255, 255, 255, .6);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        position: relative;
+      }
+
+      /* Iframe ocupa tudo */
+      .chatframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+        background: transparent;
+      }
+
+      /* Desktop: um pouco mais "clean" no centro */
+      @media (min-width: 900px) {
+        .stage { padding: 22px; padding-top: calc(22px + 3px); }
+        .shell { max-width: 520px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="topline" aria-hidden="true"><span></span></div>
+
+    <main class="stage">
+      <section class="shell" aria-label="Chat do AffectAI">
+        <iframe
+          class="chatframe"
+          src="https://app.thinkstack.ai/bot/index.html?chatbot_id=6960ea094e96c848acd0e419&type=inline"
+          title="AffectAI Chat"
+          allow="clipboard-write; microphone; camera"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </section>
+    </main>
+
+    <script>
+      /* Reforço anti-scroll (iOS e trackpad insistem) */
+      window.addEventListener("touchmove", function(e) { e.preventDefault(); }, { passive: false });
+      window.addEventListener("wheel", function(e) { e.preventDefault(); }, { passive: false });
+    </script>
+  </body>
+
 </html>
