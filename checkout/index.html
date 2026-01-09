@@ -66,9 +66,11 @@
     .sheet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
     .sheet-title{font-weight:800;font-size:16px}
     .close{border:0;background:#f3f4f6;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:700;}
-    .mp-box{min-height:360px}
+    .mp-box{min-height:380px}
     .hint{margin-top:8px;font-size:13px;color:rgba(107,114,128,.78);text-align:center}
     .mp-fallback{font-size:13px;color:rgba(107,114,128,.85);text-align:center;padding:14px 8px}
+    .field{min-height:44px;margin-top:10px}
+    .field:first-child{margin-top:0}
   </style>
 </head>
 
@@ -130,16 +132,18 @@
         <div class="sheet-title" id="sheetTitle">Finalizar pagamento</div>
         <button class="close" id="closeBtn" type="button">Fechar</button>
       </div>
-      <div class="mp-box" id="mpBrick">
+
+      <div class="mp-box" id="mpBox">
         <div class="mp-fallback" id="mpFallback">Carregando pagamento…</div>
       </div>
+
       <div class="hint">Você conclui aqui mesmo, sem sair da página.</div>
     </div>
   </div>
 
   <script>
     const MP_PUBLIC_KEY = "APP_USR-COLE_SUA_PUBLIC_KEY_AQUI";
-    const WORKER_PAY_URL = "https://SEU-ENDPOINT-REAL/pay";
+    const WORKER_SUBSCRIBE_URL = "https://SEU-WORKER.workers.dev/subscribe";
     const SUCCESS_URL = "./obrigado.html";
 
     const PLANS = {
@@ -147,9 +151,17 @@
       month: { label: "Plano mensal", amount: 27,  plan: "month" }
     };
 
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+    const cta = document.getElementById("cta");
+    const ctaText = document.getElementById("ctaText");
+    const sheetTitle = document.getElementById("sheetTitle");
+    const mpBox = document.getElementById("mpBox");
+
     let mp = null;
     let selectedPlan = "year";
-    let brickController = null;
+    let cardForm = null;
+    let mounting = false;
 
     function pushDataLayer(eventName, payload) {
       window.dataLayer = window.dataLayer || [];
@@ -173,14 +185,6 @@
     });
     setPlan("year");
 
-    const modal = document.getElementById("modal");
-    const closeBtn = document.getElementById("closeBtn");
-    const cta = document.getElementById("cta");
-    const ctaText = document.getElementById("ctaText");
-    const sheetTitle = document.getElementById("sheetTitle");
-    const mpBrickEl = document.getElementById("mpBrick");
-    const mpFallback = document.getElementById("mpFallback");
-
     function openModal() {
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
@@ -192,7 +196,7 @@
     closeBtn.addEventListener("click", closeModal);
     modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 
-    function ensureSdkReady(timeoutMs = 6000) {
+    function ensureSdkReady(timeoutMs = 8000) {
       return new Promise((resolve, reject) => {
         const start = Date.now();
         (function check(){
@@ -203,85 +207,133 @@
       });
     }
 
-    async function mountBrick(planKey) {
+    function safeHtml(s) {
+      return (s || "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    }
+
+    function renderCardFormSkeleton(planKey) {
       const plan = PLANS[planKey];
       sheetTitle.textContent = `${plan.label} • R$ ${plan.amount}`;
 
-      mpFallback.textContent = "Carregando pagamento…";
-      mpFallback.style.display = "block";
+      mpBox.innerHTML = `
+        <form id="form-checkout">
+          <div id="form-checkout__cardNumber" class="field"></div>
+          <div id="form-checkout__expirationDate" class="field"></div>
+          <div id="form-checkout__securityCode" class="field"></div>
+          <div id="form-checkout__cardholderName" class="field"></div>
+          <div id="form-checkout__issuer" class="field"></div>
+          <div id="form-checkout__installments" class="field"></div>
+          <div id="form-checkout__identificationType" class="field"></div>
+          <div id="form-checkout__identificationNumber" class="field"></div>
+          <div id="form-checkout__cardholderEmail" class="field"></div>
 
-      if (brickController) {
-        try { await brickController.unmount(); } catch {}
-        brickController = null;
-      }
+          <button type="submit" class="btn" style="margin-top:12px;width:100%">
+            Assinar agora
+          </button>
 
-      mpBrickEl.innerHTML = '<div class="mp-fallback" id="mpFallback">Carregando pagamento…</div>';
-      const fallbackEl = document.getElementById("mpFallback");
+          <div class="mp-fallback" style="padding:10px 0 0 0">
+            Cartão e dados são processados pelo Mercado Pago.
+          </div>
+        </form>
+      `;
+    }
 
-      await ensureSdkReady();
-      if (!mp) mp = new MercadoPago(MP_PUBLIC_KEY, { locale: "pt-BR" });
+    async function mountCardForm(planKey) {
+      const plan = PLANS[planKey];
 
-      const bricksBuilder = mp.bricks();
+      if (mounting) return;
+      mounting = true;
 
-      brickController = await bricksBuilder.create("cardPayment", "mpBrick", {
-        initialization: { amount: plan.amount },
-        callbacks: {
-          onReady: () => {
-            const el = document.getElementById("mpFallback");
-            if (el) el.style.display = "none";
+      try {
+        await ensureSdkReady();
+        if (!mp) mp = new MercadoPago(MP_PUBLIC_KEY, { locale: "pt-BR" });
+
+        if (cardForm) {
+          try { cardForm.unmount(); } catch {}
+          cardForm = null;
+        }
+
+        renderCardFormSkeleton(planKey);
+
+        cardForm = mp.cardForm({
+          amount: String(plan.amount),
+          iframe: true,
+          form: {
+            id: "form-checkout",
+            cardNumber: { id: "form-checkout__cardNumber", placeholder: "Número do cartão" },
+            expirationDate: { id: "form-checkout__expirationDate", placeholder: "MM/AA" },
+            securityCode: { id: "form-checkout__securityCode", placeholder: "CVV" },
+            cardholderName: { id: "form-checkout__cardholderName", placeholder: "Nome no cartão" },
+            issuer: { id: "form-checkout__issuer", placeholder: "Banco emissor" },
+            installments: { id: "form-checkout__installments", placeholder: "Parcelas" },
+            identificationType: { id: "form-checkout__identificationType", placeholder: "Tipo de documento" },
+            identificationNumber: { id: "form-checkout__identificationNumber", placeholder: "Número do documento" },
+            cardholderEmail: { id: "form-checkout__cardholderEmail", placeholder: "E-mail" },
           },
-          onError: (error) => {
-            console.error("Brick error:", error);
-            const el = document.getElementById("mpFallback");
-            if (el) {
-              el.style.display = "block";
-              el.textContent = "Não foi possível carregar o pagamento. Atualize a página e tente novamente.";
-            }
-          },
-          onSubmit: async (formData) => {
-            try {
-              const payload = {
-                token: formData.token,
-                payment_method_id: formData.payment_method_id,
-                issuer_id: formData.issuer_id,
-                installments: formData.installments,
-                transaction_amount: plan.amount,
-                description: `Affect AI | ${plan.label}`,
-                payer: {
-                  email: formData.payer.email,
-                  identification: formData.payer.identification || undefined
-                }
-              };
+          callbacks: {
+            onFormMounted: (error) => {
+              if (error) {
+                console.error("onFormMounted:", error);
+                mpBox.innerHTML = `<div class="mp-fallback">Não foi possível carregar o formulário. Verifique bloqueadores e tente novamente.</div>`;
+              }
+            },
+            onSubmit: async (event) => {
+              event.preventDefault();
 
-              const res = await fetch(WORKER_PAY_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-              });
+              const data = cardForm.getCardFormData();
 
-              const data = await res.json().catch(() => ({}));
+              const payer_email = data.cardholderEmail;
+              const card_token_id = data.token;
 
-              if (!res.ok || !data.ok) throw new Error("Pagamento não aprovado");
-
-              if (data.status === "approved") {
-                pushDataLayer("purchase", { plan: plan.plan, value: plan.amount, currency: "BRL" });
-                window.location.href = `${SUCCESS_URL}?plan=${encodeURIComponent(plan.plan)}&value=${encodeURIComponent(plan.amount)}`;
+              if (!payer_email || !card_token_id) {
+                alert("Preencha o e-mail e os dados do cartão.");
                 return;
               }
 
-              window.location.href = `${SUCCESS_URL}?plan=${encodeURIComponent(plan.plan)}&status=${encodeURIComponent(data.status || "pending")}`;
-            } catch (err) {
-              alert("Não foi possível concluir o pagamento. Verifique os dados e tente novamente.");
-              console.error("Submit error:", err);
+              try {
+                const res = await fetch(WORKER_SUBSCRIBE_URL, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    plan: selectedPlan,
+                    payer_email,
+                    card_token_id
+                  })
+                });
+
+                const out = await res.json().catch(() => ({}));
+
+                if (!res.ok || !out.ok) {
+                  console.error("Subscribe error:", out);
+                  alert("Não foi possível criar a assinatura. Tente novamente.");
+                  return;
+                }
+
+                pushDataLayer("purchase", { plan: selectedPlan, value: plan.amount, currency: "BRL" });
+
+                window.location.href =
+                  `${SUCCESS_URL}?plan=${encodeURIComponent(selectedPlan)}&status=${encodeURIComponent(out.status || "authorized")}&sub_id=${encodeURIComponent(out.id || "")}`;
+              } catch (e) {
+                console.error(e);
+                alert("Erro de rede. Tente novamente.");
+              }
+            },
+            onFetching: (resource) => {
+              return () => {};
             }
           }
-        }
-      });
+        });
+
+      } catch (e) {
+        console.error(e);
+        mpBox.innerHTML = `<div class="mp-fallback">SDK não carregou. Desative bloqueadores e atualize a página.</div>`;
+      } finally {
+        mounting = false;
+      }
     }
 
     cta.addEventListener("click", async () => {
       const plan = PLANS[selectedPlan];
-
       pushDataLayer("initiate_checkout", { plan: plan.plan, value: plan.amount, currency: "BRL" });
 
       cta.disabled = true;
@@ -289,9 +341,8 @@
       openModal();
 
       try {
-        // ponto chave: espera o modal renderizar antes de montar o Brick
         await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-        await mountBrick(selectedPlan);
+        await mountCardForm(selectedPlan);
       } finally {
         cta.disabled = false;
         ctaText.textContent = "Parar de Esperar";
