@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-K9TFCGX9');</script>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Obrigado</title>
+
+  <style>
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial;background:#fff;color:#111827}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{max-width:520px;width:100%;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 10px 24px rgba(15,23,42,.06);text-align:center}
+    h1{margin:0 0 10px;font-size:28px}
+    p{margin:0;color:#6b7280;line-height:1.5}
+  </style>
+</head>
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <div class="wrap">
+    <div class="card">
+      <h1>Pagamento confirmado.</h1>
+      <p>Seu acesso será liberado em instantes.</p>
+    </div>
+  </div>
+
+  <script>
+    function pushDataLayer(eventName, payload) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: eventName }, payload || {}));
+    }
+
+    const qs = new URLSearchParams(window.location.search);
+    const plan = (qs.get("plan") || "year").toLowerCase();
+    const value = Number(qs.get("value") || 108);
+
+    pushDataLayer("purchase", { plan, value, currency: "BRL" });
+  </script>
+</body>
+</html>
