@@ -17,15 +17,18 @@
     <!-- End Google Tag Manager -->
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Affect AI | E-mail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Affect Ai | Confirmar</title>
 
     <style>
       :root {
         --purple: #7b73f1;
-        --bg: #ffffff;
         --text: #111827;
         --muted: #6b7280;
+        --line: #e5e7eb;
+        --card: #ffffff;
+        --bg1: rgba(123, 115, 241, 0.08);
+        --blue: #3b82f6;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
@@ -35,114 +38,255 @@
       body {
         margin: 0;
         font-family: var(--font);
-        background: #f3f4f6;
         color: var(--text);
-        overflow: hidden;
-        overscroll-behavior: none;
-        touch-action: none;
+        background:
+          radial-gradient(640px 420px at 50% 0%, var(--bg1) 0%, rgba(123,115,241,0.04) 36%, rgba(255,255,255,0) 70%),
+          linear-gradient(180deg, #fbfbff 0%, #f3f4f6 48%, #f3f4f6 100%);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
+        overflow-x: hidden;
       }
 
-      .stage {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 18px 16px;
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        height: 54px;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(229,231,235,0.85);
+        display: grid;
+        place-items: center;
       }
 
-      .column {
-        width: 100%;
-        max-width: 520px;
-      }
-
-      .title {
-        font-size: 18px;
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
         font-weight: 700;
-        margin: 0 0 12px;
+        color: #111827;
+        font-size: 16px;
+      }
+
+      .lock {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(209,213,219,0.9);
+        display: grid;
+        place-items: center;
+        background: #fff;
+      }
+
+      .lock svg { width: 14px; height: 14px; opacity: 0.75; }
+
+      .wrap {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 12px 14px 140px;
+      }
+
+      .summary {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(229,231,235,0.9);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .sumRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 14px;
+        font-size: 16px;
+      }
+
+      .divider { height: 1px; background: rgba(229,231,235,0.9); }
+
+      h1 {
+        margin: 18px 2px 14px;
+        font-size: 26px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+        color: #111827;
+        text-align: center;
+      }
+
+      .sectionTitle {
+        margin: 16px 2px 10px;
+        font-size: 16px;
+        font-weight: 800;
         color: #111827;
       }
 
-      .card {
+      .pmCard {
+        background: var(--card);
+        border: 1px solid rgba(229,231,235,0.9);
+        border-radius: 14px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      }
+
+      .pmLeft {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .visa {
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid rgba(229,231,235,0.9);
         background: #fff;
-        border-radius: 10px;
-        padding: 18px;
-        border: 1px solid #e5e7eb;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        color: #1d4ed8;
+        letter-spacing: 0.02em;
+      }
+
+      .pmText { min-width: 0; }
+      .pmMain {
+        font-size: 16px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .pmSub {
+        font-size: 14px;
+        color: rgba(17,24,39,0.55);
+        font-weight: 700;
+        margin-top: 2px;
+      }
+
+      .change {
+        border: 0;
+        background: transparent;
+        color: #3b82f6;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .helpTitle {
+        margin: 18px 2px 6px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #111827;
+      }
+
+      .helpSub {
+        margin: 0 2px 12px;
+        color: rgba(107,114,128,0.95);
+        font-size: 14px;
+        line-height: 1.35;
+        font-weight: 600;
+      }
+
+      .emailBox {
+        background: var(--card);
+        border: 1px solid rgba(229,231,235,0.9);
+        border-radius: 14px;
+        padding: 14px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
       }
 
       label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #111827;
         display: block;
+        font-size: 16px;
+        font-weight: 700;
+        color: #111827;
         margin-bottom: 10px;
       }
 
       input {
         width: 100%;
-        border-radius: 6px;
-        border: 1px solid #d1d5db;
-        padding: 14px 12px;
-        font-size: 15px;
+        border: 1px solid rgba(209,213,219,0.95);
+        border-radius: 10px;
+        padding: 16px 14px;
+        font-size: 16px;
         outline: none;
         background: #fff;
         color: #111827;
       }
 
       input:focus {
-        border-color: rgba(123, 115, 241, 0.85);
-        box-shadow: 0 0 0 3px rgba(123, 115, 241, 0.14);
-      }
-
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 18px;
-      }
-
-      .btn {
-        border: 0;
-        border-radius: 8px;
-        padding: 12px 18px;
-        font-weight: 700;
-        font-size: 15px;
-        cursor: pointer;
-      }
-
-      .btn.secondary {
-        background: #e5e7eb;
-        color: #111827;
-      }
-
-      .btn.primary {
-        background: var(--purple);
-        color: #fff;
-      }
-
-      .btn[disabled] {
-        opacity: 0.7;
-        cursor: not-allowed;
+        border-color: rgba(59,130,246,0.9);
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.14);
       }
 
       .alert {
-        margin-top: 12px;
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 14px;
         display: none;
-        border: 1px solid #e5e7eb;
-        background: #fff;
+        margin-top: 12px;
+        padding: 12px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        background: rgba(239, 68, 68, 0.06);
+        color: #111827;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+      .alert.show { display: block; }
+
+      .footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(229,231,235,0.85);
+        padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
       }
 
-      .alert.show { display: block; }
-      .alert.bad { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.06); }
-      .alert.ok { border-color: rgba(34, 197, 94, 0.35); background: rgba(34, 197, 94, 0.08); }
+      .footerInner {
+        max-width: 720px;
+        margin: 0 auto;
+        display: grid;
+        gap: 10px;
+        text-align: center;
+      }
 
-      .fineprint {
-        margin-top: 10px;
-        font-size: 13px;
-        color: rgba(107, 114, 128, 0.9);
+      .btnPrimary {
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        padding: 16px 14px;
+        font-size: 18px;
+        font-weight: 900;
+        background: var(--blue);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 16px 28px rgba(59,130,246,0.28);
+      }
+
+      .btnPrimary:active { transform: scale(0.99); }
+
+      .btnPrimary[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .footNote {
+        font-size: 14px;
+        color: rgba(107,114,128,0.95);
+        font-weight: 700;
+      }
+
+      .money { font-variant-numeric: tabular-nums; }
+
+      @media (min-width: 900px) {
+        .wrap { padding-left: 18px; padding-right: 18px; }
       }
     </style>
   </head>
@@ -157,40 +301,69 @@
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <main class="stage">
-      <div class="column">
-        <h1 class="title">Informe seu e-mail</h1>
-
-        <section class="card">
-          <form id="emailForm">
-            <label for="email">E-mail</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              inputmode="email"
-              autocomplete="email"
-              placeholder="seuemail@exemplo.com"
-              required
-            />
-
-            <div class="actions">
-              <button type="button" class="btn secondary" id="backBtn">Voltar</button>
-              <button type="submit" class="btn primary" id="payBtn">Assinar agora</button>
-            </div>
-
-            <div id="alert" class="alert"></div>
-            <div class="fineprint">Garantia de 14 dias. Cancele quando quiser.</div>
-          </form>
-        </section>
+    <header class="topbar">
+      <div class="brand">
+        <span class="lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7.5 11V8.8C7.5 6.15 9.6 4 12.2 4c2.6 0 4.7 2.15 4.7 4.8V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </span>
+        <span>Affect Ai</span>
       </div>
+    </header>
+
+    <main class="wrap">
+      <section class="summary" aria-label="Resumo">
+        <div class="sumRow">
+          <span id="productName">AffectAI Anual</span>
+          <strong class="money" id="productPrice">R$ 108,00</strong>
+        </div>
+        <div class="divider"></div>
+        <div class="sumRow">
+          <strong>Total</strong>
+          <strong class="money" id="totalPrice">108,00</strong>
+        </div>
+      </section>
+
+      <h1>Confirme a sua assinatura</h1>
+
+      <div class="sectionTitle">Meio de pagamento</div>
+      <div class="pmCard" role="group" aria-label="Cartão cadastrado">
+        <div class="pmLeft">
+          <div class="visa" aria-hidden="true">VISA</div>
+          <div class="pmText">
+            <div class="pmMain" id="pmMain">Cartão ****</div>
+            <div class="pmSub">Visa Crédito</div>
+          </div>
+        </div>
+        <button class="change" id="changeBtn" type="button">Alterar</button>
+      </div>
+
+      <div class="helpTitle">Insira seu e-mail</div>
+      <p class="helpSub">Você receberá os detalhes do seu pagamento que servirão como comprovante.</p>
+
+      <section class="emailBox" aria-label="E-mail">
+        <form id="emailForm">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Ex.: nome@email.com" required />
+          <div id="alert" class="alert"></div>
+        </form>
+      </section>
     </main>
+
+    <footer class="footer" aria-label="Ações">
+      <div class="footerInner">
+        <button class="btnPrimary" id="payBtn" type="submit" form="emailForm">Pagar assinatura</button>
+        <div class="footNote">Você pode cancelar quando quiser</div>
+      </div>
+    </footer>
 
     <script>
       const CONFIG = {
         BACKEND_ENDPOINT: "https://floral-water-e008.white-king-13b3.workers.dev/api/mp/subscribe",
+        BACK_TO_CARD: "/checkout-card.html",
         PLAN_IDS: {
           month: "e9af351c59244681a3cd183596308cf4",
           year: "2bed7dc251154df4a67a026781712a35"
@@ -199,7 +372,10 @@
           month: "/p9m/",
           year: "/p9a/"
         },
-        BACK_TO_CARD: "/checkout-card.html"
+        PRICES: {
+          year: { name: "AffectAI Anual", priceText: "R$ 108,00", totalText: "108,00" },
+          month: { name: "AffectAI Mensal", priceText: "R$ 27,00", totalText: "27,00" }
+        }
       };
 
       const $ = (id) => document.getElementById(id);
@@ -208,19 +384,26 @@
       const emailEl = $("email");
       const alertEl = $("alert");
       const payBtn = $("payBtn");
-      const backBtn = $("backBtn");
+      const changeBtn = $("changeBtn");
 
-      function showAlert(type, msg) {
-        alertEl.className = "alert show " + type;
+      const productNameEl = $("productName");
+      const productPriceEl = $("productPrice");
+      const totalPriceEl = $("totalPrice");
+      const pmMainEl = $("pmMain");
+
+      function showAlert(msg) {
         alertEl.textContent = msg;
+        alertEl.classList.add("show");
       }
+
       function clearAlert() {
-        alertEl.className = "alert";
         alertEl.textContent = "";
+        alertEl.classList.remove("show");
       }
+
       function setLoading(on) {
         payBtn.disabled = on;
-        payBtn.textContent = on ? "Processando..." : "Assinar agora";
+        payBtn.textContent = on ? "Processando..." : "Pagar assinatura";
       }
 
       function getPlan() {
@@ -235,22 +418,37 @@
         return sessionStorage.getItem("affect_card_token") || "";
       }
 
+      function getLast4() {
+        return sessionStorage.getItem("affect_card_last4") || "";
+      }
+
+      function applySummary(plan) {
+        const info = CONFIG.PRICES[plan] || CONFIG.PRICES.year;
+        productNameEl.textContent = info.name;
+        productPriceEl.textContent = info.priceText;
+        totalPriceEl.textContent = info.totalText;
+      }
+
+      function applyPaymentMethod() {
+        const last4 = getLast4();
+        pmMainEl.textContent = last4 ? ("Cartão **** " + last4) : "Cartão ****";
+      }
+
       function goBackToCard(plan) {
         window.location.href = CONFIG.BACK_TO_CARD + "?plan=" + encodeURIComponent(plan || "year");
       }
 
-      backBtn.addEventListener("click", () => {
-        const plan = getPlan();
-        goBackToCard(plan);
-      });
+      changeBtn.addEventListener("click", () => goBackToCard(getPlan()));
 
       window.addEventListener("load", () => {
         const plan = getPlan();
+        sessionStorage.setItem("affect_plan", plan);
+        applySummary(plan);
+        applyPaymentMethod();
+
         const token = getToken();
         if (!token) {
-          showAlert("bad", "Sessão expirou. Volte e preencha os dados do cartão novamente.");
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_email_missing_token", plan });
+          showAlert("Sessão expirou. Volte e preencha os dados do cartão novamente.");
         }
       });
 
@@ -262,11 +460,11 @@
         const token = getToken();
         const payerEmail = emailEl.value.trim();
 
-        if (!payerEmail) return showAlert("bad", "Preencha o e-mail.");
-        if (!token) return showAlert("bad", "Sessão expirou. Volte e preencha os dados do cartão novamente.");
+        if (!payerEmail) return showAlert("Preencha este campo.");
+        if (!token) return showAlert("Sessão expirou. Volte e preencha os dados do cartão novamente.");
 
         const planId = CONFIG.PLAN_IDS[plan];
-        if (!planId) return showAlert("bad", "Plano inválido.");
+        if (!planId) return showAlert("Plano inválido.");
 
         setLoading(true);
 
@@ -291,9 +489,9 @@
 
           if (!res.ok) {
             const msg = out?.message || "Falha ao criar assinatura. Tente novamente.";
-            window.dataLayer.push({ event: "checkout_error", plan, message: msg });
             setLoading(false);
-            return showAlert("bad", msg);
+            window.dataLayer.push({ event: "checkout_error", plan, message: msg });
+            return showAlert(msg);
           }
 
           window.dataLayer.push({
@@ -303,23 +501,17 @@
             status: out.status || ""
           });
 
-          showAlert("ok", "Assinatura criada. Redirecionando...");
           sessionStorage.removeItem("affect_card_token");
 
-          setTimeout(() => {
-            window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
-          }, 450);
+          window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
         } catch (err) {
           const msg = err?.message || "Erro inesperado. Tente novamente.";
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_error", plan, message: msg });
           setLoading(false);
-          showAlert("bad", msg);
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "checkout_error", plan: getPlan(), message: msg });
+          showAlert(msg);
         }
       });
-
-      window.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
-      window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
     </script>
   </body>
 </html>
