@@ -17,20 +17,21 @@
     <!-- End Google Tag Manager -->
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Affect AI | Cartão</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Affect Ai | Cartão</title>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
 
     <style>
       :root {
         --purple: #7b73f1;
-        --bg: #ffffff;
-        --card: #ffffff;
         --text: #111827;
         --muted: #6b7280;
-        --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
-        --radius: 22px;
+        --line: #e5e7eb;
+        --card: #ffffff;
+        --bg1: rgba(123, 115, 241, 0.08);
+        --bg2: rgba(0, 0, 0, 0.02);
+        --blue: #3b82f6;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
@@ -42,78 +43,117 @@
         margin: 0;
         font-family: var(--font);
         color: var(--text);
-        background: #f3f4f6;
-        overflow: hidden;
-        overscroll-behavior: none;
-        touch-action: none;
+        background:
+          radial-gradient(640px 420px at 50% 0%, var(--bg1) 0%, rgba(123,115,241,0.04) 36%, rgba(255,255,255,0) 70%),
+          linear-gradient(180deg, #fbfbff 0%, #f3f4f6 48%, #f3f4f6 100%);
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         text-rendering: geometricPrecision;
+        overflow-x: hidden;
       }
 
-      .stage {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 18px 16px;
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        height: 54px;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(229,231,235,0.85);
+        display: grid;
+        place-items: center;
       }
 
-      .column {
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #111827;
+        font-size: 16px;
+      }
+
+      .lock {
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(209,213,219,0.9);
+        display: grid;
+        place-items: center;
+        background: #fff;
+      }
+
+      .lock svg { width: 14px; height: 14px; opacity: 0.75; }
+
+      .wrap {
         width: 100%;
-        max-width: 520px;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 12px 14px 120px;
       }
+
+      .summary {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(229,231,235,0.9);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .sumRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 14px;
+        font-size: 16px;
+      }
+
+      .sumRow strong { font-weight: 700; }
+
+      .divider { height: 1px; background: rgba(229,231,235,0.9); }
 
       .title {
-        font-size: 18px;
-        font-weight: 700;
-        margin: 0 0 12px;
+        margin: 16px 2px 14px;
+        font-size: 30px;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        font-weight: 800;
         color: #111827;
       }
 
       .card {
         background: var(--card);
-        border-radius: 10px;
-        padding: 18px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(229,231,235,0.9);
+        border-radius: 14px;
+        padding: 16px;
       }
 
-      .row {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
+      .field { margin-bottom: 18px; }
+      .field:last-child { margin-bottom: 0; }
 
       label {
-        font-size: 13px;
+        display: block;
+        font-size: 16px;
         font-weight: 600;
+        color: #111827;
+        margin-bottom: 10px;
+      }
+
+      .input {
+        width: 100%;
+        border: 1px solid rgba(209,213,219,0.95);
+        border-radius: 10px;
+        padding: 16px 14px;
+        font-size: 16px;
+        outline: none;
+        background: #fff;
         color: #111827;
       }
 
-      input, select {
-        width: 100%;
-        border-radius: 6px;
-        border: 1px solid #d1d5db;
-        padding: 14px 12px;
-        font-size: 15px;
-        outline: none;
-        background: #fff;
-        color: var(--text);
+      .input:focus {
+        border-color: rgba(59,130,246,0.9);
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.14);
       }
 
-      input:focus, select:focus {
-        border-color: rgba(123, 115, 241, 0.85);
-        box-shadow: 0 0 0 3px rgba(123, 115, 241, 0.14);
-      }
-
-      .two {
+      .grid2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 14px;
@@ -122,54 +162,92 @@
       .docRow {
         display: grid;
         grid-template-columns: 92px 1fr;
-        gap: 10px;
+        gap: 12px;
         align-items: center;
       }
 
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 18px;
+      select.input {
+        appearance: none;
+        background-image:
+          linear-gradient(45deg, transparent 50%, #6b7280 50%),
+          linear-gradient(135deg, #6b7280 50%, transparent 50%);
+        background-position:
+          calc(100% - 18px) 54%,
+          calc(100% - 12px) 54%;
+        background-size: 6px 6px, 6px 6px;
+        background-repeat: no-repeat;
+        padding-right: 34px;
       }
 
-      .btn {
+      .footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(229,231,235,0.85);
+        padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
+      }
+
+      .footerInner {
+        max-width: 720px;
+        margin: 0 auto;
+        display: grid;
+        gap: 12px;
+      }
+
+      .btnPrimary {
+        width: 100%;
         border: 0;
-        border-radius: 8px;
-        padding: 12px 18px;
+        border-radius: 12px;
+        padding: 16px 14px;
+        font-size: 18px;
+        font-weight: 800;
+        background: var(--blue);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 16px 28px rgba(59,130,246,0.28);
+      }
+
+      .btnPrimary:active { transform: scale(0.99); }
+
+      .btnPrimary[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .btnLink {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #3b82f6;
         font-weight: 700;
-        font-size: 15px;
+        font-size: 18px;
+        padding: 8px 0;
         cursor: pointer;
       }
 
-      .btn.secondary {
-        background: #e5e7eb;
-        color: #111827;
-      }
-
-      .btn.primary {
-        background: #2563eb;
-        color: #fff;
-      }
-
-      .btn[disabled] {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
-
       .alert {
-        margin-top: 12px;
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 14px;
         display: none;
-        border: 1px solid #e5e7eb;
-        background: #fff;
+        margin-top: 12px;
+        padding: 12px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        background: rgba(239, 68, 68, 0.06);
+        color: #111827;
+        font-size: 14px;
+        line-height: 1.35;
       }
-
       .alert.show { display: block; }
-      .alert.bad { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.06); }
-      .alert.ok { border-color: rgba(34, 197, 94, 0.35); background: rgba(34, 197, 94, 0.08); }
+
+      .money { font-variant-numeric: tabular-nums; }
+
+      @media (min-width: 900px) {
+        .wrap { padding-left: 18px; padding-right: 18px; }
+      }
     </style>
   </head>
 
@@ -183,111 +261,95 @@
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <main class="stage">
-      <div class="column">
-        <h1 class="title">Preencha os dados do seu cartão</h1>
-
-        <section class="card" aria-label="Dados do cartão">
-          <form id="cardForm">
-            <div class="row">
-              <div class="field">
-                <label for="cardNumber">Número do cartão</label>
-                <input
-                  id="cardNumber"
-                  name="cardNumber"
-                  type="text"
-                  inputmode="numeric"
-                  autocomplete="cc-number"
-                  placeholder="1234 1234 1234 1234"
-                  required
-                />
-              </div>
-
-              <div class="field">
-                <label for="cardholderName">Nome do titular</label>
-                <input
-                  id="cardholderName"
-                  name="cardholderName"
-                  type="text"
-                  autocomplete="cc-name"
-                  placeholder="Ex.: Maria Lopes"
-                  required
-                />
-              </div>
-
-              <div class="two">
-                <div class="field">
-                  <label for="expiration">Vencimento</label>
-                  <input
-                    id="expiration"
-                    name="expiration"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="cc-exp"
-                    placeholder="MM/AA"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="cvv">Código de segurança</label>
-                  <input
-                    id="cvv"
-                    name="cvv"
-                    type="password"
-                    inputmode="numeric"
-                    autocomplete="cc-csc"
-                    placeholder="Ex.: 123"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="field">
-                <label for="docNumber">Documento do titular</label>
-                <div class="docRow">
-                  <select id="docType" name="docType" required>
-                    <option value="CPF">CPF</option>
-                    <option value="CNPJ">CNPJ</option>
-                  </select>
-
-                  <input
-                    id="docNumber"
-                    name="docNumber"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="999.999.999-99"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="actions">
-              <button type="button" class="btn secondary" id="backBtn">Voltar</button>
-              <button type="submit" class="btn primary" id="continueBtn">Continue</button>
-            </div>
-
-            <div id="alert" class="alert"></div>
-          </form>
-        </section>
+    <header class="topbar">
+      <div class="brand">
+        <span class="lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7.5 11V8.8C7.5 6.15 9.6 4 12.2 4c2.6 0 4.7 2.15 4.7 4.8V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </span>
+        <span>Affect Ai</span>
       </div>
+    </header>
+
+    <main class="wrap">
+      <section class="summary" aria-label="Resumo">
+        <div class="sumRow">
+          <span id="productName">AffectAI Anual</span>
+          <strong class="money" id="productPrice">R$ 108,00</strong>
+        </div>
+        <div class="divider"></div>
+        <div class="sumRow">
+          <strong>Total</strong>
+          <strong class="money" id="totalPrice">108,00</strong>
+        </div>
+      </section>
+
+      <h1 class="title">Preencha os dados do seu cartão</h1>
+
+      <section class="card" aria-label="Dados do cartão">
+        <form id="cardForm">
+          <div class="field">
+            <label for="cardNumber">Número do cartão</label>
+            <input class="input" id="cardNumber" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" required />
+          </div>
+
+          <div class="field">
+            <label for="cardholderName">Nome do titular</label>
+            <input class="input" id="cardholderName" name="cardholderName" type="text" autocomplete="cc-name" placeholder="Ex.: Maria Lopes" required />
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="expiration">Vencimento</label>
+              <input class="input" id="expiration" name="expiration" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" required />
+            </div>
+            <div class="field">
+              <label for="cvv">Código de segurança</label>
+              <input class="input" id="cvv" name="cvv" type="password" inputmode="numeric" autocomplete="cc-csc" placeholder="Ex.: 123" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="docNumber">Documento do titular</label>
+            <div class="docRow">
+              <select class="input" id="docType" name="docType" required>
+                <option value="CPF">CPF</option>
+                <option value="CNPJ">CNPJ</option>
+              </select>
+              <input class="input" id="docNumber" name="docNumber" type="text" inputmode="numeric" autocomplete="off" placeholder="999.999.999-99" required />
+            </div>
+          </div>
+
+          <div id="alert" class="alert"></div>
+        </form>
+      </section>
     </main>
+
+    <footer class="footer" aria-label="Ações">
+      <div class="footerInner">
+        <button class="btnPrimary" id="continueBtn" type="submit" form="cardForm">Continuar</button>
+        <button class="btnLink" id="backBtn" type="button">Voltar</button>
+      </div>
+    </footer>
 
     <script>
       const CONFIG = {
         MP_PUBLIC_KEY: "APP_USR-6c3829de-de42-45c0-9689-cd002aaf558b",
-        NEXT_PAGE: "/checkout-email.html"
+        NEXT_PAGE: "/checkout-email.html",
+        PRICES: {
+          year: { name: "AffectAI Anual", priceText: "R$ 108,00", totalText: "108,00" },
+          month: { name: "AffectAI Mensal", priceText: "R$ 27,00", totalText: "27,00" }
+        }
       };
 
       const $ = (id) => document.getElementById(id);
 
       const form = $("cardForm");
       const alertEl = $("alert");
-      const btn = $("continueBtn");
+      const continueBtn = $("continueBtn");
       const backBtn = $("backBtn");
 
       const numberEl = $("cardNumber");
@@ -297,35 +359,27 @@
       const docTypeEl = $("docType");
       const docEl = $("docNumber");
 
+      const productNameEl = $("productName");
+      const productPriceEl = $("productPrice");
+      const totalPriceEl = $("totalPrice");
+
       const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
 
-      function showAlert(type, msg) {
-        alertEl.className = "alert show " + type;
-        alertEl.textContent = msg;
-      }
-      function clearAlert() {
-        alertEl.className = "alert";
-        alertEl.textContent = "";
-      }
-      function setLoading(on) {
-        btn.disabled = on;
-        btn.textContent = on ? "Processando..." : "Continue";
-      }
+      function onlyDigits(s) { return (s || "").replace(/\D+/g, ""); }
 
-      function onlyDigits(s) {
-        return (s || "").replace(/\D+/g, "");
-      }
       function formatCardNumber(v) {
         const d = onlyDigits(v).slice(0, 19);
         const parts = [];
         for (let i = 0; i < d.length; i += 4) parts.push(d.slice(i, i + 4));
         return parts.join(" ");
       }
+
       function formatExpiration(v) {
         const d = onlyDigits(v).slice(0, 4);
         if (d.length <= 2) return d;
         return d.slice(0, 2) + "/" + d.slice(2);
       }
+
       function parseExp(mmYY) {
         const clean = onlyDigits(mmYY);
         const mm = clean.slice(0, 2);
@@ -337,45 +391,70 @@
         return { month: String(month), year: String(year) };
       }
 
-      numberEl.addEventListener("input", (e) => {
-        e.target.value = formatCardNumber(e.target.value);
-      });
-      expEl.addEventListener("input", (e) => {
-        e.target.value = formatExpiration(e.target.value);
-      });
+      function showAlert(msg) {
+        alertEl.textContent = msg;
+        alertEl.classList.add("show");
+      }
+
+      function clearAlert() {
+        alertEl.textContent = "";
+        alertEl.classList.remove("show");
+      }
+
+      function setLoading(on) {
+        continueBtn.disabled = on;
+        continueBtn.textContent = on ? "Processando..." : "Continuar";
+      }
+
+      function getPlan() {
+        const url = new URL(window.location.href);
+        const fromUrl = url.searchParams.get("plan");
+        const fromSession = sessionStorage.getItem("affect_plan");
+        const fromLocal = localStorage.getItem("affect_plan");
+        return fromUrl || fromSession || fromLocal || "year";
+      }
+
+      function applySummary(plan) {
+        const info = CONFIG.PRICES[plan] || CONFIG.PRICES.year;
+        productNameEl.textContent = info.name;
+        productPriceEl.textContent = info.priceText;
+        totalPriceEl.textContent = info.totalText;
+      }
+
+      numberEl.addEventListener("input", (e) => { e.target.value = formatCardNumber(e.target.value); });
+      expEl.addEventListener("input", (e) => { e.target.value = formatExpiration(e.target.value); });
 
       docEl.addEventListener("input", (e) => {
         const max = docTypeEl.value === "CPF" ? 11 : 14;
         e.target.value = onlyDigits(e.target.value).slice(0, max);
       });
+
       docTypeEl.addEventListener("change", () => {
         const max = docTypeEl.value === "CPF" ? 11 : 14;
         docEl.value = onlyDigits(docEl.value).slice(0, max);
         docEl.placeholder = docTypeEl.value === "CPF" ? "999.999.999-99" : "99.999.999/9999-99";
       });
 
-      function getPlanFromStorageOrUrl() {
-        const url = new URL(window.location.href);
-        const fromUrl = url.searchParams.get("plan");
-        const fromStorage = localStorage.getItem("affect_plan");
-        return fromUrl || fromStorage || "year";
-      }
+      backBtn.addEventListener("click", () => window.history.back());
 
-      backBtn.addEventListener("click", () => {
-        window.history.back();
+      window.addEventListener("load", () => {
+        const plan = getPlan();
+        sessionStorage.setItem("affect_plan", plan);
+        applySummary(plan);
       });
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         clearAlert();
 
+        const plan = getPlan();
         const exp = parseExp(expEl.value);
-        if (!exp) return showAlert("bad", "Vencimento inválido. Use MM/AA.");
-        if (!nameEl.value.trim()) return showAlert("bad", "Preencha o nome do titular.");
-        if (onlyDigits(numberEl.value).length < 13) return showAlert("bad", "Número do cartão inválido.");
-        if (onlyDigits(cvvEl.value).length < 3) return showAlert("bad", "Código de segurança inválido.");
 
-        const plan = getPlanFromStorageOrUrl();
+        if (!exp) return showAlert("Vencimento inválido.");
+        if (!nameEl.value.trim()) return showAlert("Preencha o nome do titular.");
+        if (onlyDigits(numberEl.value).length < 13) return showAlert("Número do cartão inválido.");
+        if (onlyDigits(cvvEl.value).length < 3) return showAlert("Código de segurança inválido.");
+        if (onlyDigits(docEl.value).length < (docTypeEl.value === "CPF" ? 11 : 14)) return showAlert("Documento inválido.");
 
         setLoading(true);
 
@@ -397,17 +476,19 @@
             const msg = result?.error?.message || "Não foi possível validar o cartão.";
             setLoading(false);
             window.dataLayer.push({ event: "checkout_card_error", plan, message: msg });
-            return showAlert("bad", msg);
+            return showAlert(msg);
           }
 
           const token = result?.id;
           if (!token) {
             setLoading(false);
             window.dataLayer.push({ event: "checkout_card_error", plan, message: "Token não gerado." });
-            return showAlert("bad", "Token não gerado. Revise os dados do cartão.");
+            return showAlert("Token não gerado. Revise os dados do cartão.");
           }
 
+          const last4 = result?.last_four_digits || "";
           sessionStorage.setItem("affect_card_token", token);
+          sessionStorage.setItem("affect_card_last4", last4);
           sessionStorage.setItem("affect_plan", plan);
 
           window.location.href = CONFIG.NEXT_PAGE + "?plan=" + encodeURIComponent(plan);
@@ -415,13 +496,10 @@
           const msg = err?.message || "Erro inesperado.";
           setLoading(false);
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_card_error", message: msg });
-          showAlert("bad", msg);
+          window.dataLayer.push({ event: "checkout_card_error", plan: getPlan(), message: msg });
+          showAlert(msg);
         }
       });
-
-      window.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
-      window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
     </script>
   </body>
 </html>
