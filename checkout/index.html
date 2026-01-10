@@ -24,19 +24,15 @@
 
     <style>
       :root {
-        --purple: #7b73f1;
         --text: #111827;
         --muted: #6b7280;
         --line: #e5e7eb;
         --card: #ffffff;
-        --bg1: rgba(123, 115, 241, 0.08);
-        --bg2: rgba(0, 0, 0, 0.02);
         --blue: #3b82f6;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
       * { box-sizing: border-box; }
-
       html, body { height: 100%; }
 
       body {
@@ -44,21 +40,20 @@
         font-family: var(--font);
         color: var(--text);
         background:
-          radial-gradient(640px 420px at 50% 0%, var(--bg1) 0%, rgba(123,115,241,0.04) 36%, rgba(255,255,255,0) 70%),
-          linear-gradient(180deg, #fbfbff 0%, #f3f4f6 48%, #f3f4f6 100%);
+          radial-gradient(640px 420px at 50% 0%, rgba(123,115,241,0.07) 0%, rgba(255,255,255,0) 70%),
+          linear-gradient(180deg, #fbfbff 0%, #f3f4f6 55%, #f3f4f6 100%);
         -webkit-font-smoothing: antialiased;
         text-rendering: geometricPrecision;
-        overflow-x: hidden;
       }
 
       .topbar {
         position: sticky;
         top: 0;
         z-index: 50;
-        height: 54px;
+        height: 52px;
         background: rgba(255,255,255,0.92);
         backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(229,231,235,0.85);
+        border-bottom: 1px solid rgba(229,231,235,0.9);
         display: grid;
         place-items: center;
       }
@@ -67,7 +62,7 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        font-weight: 700;
+        font-weight: 600;
         color: #111827;
         font-size: 16px;
       }
@@ -88,13 +83,13 @@
         width: 100%;
         max-width: 720px;
         margin: 0 auto;
-        padding: 12px 14px 120px;
+        padding: 12px 14px 110px;
       }
 
       .summary {
-        background: rgba(255,255,255,0.7);
+        background: rgba(255,255,255,0.8);
         border: 1px solid rgba(229,231,235,0.9);
-        border-radius: 14px;
+        border-radius: 10px;
         overflow: hidden;
       }
 
@@ -102,46 +97,46 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 14px;
-        font-size: 16px;
+        padding: 12px 12px;
+        font-size: 15px;
       }
 
-      .sumRow strong { font-weight: 700; }
-
+      .sumRow strong { font-weight: 600; }
       .divider { height: 1px; background: rgba(229,231,235,0.9); }
 
       .title {
-        margin: 16px 2px 14px;
-        font-size: 30px;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
-        font-weight: 800;
+        margin: 14px 2px 12px;
+        font-size: 22px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        font-weight: 700;
         color: #111827;
       }
 
       .card {
         background: var(--card);
         border: 1px solid rgba(229,231,235,0.9);
-        border-radius: 14px;
-        padding: 16px;
+        border-radius: 10px;
+        padding: 14px 14px;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
       }
 
-      .field { margin-bottom: 18px; }
+      .field { margin-bottom: 16px; }
       .field:last-child { margin-bottom: 0; }
 
       label {
         display: block;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
         color: #111827;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .input {
         width: 100%;
         border: 1px solid rgba(209,213,219,0.95);
-        border-radius: 10px;
-        padding: 16px 14px;
+        border-radius: 8px;
+        padding: 14px 12px;
         font-size: 16px;
         outline: none;
         background: #fff;
@@ -150,19 +145,19 @@
 
       .input:focus {
         border-color: rgba(59,130,246,0.9);
-        box-shadow: 0 0 0 4px rgba(59,130,246,0.14);
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
       }
 
       .grid2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 12px;
       }
 
       .docRow {
         display: grid;
         grid-template-columns: 92px 1fr;
-        gap: 12px;
+        gap: 10px;
         align-items: center;
       }
 
@@ -172,11 +167,11 @@
           linear-gradient(45deg, transparent 50%, #6b7280 50%),
           linear-gradient(135deg, #6b7280 50%, transparent 50%);
         background-position:
-          calc(100% - 18px) 54%,
-          calc(100% - 12px) 54%;
+          calc(100% - 16px) 54%,
+          calc(100% - 10px) 54%;
         background-size: 6px 6px, 6px 6px;
         background-repeat: no-repeat;
-        padding-right: 34px;
+        padding-right: 32px;
       }
 
       .footer {
@@ -187,28 +182,26 @@
         z-index: 60;
         background: rgba(255,255,255,0.92);
         backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(229,231,235,0.85);
+        border-top: 1px solid rgba(229,231,235,0.9);
         padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
       }
 
       .footerInner {
         max-width: 720px;
         margin: 0 auto;
-        display: grid;
-        gap: 12px;
       }
 
       .btnPrimary {
         width: 100%;
         border: 0;
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 16px 14px;
         font-size: 18px;
-        font-weight: 800;
+        font-weight: 700;
         background: var(--blue);
         color: #fff;
         cursor: pointer;
-        box-shadow: 0 16px 28px rgba(59,130,246,0.28);
+        box-shadow: 0 14px 26px rgba(59,130,246,0.22);
       }
 
       .btnPrimary:active { transform: scale(0.99); }
@@ -219,23 +212,12 @@
         box-shadow: none;
       }
 
-      .btnLink {
-        width: 100%;
-        border: 0;
-        background: transparent;
-        color: #3b82f6;
-        font-weight: 700;
-        font-size: 18px;
-        padding: 8px 0;
-        cursor: pointer;
-      }
-
       .alert {
         display: none;
         margin-top: 12px;
         padding: 12px 12px;
-        border-radius: 12px;
-        border: 1px solid rgba(239, 68, 68, 0.35);
+        border-radius: 10px;
+        border: 1px solid rgba(239, 68, 68, 0.28);
         background: rgba(239, 68, 68, 0.06);
         color: #111827;
         font-size: 14px;
@@ -244,10 +226,6 @@
       .alert.show { display: block; }
 
       .money { font-variant-numeric: tabular-nums; }
-
-      @media (min-width: 900px) {
-        .wrap { padding-left: 18px; padding-right: 18px; }
-      }
     </style>
   </head>
 
@@ -331,7 +309,6 @@
     <footer class="footer" aria-label="Ações">
       <div class="footerInner">
         <button class="btnPrimary" id="continueBtn" type="submit" form="cardForm">Continuar</button>
-        <button class="btnLink" id="backBtn" type="button">Voltar</button>
       </div>
     </footer>
 
@@ -350,7 +327,6 @@
       const form = $("cardForm");
       const alertEl = $("alert");
       const continueBtn = $("continueBtn");
-      const backBtn = $("backBtn");
 
       const numberEl = $("cardNumber");
       const nameEl = $("cardholderName");
@@ -434,8 +410,6 @@
         docEl.value = onlyDigits(docEl.value).slice(0, max);
         docEl.placeholder = docTypeEl.value === "CPF" ? "999.999.999-99" : "99.999.999/9999-99";
       });
-
-      backBtn.addEventListener("click", () => window.history.back());
 
       window.addEventListener("load", () => {
         const plan = getPlan();
