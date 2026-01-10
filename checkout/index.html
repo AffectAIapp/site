@@ -18,7 +18,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Affect AI | Checkout</title>
+    <title>Affect AI | Cartão</title>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
 
@@ -42,8 +42,7 @@
         margin: 0;
         font-family: var(--font);
         color: var(--text);
-        background: radial-gradient(600px 460px at 50% 16%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.025) 28%, rgba(0, 0, 0, 0.01) 52%, rgba(255, 255, 255, 0) 72%),
-          var(--bg);
+        background: #f3f4f6;
         overflow: hidden;
         overscroll-behavior: none;
         touch-action: none;
@@ -52,348 +51,125 @@
         text-rendering: geometricPrecision;
       }
 
-      @media (min-width: 900px) {
-        body {
-          background: radial-gradient(720px 540px at 50% 16%, rgba(0, 0, 0, 0.045) 0%, rgba(0, 0, 0, 0.022) 30%, rgba(0, 0, 0, 0.01) 54%, rgba(255, 255, 255, 0) 74%),
-            radial-gradient(900px 520px at 50% 30%, rgba(123, 115, 241, 0.08), transparent 62%),
-            var(--bg);
-        }
-      }
-
-      .progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: #e5e7eb;
-        z-index: 10;
-      }
-
-      .progress span {
-        display: block;
-        height: 100%;
-        width: 100%;
-        background: var(--purple);
-      }
-
       .stage {
         height: 100vh;
         display: flex;
         justify-content: center;
-        padding: 18px 16px 18px;
+        align-items: flex-start;
+        padding: 18px 16px;
       }
 
       .column {
         width: 100%;
-        max-width: 390px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        max-width: 520px;
       }
 
-      .content {
-        text-align: center;
-        margin: 10px 0 10px;
-        width: 100%;
-        opacity: 0;
-        transform: translateY(12px) scale(0.985);
-        will-change: transform, opacity;
-        animation: popIn 0.55s ease-out forwards 0.12s;
+      .title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 12px;
+        color: #111827;
       }
-
-      @keyframes popIn {
-        from { opacity: 0; transform: translateY(18px) scale(0.985); filter: blur(2px); }
-        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-      }
-
-      h1 {
-        font-size: 16px;
-        font-weight: 800;
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-        margin: 0 0 10px;
-      }
-
-      .checks {
-        width: 100%;
-        display: grid;
-        gap: 6px;
-        justify-items: center;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        color: rgba(107, 114, 128, 0.95);
-        font-size: 15px;
-        line-height: 1.35;
-      }
-
-      .checks li {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .check {
-        width: 18px;
-        height: 18px;
-        display: inline-grid;
-        place-items: center;
-        border-radius: 999px;
-        background: rgba(123, 115, 241, 0.12);
-        color: var(--purple);
-        font-weight: 900;
-        font-size: 13px;
-        line-height: 1;
-      }
-
-      .plans {
-        width: 100%;
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .plan {
-        width: 100%;
-        background: #fff;
-        border-radius: 18px;
-        padding: 14px 16px;
-        border: 1.5px solid #e5e7eb;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-        cursor: pointer;
-        user-select: none;
-      }
-
-      .plan.selected {
-        background: #f7f7ff;
-        border-color: rgba(123, 115, 241, 0.85);
-      }
-
-      .plan-left {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        min-width: 0;
-        align-items: flex-start;
-        text-align: left;
-      }
-
-      .plan-top {
-        font-weight: 600;
-        color: rgba(17, 24, 39, 0.6);
-        font-size: 15px;
-        line-height: 1.1;
-        text-align: left;
-      }
-
-      .price-row {
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-        justify-content: flex-start;
-        text-align: left;
-        width: 100%;
-      }
-
-      .price {
-        font-size: 30px;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        color: var(--text);
-        line-height: 1.05;
-        text-align: left;
-      }
-
-      .per {
-        font-size: 15px;
-        color: rgba(17, 24, 39, 0.55);
-        font-weight: 600;
-        line-height: 1.1;
-        text-align: left;
-      }
-
-      .note {
-        font-size: 14px;
-        color: rgba(107, 114, 128, 0.85);
-        margin-top: 0;
-        line-height: 1.1;
-        text-align: left;
-      }
-
-      .plan-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-      }
-
-      .badge {
-        font-size: 12px;
-        font-weight: 800;
-        color: #16a34a;
-        background: rgba(34, 197, 94, 0.14);
-        padding: 6px 10px;
-        border-radius: 999px;
-        white-space: nowrap;
-      }
-
-      .radio {
-        width: 20px;
-        height: 20px;
-        border-radius: 999px;
-        border: 2px solid #d1d5db;
-        display: grid;
-        place-items: center;
-      }
-
-      .plan.selected .radio { border-color: rgba(123, 115, 241, 0.85); }
-
-      .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: transparent;
-      }
-
-      .plan.selected .dot { background: var(--purple); }
 
       .card {
-        width: 100%;
-        margin-top: 12px;
         background: var(--card);
-        border-radius: 18px;
-        padding: 14px 14px;
-        border: 1.5px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 18px;
+        border: 1px solid #e5e7eb;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
       }
 
       .row {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 18px;
       }
 
       .field {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        text-align: left;
+        gap: 10px;
       }
 
       label {
-        font-size: 12px;
-        font-weight: 800;
-        color: rgba(17, 24, 39, 0.62);
+        font-size: 13px;
+        font-weight: 600;
+        color: #111827;
       }
 
       input, select {
         width: 100%;
-        border-radius: 14px;
-        border: 1.5px solid #e5e7eb;
-        padding: 14px 14px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        padding: 14px 12px;
         font-size: 15px;
         outline: none;
         background: #fff;
         color: var(--text);
-        transition: box-shadow 0.2s ease, border-color 0.2s ease;
       }
 
       input:focus, select:focus {
         border-color: rgba(123, 115, 241, 0.85);
-        box-shadow: 0 0 0 4px rgba(123, 115, 241, 0.14);
+        box-shadow: 0 0 0 3px rgba(123, 115, 241, 0.14);
       }
 
       .two {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .docRow {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
         gap: 12px;
+        margin-top: 18px;
       }
 
       .btn {
-        width: 100%;
-        margin-top: 14px;
-        background: var(--purple);
-        color: #fff;
-        text-align: center;
-        padding: 18px;
-        border-radius: 16px;
-        font-size: 18px;
-        font-weight: 800;
-        text-decoration: none;
-        box-shadow: 0 18px 36px rgba(123, 115, 241, 0.35);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
         border: 0;
+        border-radius: 8px;
+        padding: 12px 18px;
+        font-weight: 700;
+        font-size: 15px;
         cursor: pointer;
       }
 
-      .btn:hover {
-        transform: scale(1.02);
-        background-color: #8a83f6;
-        box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
+      .btn.secondary {
+        background: #e5e7eb;
+        color: #111827;
       }
 
-      .btn:active { transform: scale(0.99); }
+      .btn.primary {
+        background: #2563eb;
+        color: #fff;
+      }
 
       .btn[disabled] {
         opacity: 0.7;
         cursor: not-allowed;
-        box-shadow: none;
-      }
-
-      .spinner {
-        width: 18px;
-        height: 18px;
-        border-radius: 999px;
-        border: 2px solid rgba(255, 255, 255, 0.35);
-        border-top-color: rgba(255, 255, 255, 0.95);
-        animation: spin 0.9s linear infinite;
-        display: none;
-      }
-
-      @keyframes spin { to { transform: rotate(360deg); } }
-
-      .fineprint {
-        margin-top: 8px;
-        font-size: 14px;
-        color: rgba(107, 114, 128, 0.72);
-        text-align: center;
       }
 
       .alert {
-        width: 100%;
         margin-top: 12px;
-        border-radius: 14px;
-        padding: 12px 12px;
+        border-radius: 8px;
+        padding: 10px 12px;
         font-size: 14px;
-        line-height: 1.4;
         display: none;
-        border: 1.5px solid #e5e7eb;
+        border: 1px solid #e5e7eb;
         background: #fff;
-        text-align: left;
       }
 
       .alert.show { display: block; }
-      .alert.ok { border-color: rgba(34, 197, 94, 0.35); background: rgba(34, 197, 94, 0.08); }
       .alert.bad { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.06); }
-
-      .stage.slide-out {
-        animation: slideOutRight 0.45s ease forwards;
-        will-change: transform, opacity;
-      }
-
-      @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(-100%); opacity: 0; }
-      }
+      .alert.ok { border-color: rgba(34, 197, 94, 0.35); background: rgba(34, 197, 94, 0.08); }
     </style>
   </head>
 
@@ -409,57 +185,12 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div class="progress"><span></span></div>
-
-    <main class="stage" id="stage">
+    <main class="stage">
       <div class="column">
-        <section class="content" aria-label="Cabeçalho">
-          <h1>Comece agora.</h1>
-          <ul class="checks" aria-label="Benefícios">
-            <li><span class="check">✓</span> Leitura emocional da conversa</li>
-            <li><span class="check">✓</span> Diga o que precisa ser dito</li>
-            <li><span class="check">✓</span> Menos silêncio. Mais conexão.</li>
-          </ul>
-        </section>
+        <h1 class="title">Preencha os dados do seu cartão</h1>
 
-        <section class="plans" aria-label="Planos">
-          <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
-            <div class="plan-left">
-              <div class="plan-top">1 ano</div>
-              <div class="price-row">
-                <div class="price">R$ 9</div>
-                <div class="per">/ mês</div>
-              </div>
-              <div class="note">R$ 108 por ano</div>
-            </div>
-
-            <div class="plan-right">
-              <div class="badge">Desconto</div>
-              <div class="radio" aria-hidden="true">
-                <div class="dot"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
-            <div class="plan-left">
-              <div class="plan-top">1 mês</div>
-              <div class="price-row">
-                <div class="price">R$ 27</div>
-                <div class="per">/ mês</div>
-              </div>
-            </div>
-
-            <div class="plan-right">
-              <div class="radio" aria-hidden="true">
-                <div class="dot"></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="card" aria-label="Formulário de pagamento">
-          <form id="checkoutForm">
+        <section class="card" aria-label="Dados do cartão">
+          <form id="cardForm">
             <div class="row">
               <div class="field">
                 <label for="cardNumber">Número do cartão</label>
@@ -475,7 +206,7 @@
               </div>
 
               <div class="field">
-                <label for="cardholderName">Nome do titular do cartão</label>
+                <label for="cardholderName">Nome do titular</label>
                 <input
                   id="cardholderName"
                   name="cardholderName"
@@ -516,7 +247,7 @@
 
               <div class="field">
                 <label for="docNumber">Documento do titular</label>
-                <div class="two">
+                <div class="docRow">
                   <select id="docType" name="docType" required>
                     <option value="CPF">CPF</option>
                     <option value="CNPJ">CNPJ</option>
@@ -533,29 +264,14 @@
                   />
                 </div>
               </div>
-
-              <div class="field">
-                <label for="email">E-mail</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  inputmode="email"
-                  autocomplete="email"
-                  placeholder="seuemail@exemplo.com"
-                  required
-                />
-              </div>
             </div>
 
-            <button class="btn" id="payBtn" type="submit">
-              <span id="btnText">Assinar agora</span>
-              <span id="btnSpin" class="spinner" aria-hidden="true"></span>
-            </button>
+            <div class="actions">
+              <button type="button" class="btn secondary" id="backBtn">Voltar</button>
+              <button type="submit" class="btn primary" id="continueBtn">Continue</button>
+            </div>
 
             <div id="alert" class="alert"></div>
-
-            <div class="fineprint">Garantia de 14 dias. Cancele quando quiser.</div>
           </form>
         </section>
       </div>
@@ -564,114 +280,52 @@
     <script>
       const CONFIG = {
         MP_PUBLIC_KEY: "APP_USR-6c3829de-de42-45c0-9689-cd002aaf558b",
-        BACKEND_ENDPOINT: "https://floral-water-e008.white-king-13b3.workers.dev/api/mp/subscribe",
-        PLAN_IDS: {
-          month: "e9af351c59244681a3cd183596308cf4",
-          year: "2bed7dc251154df4a67a026781712a35"
-        },
-        THANK_YOU: {
-          month: "/p9m/",
-          year: "/p9a/"
-        }
+        NEXT_PAGE: "/checkout-email.html"
       };
 
       const $ = (id) => document.getElementById(id);
 
-      const stage = $("stage");
-      const form = $("checkoutForm");
+      const form = $("cardForm");
+      const alertEl = $("alert");
+      const btn = $("continueBtn");
+      const backBtn = $("backBtn");
 
       const numberEl = $("cardNumber");
       const nameEl = $("cardholderName");
       const expEl = $("expiration");
       const cvvEl = $("cvv");
-
       const docTypeEl = $("docType");
       const docEl = $("docNumber");
-      const emailEl = $("email");
 
-      const payBtn = $("payBtn");
-      const btnText = $("btnText");
-      const btnSpin = $("btnSpin");
-      const alertEl = $("alert");
-
-      let currentPlan = "year";
+      const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
 
       function showAlert(type, msg) {
         alertEl.className = "alert show " + type;
         alertEl.textContent = msg;
       }
-
       function clearAlert() {
         alertEl.className = "alert";
         alertEl.textContent = "";
       }
-
       function setLoading(on) {
-        payBtn.disabled = on;
-        btnSpin.style.display = on ? "inline-block" : "none";
-        btnText.textContent = on ? "Processando..." : "Assinar agora";
+        btn.disabled = on;
+        btn.textContent = on ? "Processando..." : "Continue";
       }
 
       function onlyDigits(s) {
         return (s || "").replace(/\D+/g, "");
       }
-
       function formatCardNumber(v) {
         const d = onlyDigits(v).slice(0, 19);
         const parts = [];
         for (let i = 0; i < d.length; i += 4) parts.push(d.slice(i, i + 4));
         return parts.join(" ");
       }
-
       function formatExpiration(v) {
         const d = onlyDigits(v).slice(0, 4);
         if (d.length <= 2) return d;
         return d.slice(0, 2) + "/" + d.slice(2);
       }
-
-      numberEl.addEventListener("input", (e) => {
-        e.target.value = formatCardNumber(e.target.value);
-      });
-
-      expEl.addEventListener("input", (e) => {
-        e.target.value = formatExpiration(e.target.value);
-      });
-
-      docEl.addEventListener("input", (e) => {
-        const max = docTypeEl.value === "CPF" ? 11 : 14;
-        e.target.value = onlyDigits(e.target.value).slice(0, max);
-      });
-
-      docTypeEl.addEventListener("change", () => {
-        const max = docTypeEl.value === "CPF" ? 11 : 14;
-        docEl.value = onlyDigits(docEl.value).slice(0, max);
-      });
-
-      function setPlan(plan) {
-        currentPlan = plan;
-
-        document.querySelectorAll(".plan").forEach((el) => {
-          const selected = el.dataset.plan === plan;
-          el.classList.toggle("selected", selected);
-          el.setAttribute("aria-pressed", selected ? "true" : "false");
-        });
-
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: "checkout_plan_selected", plan });
-      }
-
-      document.querySelectorAll(".plan").forEach((el) => {
-        el.addEventListener("click", () => setPlan(el.dataset.plan));
-        el.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter" || ev.key === " ") {
-            ev.preventDefault();
-            setPlan(el.dataset.plan);
-          }
-        });
-      });
-
-      const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
-
       function parseExp(mmYY) {
         const clean = onlyDigits(mmYY);
         const mm = clean.slice(0, 2);
@@ -683,89 +337,85 @@
         return { month: String(month), year: String(year) };
       }
 
-      async function createCardToken() {
-        const exp = parseExp(expEl.value);
-        if (!exp) throw new Error("Validade inválida. Use MM/AA.");
+      numberEl.addEventListener("input", (e) => {
+        e.target.value = formatCardNumber(e.target.value);
+      });
+      expEl.addEventListener("input", (e) => {
+        e.target.value = formatExpiration(e.target.value);
+      });
 
-        const result = await mp.createCardToken({
-          cardNumber: onlyDigits(numberEl.value),
-          cardholderName: nameEl.value.trim(),
-          cardExpirationMonth: exp.month,
-          cardExpirationYear: exp.year,
-          securityCode: onlyDigits(cvvEl.value),
-          identificationType: docTypeEl.value,
-          identificationNumber: onlyDigits(docEl.value)
-        });
+      docEl.addEventListener("input", (e) => {
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        e.target.value = onlyDigits(e.target.value).slice(0, max);
+      });
+      docTypeEl.addEventListener("change", () => {
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        docEl.value = onlyDigits(docEl.value).slice(0, max);
+        docEl.placeholder = docTypeEl.value === "CPF" ? "999.999.999-99" : "99.999.999/9999-99";
+      });
 
-        if (result?.error) {
-          const msg = result?.error?.message || "Não foi possível validar o cartão.";
-          throw new Error(msg);
-        }
-
-        const token = result?.id;
-        if (!token) throw new Error("Token não gerado. Revise os dados do cartão.");
-        return token;
+      function getPlanFromStorageOrUrl() {
+        const url = new URL(window.location.href);
+        const fromUrl = url.searchParams.get("plan");
+        const fromStorage = localStorage.getItem("affect_plan");
+        return fromUrl || fromStorage || "year";
       }
+
+      backBtn.addEventListener("click", () => {
+        window.history.back();
+      });
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         clearAlert();
 
-        const payerEmail = emailEl.value.trim();
-        if (!nameEl.value.trim()) return showAlert("bad", "Preencha o nome do titular do cartão.");
-        if (!payerEmail) return showAlert("bad", "Preencha o e-mail.");
+        const exp = parseExp(expEl.value);
+        if (!exp) return showAlert("bad", "Vencimento inválido. Use MM/AA.");
+        if (!nameEl.value.trim()) return showAlert("bad", "Preencha o nome do titular.");
+        if (onlyDigits(numberEl.value).length < 13) return showAlert("bad", "Número do cartão inválido.");
+        if (onlyDigits(cvvEl.value).length < 3) return showAlert("bad", "Código de segurança inválido.");
 
-        const planId = CONFIG.PLAN_IDS[currentPlan];
-        if (!planId) return showAlert("bad", "Plano inválido.");
+        const plan = getPlanFromStorageOrUrl();
 
         setLoading(true);
 
         try {
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_submit", plan: currentPlan });
+          window.dataLayer.push({ event: "checkout_card_continue", plan });
 
-          const card_token_id = await createCardToken();
-
-          const payload = {
-            plan: currentPlan,
-            preapproval_plan_id: planId,
-            payerEmail,
-            card_token_id
-          };
-
-          const res = await fetch(CONFIG.BACKEND_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+          const result = await mp.createCardToken({
+            cardNumber: onlyDigits(numberEl.value),
+            cardholderName: nameEl.value.trim(),
+            cardExpirationMonth: exp.month,
+            cardExpirationYear: exp.year,
+            securityCode: onlyDigits(cvvEl.value),
+            identificationType: docTypeEl.value,
+            identificationNumber: onlyDigits(docEl.value)
           });
 
-          const out = await res.json().catch(() => ({}));
-
-          if (!res.ok) {
-            const msg = out?.message || "Falha ao criar assinatura. Tente novamente.";
-            window.dataLayer.push({ event: "checkout_error", plan: currentPlan, message: msg });
+          if (result?.error) {
+            const msg = result?.error?.message || "Não foi possível validar o cartão.";
             setLoading(false);
+            window.dataLayer.push({ event: "checkout_card_error", plan, message: msg });
             return showAlert("bad", msg);
           }
 
-          window.dataLayer.push({
-            event: "subscribe_created",
-            plan: currentPlan,
-            subscription_id: out.id || "",
-            status: out.status || ""
-          });
+          const token = result?.id;
+          if (!token) {
+            setLoading(false);
+            window.dataLayer.push({ event: "checkout_card_error", plan, message: "Token não gerado." });
+            return showAlert("bad", "Token não gerado. Revise os dados do cartão.");
+          }
 
-          showAlert("ok", "Assinatura criada. Redirecionando...");
+          sessionStorage.setItem("affect_card_token", token);
+          sessionStorage.setItem("affect_plan", plan);
 
-          stage.classList.add("slide-out");
-          setTimeout(() => {
-            window.location.href = CONFIG.THANK_YOU[currentPlan] || "/p9a/";
-          }, 450);
+          window.location.href = CONFIG.NEXT_PAGE + "?plan=" + encodeURIComponent(plan);
         } catch (err) {
-          const msg = err?.message || "Erro inesperado. Tente novamente.";
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_error", plan: currentPlan, message: msg });
+          const msg = err?.message || "Erro inesperado.";
           setLoading(false);
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "checkout_card_error", message: msg });
           showAlert("bad", msg);
         }
       });
