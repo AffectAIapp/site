@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -25,23 +26,12 @@
     <style>
       :root {
         --purple: #7b73f1;
-
-        --bg: #f3f4f6;
+        --bg: #ffffff;
         --card: #ffffff;
-
         --text: #111827;
         --muted: #6b7280;
-
-        --line: #e5e7eb;
-        --lineStrong: #d1d5db;
-
-        --danger: #ef4444;
-
-        --primaryBtn: #2563eb;
-        --secondaryBtnBg: #e5e7eb;
-        --secondaryBtnText: #2563eb;
-
-        --shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+        --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        --radius: 22px;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
@@ -58,7 +48,8 @@
         margin: 0;
         font-family: var(--font);
         color: var(--text);
-        background: var(--bg);
+        background: radial-gradient(600px 460px at 50% 16%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.025) 28%, rgba(0, 0, 0, 0.01) 52%, rgba(255, 255, 255, 0) 72%),
+          var(--bg);
         overflow: hidden;
         overscroll-behavior: none;
         touch-action: none;
@@ -67,55 +58,134 @@
         text-rendering: geometricPrecision;
       }
 
-      .page {
+      @media (min-width: 900px) {
+        body {
+          background: radial-gradient(720px 540px at 50% 16%, rgba(0, 0, 0, 0.045) 0%, rgba(0, 0, 0, 0.022) 30%, rgba(0, 0, 0, 0.01) 54%, rgba(255, 255, 255, 0) 74%),
+            radial-gradient(900px 520px at 50% 30%, rgba(123, 115, 241, 0.08), transparent 62%),
+            var(--bg);
+        }
+      }
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e5e7eb;
+        z-index: 10;
+      }
+
+      .progress span {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background: var(--purple);
+      }
+
+      .stage {
         height: 100vh;
-        max-width: 520px;
-        margin: 0 auto;
-        padding: 14px 14px 12px;
-        display: grid;
-        grid-template-rows: auto auto 1fr auto;
-        gap: 10px;
+        display: flex;
+        justify-content: center;
+        padding: 18px 16px 18px;
+      }
+
+      .column {
+        width: 100%;
+        max-width: 390px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .content {
+        text-align: center;
+        margin: 10px 0 10px;
+        width: 100%;
+        opacity: 0;
+        transform: translateY(12px) scale(0.985);
+        will-change: transform, opacity;
+        animation: popIn 0.55s ease-out forwards 0.12s;
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.985);
+          filter: blur(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
       }
 
       h1 {
-        margin: 6px 0 0;
-        font-size: 22px;
-        font-weight: 900;
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1.05;
         letter-spacing: -0.01em;
-        text-align: center;
+        margin: 0 0 10px;
       }
 
-      .subtitle {
+      .checks {
+        width: 100%;
+        display: grid;
+        gap: 6px;
+        justify-items: center;
         margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.2;
-        text-align: center;
+        padding: 0;
+        list-style: none;
+        color: rgba(107, 114, 128, 0.95);
+        font-size: 15px;
+        line-height: 1.35;
+      }
+
+      .checks li {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .check {
+        width: 18px;
+        height: 18px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 999px;
+        background: rgba(123, 115, 241, 0.12);
+        color: var(--purple);
+        font-weight: 900;
+        font-size: 13px;
+        line-height: 1;
       }
 
       .plans {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
 
       .plan {
-        background: var(--card);
-        border: 1.5px solid var(--line);
-        border-radius: 16px;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-        padding: 12px 14px;
+        width: 100%;
+        background: #fff;
+        border-radius: 18px;
+        padding: 14px 16px;
+        border: 1.5px solid #e5e7eb;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
         cursor: pointer;
         user-select: none;
       }
 
       .plan.selected {
         background: #f7f7ff;
-        border-color: rgba(123, 115, 241, 0.55);
-        box-shadow: 0 12px 28px rgba(123, 115, 241, 0.10);
+        border-color: rgba(123, 115, 241, 0.85);
       }
 
       .plan-left {
@@ -128,36 +198,45 @@
       }
 
       .plan-top {
-        font-weight: 700;
-        color: rgba(17, 24, 39, 0.60);
-        font-size: 14px;
+        font-weight: 600;
+        color: rgba(17, 24, 39, 0.6);
+        font-size: 15px;
         line-height: 1.1;
+        text-align: left;
       }
 
       .price-row {
         display: flex;
         align-items: baseline;
         gap: 6px;
+        justify-content: flex-start;
+        text-align: left;
+        width: 100%;
       }
 
       .price {
-        font-size: 28px;
-        font-weight: 900;
+        font-size: 30px;
+        font-weight: 800;
         letter-spacing: -0.01em;
         color: var(--text);
         line-height: 1.05;
+        text-align: left;
       }
 
       .per {
-        font-size: 14px;
+        font-size: 15px;
         color: rgba(17, 24, 39, 0.55);
         font-weight: 600;
+        line-height: 1.1;
+        text-align: left;
       }
 
       .note {
-        font-size: 13px;
+        font-size: 14px;
         color: rgba(107, 114, 128, 0.85);
+        margin-top: 0;
         line-height: 1.1;
+        text-align: left;
       }
 
       .plan-right {
@@ -178,164 +257,153 @@
       }
 
       .radio {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         border-radius: 999px;
-        border: 2px solid #cbd5e1;
+        border: 2px solid #d1d5db;
         display: grid;
         place-items: center;
       }
 
       .plan.selected .radio {
-        border-color: rgba(123, 115, 241, 0.9);
+        border-color: rgba(123, 115, 241, 0.85);
       }
 
       .dot {
-        width: 9px;
-        height: 9px;
+        width: 10px;
+        height: 10px;
         border-radius: 999px;
         background: transparent;
       }
 
       .plan.selected .dot {
-        background: rgba(123, 115, 241, 1);
+        background: var(--purple);
       }
 
       .card {
+        width: 100%;
+        margin-top: 12px;
         background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        box-shadow: var(--shadow);
-        padding: 12px;
-        align-self: center;
+        border-radius: 18px;
+        padding: 14px 14px;
+        border: 1.5px solid #e5e7eb;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
 
       .field {
-        margin: 0 0 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
       }
 
-      .label {
-        display: block;
-        font-size: 13px;
+      label {
+        font-size: 12px;
         font-weight: 800;
-        color: var(--text);
-        margin: 0 0 6px;
-      }
-
-      .control {
-        position: relative;
+        color: rgba(17, 24, 39, 0.62);
       }
 
       input,
       select {
         width: 100%;
-        border-radius: 10px;
-        border: 1.5px solid var(--lineStrong);
-        padding: 12px 12px;
-        font-size: 14px;
+        border-radius: 14px;
+        border: 1.5px solid #e5e7eb;
+        padding: 14px 14px;
+        font-size: 15px;
         outline: none;
         background: #fff;
         color: var(--text);
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      }
-
-      input::placeholder {
-        color: #9ca3af;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
       }
 
       input:focus,
       select:focus {
-        border-color: rgba(123, 115, 241, 0.9);
-        box-shadow: 0 0 0 4px rgba(123, 115, 241, 0.12);
-      }
-
-      .helper {
-        margin-top: 6px;
-        font-size: 12px;
-        color: var(--muted);
-        line-height: 1.2;
-      }
-
-      .error {
-        margin-top: 6px;
-        font-size: 12px;
-        color: var(--danger);
-        display: none;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .error svg {
-        width: 14px;
-        height: 14px;
-        flex: 0 0 14px;
-      }
-
-      .invalid .label {
-        color: var(--danger);
-      }
-
-      .invalid input,
-      .invalid select {
-        border-color: var(--danger);
-        box-shadow: none;
-      }
-
-      .invalid .error {
-        display: inline-flex;
+        border-color: rgba(123, 115, 241, 0.85);
+        box-shadow: 0 0 0 4px rgba(123, 115, 241, 0.14);
       }
 
       .two {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 12px;
       }
 
-      .docRow {
-        display: grid;
-        grid-template-columns: 92px 1fr;
-        gap: 10px;
+      .helper {
+        margin-top: -4px;
+        color: rgba(107, 114, 128, 0.9);
+        font-size: 12px;
+        line-height: 1.2;
       }
 
-      .actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+      .hint {
+        margin-top: 10px;
+        color: rgba(107, 114, 128, 0.78);
+        font-size: 13px;
+        line-height: 1.45;
+        text-align: left;
+      }
+
+      .secure {
+        margin-top: 12px;
+        display: flex;
         align-items: center;
+        gap: 10px;
+        color: rgba(107, 114, 128, 0.78);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .secure svg {
+        width: 18px;
+        height: 18px;
       }
 
       .btn {
         width: 100%;
-        border-radius: 10px;
-        padding: 12px 12px;
-        font-size: 14px;
-        font-weight: 900;
-        cursor: pointer;
-        border: 0;
-        display: inline-flex;
+        margin-top: 14px;
+        background: var(--purple);
+        color: #fff;
+        text-align: center;
+        padding: 18px;
+        border-radius: 16px;
+        font-size: 18px;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 18px 36px rgba(123, 115, 241, 0.35);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 12px;
+        border: 0;
+        cursor: pointer;
       }
 
-      .btn.secondary {
-        background: var(--secondaryBtnBg);
-        color: var(--secondaryBtnText);
+      .btn:hover {
+        transform: scale(1.02);
+        background-color: #8a83f6;
+        box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
       }
 
-      .btn.primary {
-        background: var(--primaryBtn);
-        color: #fff;
+      .btn:active {
+        transform: scale(0.99);
       }
 
       .btn[disabled] {
-        opacity: 0.75;
+        opacity: 0.7;
         cursor: not-allowed;
+        box-shadow: none;
       }
 
       .spinner {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
         border-radius: 999px;
         border: 2px solid rgba(255, 255, 255, 0.35);
         border-top-color: rgba(255, 255, 255, 0.95);
@@ -349,30 +417,22 @@
         }
       }
 
-      .secureRow {
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: rgba(107, 114, 128, 0.78);
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .secureRow svg {
-        width: 18px;
-        height: 18px;
-        flex: 0 0 18px;
+      .fineprint {
+        margin-top: 8px;
+        font-size: 14px;
+        color: rgba(107, 114, 128, 0.72);
+        text-align: center;
       }
 
       .alert {
-        margin-top: 10px;
-        border-radius: 10px;
-        padding: 10px 10px;
-        font-size: 13px;
-        line-height: 1.25;
+        width: 100%;
+        margin-top: 12px;
+        border-radius: 14px;
+        padding: 12px 12px;
+        font-size: 14px;
+        line-height: 1.4;
         display: none;
-        border: 1px solid var(--line);
+        border: 1.5px solid #e5e7eb;
         background: #fff;
         text-align: left;
       }
@@ -391,40 +451,19 @@
         background: rgba(239, 68, 68, 0.06);
       }
 
-      .fineprint {
-        text-align: center;
-        margin: 0;
-        font-size: 13px;
-        color: rgba(107, 114, 128, 0.72);
+      .stage.slide-out {
+        animation: slideOutRight 0.45s ease forwards;
+        will-change: transform, opacity;
       }
 
-      /* Compactação para caber sem scroll */
-      @media (max-height: 760px) {
-        .page {
-          padding-top: 10px;
-          gap: 8px;
+      @keyframes slideOutRight {
+        from {
+          transform: translateX(0);
+          opacity: 1;
         }
-        .plans {
-          gap: 8px;
-        }
-        .plan {
-          padding: 10px 12px;
-        }
-        .price {
-          font-size: 26px;
-        }
-        .card {
-          padding: 10px;
-        }
-        .field {
-          margin-bottom: 8px;
-        }
-        input,
-        select {
-          padding: 10px 10px;
-        }
-        .helper {
-          margin-top: 5px;
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
         }
       }
     </style>
@@ -442,198 +481,180 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <main class="page" id="stage">
-      <div>
-        <h1>Comece agora.</h1>
-        <p class="subtitle">Preencha os dados do seu cartão</p>
-      </div>
+    <div class="progress"><span></span></div>
 
-      <section class="plans" aria-label="Planos">
-        <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
-          <div class="plan-left">
-            <div class="plan-top">1 ano</div>
-            <div class="price-row">
-              <div class="price">R$ 9</div>
-              <div class="per">/ mês</div>
+    <main class="stage" id="stage">
+      <div class="column">
+        <section class="content" aria-label="Cabeçalho">
+          <h1>Comece agora.</h1>
+          <ul class="checks" aria-label="Benefícios">
+            <li><span class="check">✓</span> Leitura emocional da conversa</li>
+            <li><span class="check">✓</span> Diga o que precisa ser dito</li>
+            <li><span class="check">✓</span> Menos silêncio. Mais conexão.</li>
+          </ul>
+        </section>
+
+        <section class="plans" aria-label="Planos">
+          <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
+            <div class="plan-left">
+              <div class="plan-top">1 ano</div>
+              <div class="price-row">
+                <div class="price">R$ 9</div>
+                <div class="per">/ mês</div>
+              </div>
+              <div class="note">R$ 108 por ano</div>
             </div>
-            <div class="note">R$ 108 por ano</div>
-          </div>
 
-          <div class="plan-right">
-            <div class="badge">Desconto</div>
-            <div class="radio" aria-hidden="true"><div class="dot"></div></div>
-          </div>
-        </div>
-
-        <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
-          <div class="plan-left">
-            <div class="plan-top">1 mês</div>
-            <div class="price-row">
-              <div class="price">R$ 27</div>
-              <div class="per">/ mês</div>
-            </div>
-          </div>
-
-          <div class="plan-right">
-            <div class="radio" aria-hidden="true"><div class="dot"></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" aria-label="Dados do cartão">
-        <form id="checkoutForm" novalidate>
-          <div class="field" id="fCardNumber">
-            <span class="label">Número do cartão</span>
-            <div class="control">
-              <input
-                id="cardNumber"
-                type="text"
-                inputmode="numeric"
-                autocomplete="cc-number"
-                placeholder="1234 1234 1234 1234"
-                required
-              />
-            </div>
-            <div class="error">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
-              <span>Preencha este campo.</span>
+            <div class="plan-right">
+              <div class="badge">Desconto</div>
+              <div class="radio" aria-hidden="true">
+                <div class="dot"></div>
+              </div>
             </div>
           </div>
 
-          <div class="field" id="fName">
-            <span class="label">Nome do titular</span>
-            <div class="control">
-              <input
-                id="cardholderName"
-                type="text"
-                autocomplete="cc-name"
-                placeholder="Ex.: Maria Lopes"
-                required
-              />
+          <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
+            <div class="plan-left">
+              <div class="plan-top">1 mês</div>
+              <div class="price-row">
+                <div class="price">R$ 27</div>
+                <div class="per">/ mês</div>
+              </div>
             </div>
-            <div class="helper">Conforme aparece no cartão.</div>
-            <div class="error">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
-              <span>Preencha este campo.</span>
+
+            <div class="plan-right">
+              <div class="radio" aria-hidden="true">
+                <div class="dot"></div>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div class="two">
-            <div class="field" id="fExp">
-              <span class="label">Vencimento</span>
-              <div class="control">
+        <section class="card" aria-label="Formulário de pagamento">
+          <form id="checkoutForm">
+            <div class="row">
+              <div class="field">
+                <label for="cardNumber">Número do cartão</label>
                 <input
-                  id="expiration"
+                  id="cardNumber"
+                  name="cardNumber"
                   type="text"
                   inputmode="numeric"
-                  autocomplete="cc-exp"
-                  placeholder="MM/AA"
+                  autocomplete="cc-number"
+                  placeholder="1234 1234 1234 1234"
                   required
                 />
               </div>
-              <div class="error">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                  <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                </svg>
-                <span>Preencha este campo.</span>
-              </div>
-            </div>
 
-            <div class="field" id="fCvv">
-              <span class="label">Código de segurança</span>
-              <div class="control">
+              <div class="field">
+                <label for="cardholderName">Nome do titular</label>
                 <input
-                  id="cvv"
-                  type="password"
-                  inputmode="numeric"
-                  autocomplete="cc-csc"
-                  placeholder="Ex.: 123"
+                  id="cardholderName"
+                  name="cardholderName"
+                  type="text"
+                  autocomplete="cc-name"
+                  placeholder="Ex.: Maria Lopes"
+                  required
+                />
+                <div class="helper">Conforme aparece no cartão.</div>
+              </div>
+
+              <div class="two">
+                <div class="field">
+                  <label for="expiration">Vencimento</label>
+                  <input
+                    id="expiration"
+                    name="expiration"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-exp"
+                    placeholder="MM/AA"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="cvv">Código de segurança</label>
+                  <input
+                    id="cvv"
+                    name="cvv"
+                    type="password"
+                    inputmode="numeric"
+                    autocomplete="cc-csc"
+                    placeholder="Ex.: 123"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="docNumber">Documento do titular</label>
+                <div class="two">
+                  <select id="docType" name="docType" required>
+                    <option value="CPF">CPF</option>
+                    <option value="CNPJ">CNPJ</option>
+                  </select>
+
+                  <input
+                    id="docNumber"
+                    name="docNumber"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="999.999.999-99"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="email">E-mail</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="email"
+                  placeholder="seuemail@exemplo.com"
                   required
                 />
               </div>
-              <div class="error">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                  <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                  <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                </svg>
-                <span>Preencha este campo.</span>
-              </div>
             </div>
-          </div>
 
-          <div class="field" id="fDoc">
-            <span class="label">Documento do titular</span>
-            <div class="docRow">
-              <select id="docType" required>
-                <option value="CPF">CPF</option>
-                <option value="CNPJ">CNPJ</option>
-              </select>
-              <input id="docNumber" type="text" inputmode="numeric" autocomplete="off" placeholder="999.999.999-99" required />
+            <div class="hint">
+              Seus dados são tokenizados pelo Mercado Pago. A assinatura é criada no seu Worker com o token do cartão.
             </div>
-            <div class="error">
+
+            <div class="secure">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path
+                  d="M12 2 20 6v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4Z"
+                  stroke="rgba(34,197,94,.9)"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9.5 12.5l1.7 1.7 3.6-3.8"
+                  stroke="rgba(34,197,94,.9)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
-              <span>Preencha este campo.</span>
+              <span>Selo de segurança</span>
             </div>
-          </div>
 
-          <div class="field" id="fEmail">
-            <span class="label">E-mail</span>
-            <div class="control">
-              <input
-                id="email"
-                type="email"
-                inputmode="email"
-                autocomplete="email"
-                placeholder="seuemail@exemplo.com"
-                required
-              />
-            </div>
-            <div class="error">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 8v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                <path d="M10.2 4.6h3.6L21 12l-7.2 7.4h-3.6L3 12l7.2-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
-              <span>Preencha este campo.</span>
-            </div>
-          </div>
-
-          <div class="secureRow" aria-label="Selo de segurança">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2 20 6v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4Z" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linejoin="round" />
-              <path d="M9.5 12.5l1.7 1.7 3.6-3.8" stroke="rgba(34,197,94,.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span>Pagamento 100% seguro</span>
-          </div>
-
-          <div class="actions">
-            <button class="btn secondary" type="button" id="btnBack">Voltar</button>
-            <button class="btn primary" type="submit" id="btnPay">
+            <button class="btn" id="payBtn" type="submit">
               <span id="btnText">Assinar agora</span>
               <span id="btnSpin" class="spinner" aria-hidden="true"></span>
             </button>
-          </div>
 
-          <div id="alert" class="alert"></div>
-        </form>
-      </section>
+            <div id="alert" class="alert"></div>
 
-      <p class="fineprint">Garantia de 14 dias. Cancele quando quiser.</p>
+            <div class="fineprint">Garantia de 14 dias. Cancele quando quiser.</div>
+          </form>
+        </section>
+      </div>
     </main>
 
     <script>
@@ -652,32 +673,24 @@
 
       const $ = (id) => document.getElementById(id);
 
+      const stage = $("stage");
       const form = $("checkoutForm");
-      const btnBack = $("btnBack");
-      const btnPay = $("btnPay");
-      const btnText = $("btnText");
-      const btnSpin = $("btnSpin");
-      const alertEl = $("alert");
 
-      const cardNumberEl = $("cardNumber");
+      const numberEl = $("cardNumber");
       const nameEl = $("cardholderName");
       const expEl = $("expiration");
       const cvvEl = $("cvv");
+
       const docTypeEl = $("docType");
       const docEl = $("docNumber");
       const emailEl = $("email");
 
+      const payBtn = $("payBtn");
+      const btnText = $("btnText");
+      const btnSpin = $("btnSpin");
+      const alertEl = $("alert");
+
       let currentPlan = "year";
-
-      function onlyDigits(s) {
-        return (s || "").replace(/\D+/g, "");
-      }
-
-      function setLoading(on) {
-        btnPay.disabled = on;
-        btnSpin.style.display = on ? "inline-block" : "none";
-        btnText.textContent = on ? "Processando..." : "Assinar agora";
-      }
 
       function showAlert(type, msg) {
         alertEl.className = "alert show " + type;
@@ -689,32 +702,14 @@
         alertEl.textContent = "";
       }
 
-      function setInvalid(fieldId, on) {
-        const el = $(fieldId);
-        if (!el) return;
-        el.classList.toggle("invalid", !!on);
+      function setLoading(on) {
+        payBtn.disabled = on;
+        btnSpin.style.display = on ? "inline-block" : "none";
+        btnText.textContent = on ? "Processando..." : "Assinar agora";
       }
 
-      function validateBasic() {
-        let ok = true;
-
-        const cn = onlyDigits(cardNumberEl.value);
-        const nm = nameEl.value.trim();
-        const ex = expEl.value.trim();
-        const cv = onlyDigits(cvvEl.value);
-        const dc = onlyDigits(docEl.value);
-        const em = emailEl.value.trim();
-
-        setInvalid("fCardNumber", !cn);
-        setInvalid("fName", !nm);
-        setInvalid("fExp", !ex);
-        setInvalid("fCvv", !cv);
-        setInvalid("fDoc", !dc);
-        setInvalid("fEmail", !em);
-
-        if (!cn || !nm || !ex || !cv || !dc || !em) ok = false;
-
-        return ok;
+      function onlyDigits(s) {
+        return (s || "").replace(/\D+/g, "");
       }
 
       function formatCardNumber(v) {
@@ -730,39 +725,22 @@
         return d.slice(0, 2) + "/" + d.slice(2);
       }
 
-      cardNumberEl.addEventListener("input", (e) => {
+      numberEl.addEventListener("input", (e) => {
         e.target.value = formatCardNumber(e.target.value);
-        setInvalid("fCardNumber", false);
       });
 
       expEl.addEventListener("input", (e) => {
         e.target.value = formatExpiration(e.target.value);
-        setInvalid("fExp", false);
       });
-
-      cvvEl.addEventListener("input", () => setInvalid("fCvv", false));
-      nameEl.addEventListener("input", () => setInvalid("fName", false));
-      emailEl.addEventListener("input", () => setInvalid("fEmail", false));
-
-      function docMax() {
-        return docTypeEl.value === "CPF" ? 11 : 14;
-      }
-
-      function docPlaceholder() {
-        return docTypeEl.value === "CPF" ? "999.999.999-99" : "99.999.999/9999-99";
-      }
-
-      docTypeEl.addEventListener("change", () => {
-        docEl.value = onlyDigits(docEl.value).slice(0, docMax());
-        docEl.placeholder = docPlaceholder();
-        setInvalid("fDoc", false);
-      });
-
-      docEl.placeholder = docPlaceholder();
 
       docEl.addEventListener("input", (e) => {
-        e.target.value = onlyDigits(e.target.value).slice(0, docMax());
-        setInvalid("fDoc", false);
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        e.target.value = onlyDigits(e.target.value).slice(0, max);
+      });
+
+      docTypeEl.addEventListener("change", () => {
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        docEl.value = onlyDigits(docEl.value).slice(0, max);
       });
 
       function setPlan(plan) {
@@ -788,8 +766,6 @@
         });
       });
 
-      btnBack.addEventListener("click", () => history.back());
-
       const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
 
       function parseExp(mmYY) {
@@ -808,7 +784,7 @@
         if (!exp) throw new Error("Validade inválida. Use MM/AA.");
 
         const result = await mp.createCardToken({
-          cardNumber: onlyDigits(cardNumberEl.value),
+          cardNumber: onlyDigits(numberEl.value),
           cardholderName: nameEl.value.trim(),
           cardExpirationMonth: exp.month,
           cardExpirationYear: exp.year,
@@ -831,7 +807,9 @@
         e.preventDefault();
         clearAlert();
 
-        if (!validateBasic()) return;
+        const payerEmail = emailEl.value.trim();
+        if (!nameEl.value.trim()) return showAlert("bad", "Preencha o nome do titular.");
+        if (!payerEmail) return showAlert("bad", "Preencha o e-mail.");
 
         const planId = CONFIG.PLAN_IDS[currentPlan];
         if (!planId) return showAlert("bad", "Plano inválido.");
@@ -847,7 +825,7 @@
           const payload = {
             plan: currentPlan,
             preapproval_plan_id: planId,
-            payerEmail: emailEl.value.trim(),
+            payerEmail,
             card_token_id
           };
 
@@ -875,9 +853,10 @@
 
           showAlert("ok", "Assinatura criada. Redirecionando...");
 
+          stage.classList.add("slide-out");
           setTimeout(() => {
             window.location.href = CONFIG.THANK_YOU[currentPlan] || "/p9a/";
-          }, 300);
+          }, 450);
         } catch (err) {
           const msg = err?.message || "Erro inesperado. Tente novamente.";
           window.dataLayer = window.dataLayer || [];
@@ -887,8 +866,16 @@
         }
       });
 
-      window.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
-      window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
+      window.addEventListener(
+        "touchmove",
+        (e) => e.preventDefault(),
+        { passive: false }
+      );
+      window.addEventListener(
+        "wheel",
+        (e) => e.preventDefault(),
+        { passive: false }
+      );
     </script>
   </body>
 </html>
