@@ -1,353 +1,507 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-K9TFCGX9');</script>
+  <!-- Google Tag Manager -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-K9TFCGX9');
+  </script>
+  <!-- End Google Tag Manager -->
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Affect AI</title>
-
-  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <title>Checkout AffectAI</title>
 
   <style>
-    :root{--purple:#7b73f1;--bg:#ffffff;--text:#111827;--muted:#6b7280;--shadow:0 20px 40px rgba(15,23,42,.12);--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial;}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;font-family:var(--font);color:var(--text);
-      background:radial-gradient(600px 460px at 50% 16%,rgba(0,0,0,.05) 0%,rgba(0,0,0,.025) 28%,rgba(0,0,0,.01) 52%,rgba(255,255,255,0) 72%),var(--bg);
-      overflow:hidden;overscroll-behavior:none;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:geometricPrecision;
-    }
-    @media(min-width:900px){
-      body{background:radial-gradient(720px 540px at 50% 16%,rgba(0,0,0,.045) 0%,rgba(0,0,0,.022) 30%,rgba(0,0,0,.01) 54%,rgba(255,255,255,0) 74%),radial-gradient(900px 520px at 50% 30%,rgba(123,115,241,.08), transparent 62%),var(--bg);}
-    }
-    .progress{position:fixed;top:0;left:0;right:0;height:3px;background:#e5e7eb;z-index:10}
-    .progress span{display:block;height:100%;width:100%;background:var(--purple)}
-    .stage{height:100vh;display:flex;justify-content:center;padding:18px 16px}
-    .column{width:100%;max-width:390px;display:flex;flex-direction:column;align-items:center}
-    .hero-wrap{width:100%;display:flex;justify-content:center;margin-top:6px;opacity:0;transform:translateY(12px) scale(.98);animation:popIn .55s ease-out forwards .15s, floaty 4.5s ease-in-out infinite .75s;}
-    .hero-img{width:96px;height:auto;border-radius:12px;box-shadow:0 14px 28px rgba(15,23,42,.12);user-select:none;-webkit-user-drag:none;}
-    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
-    @keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.98);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
-    .content{text-align:center;margin:14px 0 10px;width:100%}
-    h1{font-size:32px;font-weight:700;line-height:1.08;letter-spacing:-.01em;margin:0 0 10px}
-    .checks{margin:0;padding:0;list-style:none;color:var(--muted);font-size:16px;line-height:1.6}
-    .checks li{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0}
-    .checks svg{width:18px;height:18px;flex:0 0 18px}
-    .plans{width:100%;margin-top:10px;display:flex;flex-direction:column;gap:12px}
-    .plan{width:100%;background:#fff;border-radius:18px;padding:14px 16px;border:1.5px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;box-shadow:0 10px 24px rgba(15,23,42,.06);cursor:pointer;user-select:none;}
-    .plan.selected{background:#f7f7ff;border-color:rgba(123,115,241,.85)}
-    .plan-left{display:flex;flex-direction:column;gap:4px;min-width:0;align-items:flex-start;text-align:left}
-    .plan-top{font-weight:600;color:rgba(17,24,39,.60);font-size:15px;line-height:1.1}
-    .price-row{display:flex;align-items:baseline;gap:6px;justify-content:flex-start;width:100%}
-    .price{font-size:30px;font-weight:700;letter-spacing:-.01em;color:var(--text);line-height:1.05}
-    .per{font-size:15px;color:rgba(17,24,39,.55);font-weight:500;line-height:1.1}
-    .note{font-size:14px;color:rgba(107,114,128,.85);margin-top:0;line-height:1.1}
-    .plan-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-    .badge{font-size:12px;font-weight:700;color:#16a34a;background:rgba(34,197,94,.14);padding:6px 10px;border-radius:999px;white-space:nowrap}
-    .radio{width:20px;height:20px;border-radius:999px;border:2px solid #d1d5db;display:grid;place-items:center}
-    .plan.selected .radio{border-color:rgba(123,115,241,.85)}
-    .dot{width:10px;height:10px;border-radius:999px;background:transparent}
-    .plan.selected .dot{background:var(--purple)}
-    .secure{margin-top:12px;display:flex;align-items:center;gap:10px;color:rgba(107,114,128,.78);font-size:14px;font-weight:500}
-    .secure svg{width:18px;height:18px}
-    .btn{width:100%;margin-top:14px;background:var(--purple);color:#fff;text-align:center;padding:18px;border-radius:16px;font-size:18px;font-weight:700;text-decoration:none;box-shadow:0 18px 36px rgba(123,115,241,.35);transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;display:flex;align-items:center;justify-content:center;gap:12px;border:none;cursor:pointer;}
-    .btn:hover{transform:scale(1.02);background-color:#8a83f6;box-shadow:0 22px 44px rgba(123,115,241,.45)}
-    .fineprint{margin-top:8px;font-size:14px;color:rgba(107,114,128,.72);text-align:center}
+    :root {
+      --purple: #7b73f1;
 
-    .modal{position:fixed;inset:0;background:rgba(17,24,39,.55);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:50;}
-    .modal.open{display:flex}
-    .sheet{width:100%;max-width:420px;background:#fff;border-radius:18px;box-shadow:0 20px 50px rgba(15,23,42,.22);padding:14px 14px 12px;}
-    .sheet-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-    .sheet-title{font-weight:800;font-size:16px}
-    .close{border:0;background:#f3f4f6;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:700;}
-    .mp-box{min-height:380px}
-    .hint{margin-top:8px;font-size:13px;color:rgba(107,114,128,.78);text-align:center}
-    .mp-fallback{font-size:13px;color:rgba(107,114,128,.85);text-align:center;padding:14px 8px}
-    .field{min-height:44px;margin-top:10px}
-    .field:first-child{margin-top:0}
+      --bg: #eef7f6;
+      --bgGlow1: rgba(123, 115, 241, .10);
+      --bgGlow2: rgba(120, 205, 210, .22);
+
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 20px 40px rgba(15, 23, 42, .12);
+      --radius: 22px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    html, body {
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(520px 360px at 50% 24%, var(--bgGlow1), transparent 62%),
+        radial-gradient(520px 360px at 50% 8%, var(--bgGlow2), transparent 70%),
+        var(--bg);
+    }
+
+    @media (min-width: 900px) {
+      body {
+        background:
+          radial-gradient(900px 560px at 50% 22%, rgba(123, 115, 241, .10), transparent 60%),
+          radial-gradient(900px 560px at 50% 10%, rgba(120, 205, 210, .22), transparent 70%),
+          var(--bg);
+      }
+    }
+
+    .progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #e5e7eb;
+      z-index: 10;
+    }
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--purple);
+      opacity: .35;
+    }
+
+    .stage {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 24px;
+    }
+
+    .column {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 26px;
+
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+      will-change: transform, opacity;
+      animation: popIn 0.55s ease-out forwards 0.12s, floaty 4.5s ease-in-out infinite 0.85s;
+    }
+
+    .logo {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 28px rgba(15, 23, 42, 0.14));
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); filter: blur(2px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    .card {
+      width: 100%;
+      margin-top: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 22px;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.10);
+      padding: 18px 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .plan {
+      border-radius: 18px;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      background: rgba(255,255,255,0.66);
+      padding: 14px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+    }
+
+    .plan:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 28px rgba(15, 23, 42, 0.10);
+      background: rgba(255,255,255,0.82);
+    }
+
+    .plan input {
+      margin-top: 3px;
+      accent-color: var(--purple);
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .plan .meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .plan .title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 6px;
+    }
+
+    .plan .name {
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+
+    .plan .price {
+      font-weight: 900;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+
+    .plan .desc {
+      margin: 0;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #111827;
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.72);
+      padding: 8px 10px;
+      border-radius: 999px;
+      margin-top: 14px;
+    }
+
+    .badge .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(123, 115, 241, 0.45);
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--purple);
+      color: #fff;
+      padding: 16px 16px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 900;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 18px 36px rgba(123, 115, 241, 0.35);
+      transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn:hover {
+      transform: scale(1.02);
+      background-color: #8a83f6;
+      box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
+    }
+
+    .btn:disabled {
+      opacity: .72;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 18px 36px rgba(123, 115, 241, 0.22);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.78);
+      color: #111827;
+      border: 1px solid rgba(17, 24, 39, 0.10);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 22px 44px rgba(15, 23, 42, 0.10);
+    }
+
+    .fine {
+      margin: 10px 2px 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,.55);
+      border-top-color: #fff;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+    .btn.loading .spinner { display: inline-block; }
+    .btn.loading .label { opacity: .92; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error {
+      display: none;
+      margin-top: 12px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      padding: 12px 12px;
+      color: #991b1b;
+      font-size: 13.5px;
+      line-height: 1.35;
+    }
+
+    .footer-links {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #374151;
+    }
+    .footer-links a {
+      color: #374151;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(55, 65, 81, 0.25);
+      padding-bottom: 2px;
+    }
+    .footer-links a:hover {
+      border-bottom-color: rgba(55, 65, 81, 0.55);
+    }
+
+    @media (max-height: 760px) {
+      .logo-wrap { margin-top: 18px; }
+      .card { margin-top: 14px; }
+    }
   </style>
 </head>
 
 <body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <div class="progress"><span></span></div>
 
   <main class="stage">
     <div class="column">
-      <div class="hero-wrap" aria-hidden="true">
-        <img class="hero-img" src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/7ba73aaa-3da9-4cf1-abf2-ccc85dea5875/uid_3222836/Captura%20de%20Tela%202026-01-05%20a%CC%80s%2015.52.48.png" alt="" />
+
+      <div class="logo-wrap" aria-hidden="true">
+        <img class="logo"
+          src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/7ba73aaa-3da9-4cf1-abf2-ccc85dea5875/uid_3222836/logo-affectAI.png"
+          alt="AffectAI" />
       </div>
 
-      <section class="content">
-        <h1>Comece agora.</h1>
-        <ul class="checks">
-          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Leitura emocional da conversa</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Diga o que precisa ser dito</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="rgba(31,41,55,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg><span>Menos silêncio. Mais conexão.</span></li>
-        </ul>
-      </section>
+      <section class="card" aria-labelledby="ttl">
+        <h1 id="ttl">Finalizar assinatura</h1>
+        <p class="sub">
+          Você será direcionado ao checkout do Mercado Pago para concluir o pagamento com segurança.
+        </p>
 
-      <section class="plans" aria-label="Planos">
-        <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
-          <div class="plan-left">
-            <div class="plan-top">1 ano</div>
-            <div class="price-row"><div class="price">R$ 9</div><div class="per">/ mês</div></div>
-            <div class="note">R$ 108 por ano</div>
-          </div>
-          <div class="plan-right"><div class="badge">Desconto</div><div class="radio" aria-hidden="true"><div class="dot"></div></div></div>
+        <div class="plans" role="radiogroup" aria-label="Selecione um plano">
+          <label class="plan" for="planMensal">
+            <input id="planMensal" type="radio" name="plan" value="mensal" checked />
+            <div class="meta">
+              <div class="title">
+                <div class="name">Mensal</div>
+                <div class="price">R$ 9,00</div>
+              </div>
+              <p class="desc">Acesso completo e ilimitado durante o período do plano.</p>
+            </div>
+          </label>
+
+          <label class="plan" for="planAnual">
+            <input id="planAnual" type="radio" name="plan" value="anual" />
+            <div class="meta">
+              <div class="title">
+                <div class="name">Anual</div>
+                <div class="price">R$ 108,00</div>
+              </div>
+              <p class="desc">Melhor custo-benefício para uso contínuo.</p>
+            </div>
+          </label>
         </div>
 
-        <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
-          <div class="plan-left">
-            <div class="plan-top">1 mês</div>
-            <div class="price-row"><div class="price">R$ 27</div><div class="per">/ mês</div></div>
-          </div>
-          <div class="plan-right"><div class="radio" aria-hidden="true"><div class="dot"></div></div></div>
+        <div class="badge" aria-live="polite">
+          <span class="dot"></span>
+          <span>Pagamento via Mercado Pago</span>
+        </div>
+
+        <div class="error" id="errBox" role="alert"></div>
+
+        <div class="actions">
+          <button class="btn" id="payBtn" type="button" onclick="startCheckout()">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label">Continuar para pagamento</span>
+          </button>
+
+          <a class="btn secondary" href="/p8/">Voltar</a>
+        </div>
+
+        <p class="fine">
+          Ao continuar, você concorda com o processamento do pagamento e será redirecionado para concluir a compra.
+        </p>
+
+        <div class="footer-links">
+          <a href="/chat/">Já tenho acesso</a>
+          <a href="/p1/">Início</a>
         </div>
       </section>
 
-      <div class="secure">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2 20 6v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4Z" stroke="rgba(34,197,94,.9)" stroke-width="2" stroke-linejoin="round" />
-          <path d="M9.5 12.5l1.7 1.7 3.6-3.8" stroke="rgba(34,197,94,.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <span>Pagamento 100% seguro</span>
-      </div>
-
-      <button class="btn" id="cta" type="button"><span id="ctaText">Parar de Esperar</span></button>
-      <div class="fineprint">Garantia de 14 dias. Cancele quando quiser.</div>
     </div>
   </main>
 
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true" aria-label="Pagamento">
-      <div class="sheet-top">
-        <div class="sheet-title" id="sheetTitle">Finalizar pagamento</div>
-        <button class="close" id="closeBtn" type="button">Fechar</button>
-      </div>
-
-      <div class="mp-box" id="mpBox">
-        <div class="mp-fallback" id="mpFallback">Carregando pagamento…</div>
-      </div>
-
-      <div class="hint">Você conclui aqui mesmo, sem sair da página.</div>
-    </div>
-  </div>
-
   <script>
-    const MP_PUBLIC_KEY = "APP_USR-COLE_SUA_PUBLIC_KEY_AQUI";
-    const WORKER_SUBSCRIBE_URL = "https://SEU-WORKER.workers.dev/subscribe";
-    const SUCCESS_URL = "./obrigado.html";
+    const WORKER_CREATE_PREFERENCE_URL =
+      "https://floral-water-e008.white-king-13b3.workers.dev/create-preference";
 
-    const PLANS = {
-      year:  { label: "Plano anual",  amount: 108, plan: "year"  },
-      month: { label: "Plano mensal", amount: 27,  plan: "month" }
-    };
-
-    const modal = document.getElementById("modal");
-    const closeBtn = document.getElementById("closeBtn");
-    const cta = document.getElementById("cta");
-    const ctaText = document.getElementById("ctaText");
-    const sheetTitle = document.getElementById("sheetTitle");
-    const mpBox = document.getElementById("mpBox");
-
-    let mp = null;
-    let selectedPlan = "year";
-    let cardForm = null;
-    let mounting = false;
-
-    function pushDataLayer(eventName, payload) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(Object.assign({ event: eventName }, payload || {}));
+    function selectedPlan() {
+      const el = document.querySelector('input[name="plan"]:checked');
+      return el ? el.value : "mensal";
     }
 
-    function setPlan(plan) {
-      selectedPlan = plan;
-      document.querySelectorAll(".plan").forEach(el => {
-        const selected = el.dataset.plan === plan;
-        el.classList.toggle("selected", selected);
-        el.setAttribute("aria-pressed", selected ? "true" : "false");
-      });
+    function setLoading(isLoading) {
+      const btn = document.getElementById("payBtn");
+      btn.disabled = !!isLoading;
+      btn.classList.toggle("loading", !!isLoading);
+      btn.setAttribute("aria-busy", isLoading ? "true" : "false");
     }
 
-    document.querySelectorAll(".plan").forEach(el => {
-      el.addEventListener("click", () => setPlan(el.dataset.plan));
-      el.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); setPlan(el.dataset.plan); }
-      });
-    });
-    setPlan("year");
-
-    function openModal() {
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-    function closeModal() {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-    closeBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-
-    function ensureSdkReady(timeoutMs = 8000) {
-      return new Promise((resolve, reject) => {
-        const start = Date.now();
-        (function check(){
-          if (window.MercadoPago) return resolve();
-          if (Date.now() - start > timeoutMs) return reject(new Error("SDK Mercado Pago não carregou"));
-          setTimeout(check, 50);
-        })();
-      });
+    function showError(message) {
+      const box = document.getElementById("errBox");
+      box.textContent = message || "Não foi possível iniciar o pagamento. Tente novamente.";
+      box.style.display = "block";
     }
 
-    function safeHtml(s) {
-      return (s || "").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    function hideError() {
+      const box = document.getElementById("errBox");
+      box.textContent = "";
+      box.style.display = "none";
     }
 
-    function renderCardFormSkeleton(planKey) {
-      const plan = PLANS[planKey];
-      sheetTitle.textContent = `${plan.label} • R$ ${plan.amount}`;
+    async function startCheckout() {
+      hideError();
+      setLoading(true);
 
-      mpBox.innerHTML = `
-        <form id="form-checkout">
-          <div id="form-checkout__cardNumber" class="field"></div>
-          <div id="form-checkout__expirationDate" class="field"></div>
-          <div id="form-checkout__securityCode" class="field"></div>
-          <div id="form-checkout__cardholderName" class="field"></div>
-          <div id="form-checkout__issuer" class="field"></div>
-          <div id="form-checkout__installments" class="field"></div>
-          <div id="form-checkout__identificationType" class="field"></div>
-          <div id="form-checkout__identificationNumber" class="field"></div>
-          <div id="form-checkout__cardholderEmail" class="field"></div>
-
-          <button type="submit" class="btn" style="margin-top:12px;width:100%">
-            Assinar agora
-          </button>
-
-          <div class="mp-fallback" style="padding:10px 0 0 0">
-            Cartão e dados são processados pelo Mercado Pago.
-          </div>
-        </form>
-      `;
-    }
-
-    async function mountCardForm(planKey) {
-      const plan = PLANS[planKey];
-
-      if (mounting) return;
-      mounting = true;
+      const plan = selectedPlan();
 
       try {
-        await ensureSdkReady();
-        if (!mp) mp = new MercadoPago(MP_PUBLIC_KEY, { locale: "pt-BR" });
-
-        if (cardForm) {
-          try { cardForm.unmount(); } catch {}
-          cardForm = null;
-        }
-
-        renderCardFormSkeleton(planKey);
-
-        cardForm = mp.cardForm({
-          amount: String(plan.amount),
-          iframe: true,
-          form: {
-            id: "form-checkout",
-            cardNumber: { id: "form-checkout__cardNumber", placeholder: "Número do cartão" },
-            expirationDate: { id: "form-checkout__expirationDate", placeholder: "MM/AA" },
-            securityCode: { id: "form-checkout__securityCode", placeholder: "CVV" },
-            cardholderName: { id: "form-checkout__cardholderName", placeholder: "Nome no cartão" },
-            issuer: { id: "form-checkout__issuer", placeholder: "Banco emissor" },
-            installments: { id: "form-checkout__installments", placeholder: "Parcelas" },
-            identificationType: { id: "form-checkout__identificationType", placeholder: "Tipo de documento" },
-            identificationNumber: { id: "form-checkout__identificationNumber", placeholder: "Número do documento" },
-            cardholderEmail: { id: "form-checkout__cardholderEmail", placeholder: "E-mail" },
-          },
-          callbacks: {
-            onFormMounted: (error) => {
-              if (error) {
-                console.error("onFormMounted:", error);
-                mpBox.innerHTML = `<div class="mp-fallback">Não foi possível carregar o formulário. Verifique bloqueadores e tente novamente.</div>`;
-              }
-            },
-            onSubmit: async (event) => {
-              event.preventDefault();
-
-              const data = cardForm.getCardFormData();
-
-              const payer_email = data.cardholderEmail;
-              const card_token_id = data.token;
-
-              if (!payer_email || !card_token_id) {
-                alert("Preencha o e-mail e os dados do cartão.");
-                return;
-              }
-
-              try {
-                const res = await fetch(WORKER_SUBSCRIBE_URL, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    plan: selectedPlan,
-                    payer_email,
-                    card_token_id
-                  })
-                });
-
-                const out = await res.json().catch(() => ({}));
-
-                if (!res.ok || !out.ok) {
-                  console.error("Subscribe error:", out);
-                  alert("Não foi possível criar a assinatura. Tente novamente.");
-                  return;
-                }
-
-                pushDataLayer("purchase", { plan: selectedPlan, value: plan.amount, currency: "BRL" });
-
-                window.location.href =
-                  `${SUCCESS_URL}?plan=${encodeURIComponent(selectedPlan)}&status=${encodeURIComponent(out.status || "authorized")}&sub_id=${encodeURIComponent(out.id || "")}`;
-              } catch (e) {
-                console.error(e);
-                alert("Erro de rede. Tente novamente.");
-              }
-            },
-            onFetching: (resource) => {
-              return () => {};
-            }
+        // DataLayer para rastreio no GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "begin_checkout",
+          ecommerce: {
+            currency: "BRL",
+            items: [{
+              item_name: plan === "anual" ? "AffectAI Anual" : "AffectAI Mensal",
+              item_category: "assinatura",
+              price: plan === "anual" ? 108.0 : 9.0,
+              quantity: 1
+            }]
           }
         });
 
+        const res = await fetch(WORKER_CREATE_PREFERENCE_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data || !data.init_point) {
+          setLoading(false);
+          showError("Erro ao iniciar pagamento. Verifique sua conexão e tente novamente.");
+          return;
+        }
+
+        // DataLayer opcional
+        window.dataLayer.push({
+          event: "redirect_to_payment",
+          payment_provider: "mercadopago",
+          plan: plan
+        });
+
+        window.location.href = data.init_point;
       } catch (e) {
-        console.error(e);
-        mpBox.innerHTML = `<div class="mp-fallback">SDK não carregou. Desative bloqueadores e atualize a página.</div>`;
-      } finally {
-        mounting = false;
+        setLoading(false);
+        showError("Falha de conexão. Tente novamente em instantes.");
       }
     }
 
-    cta.addEventListener("click", async () => {
-      const plan = PLANS[selectedPlan];
-      pushDataLayer("initiate_checkout", { plan: plan.plan, value: plan.amount, currency: "BRL" });
-
-      cta.disabled = true;
-      ctaText.textContent = "Abrindo pagamento…";
-      openModal();
-
-      try {
-        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-        await mountCardForm(selectedPlan);
-      } finally {
-        cta.disabled = false;
-        ctaText.textContent = "Parar de Esperar";
-      }
-    });
+    // Evita scroll nos seus layouts
+    window.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+    window.addEventListener("wheel", e => e.preventDefault(), { passive: false });
   </script>
 </body>
 </html>
