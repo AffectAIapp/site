@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -22,72 +23,79 @@
 
     <style>
       :root {
+        --purple: #7b73f1;
+        --purple2: rgba(123, 115, 241, 0.18);
         --bg: #f5f6fb;
-        --card: #ffffff;
-        --text: #111827;
-        --muted: rgba(107, 114, 128, 0.95);
-        --line: rgba(229, 231, 235, 0.9);
+        --text: #0f172a;
+        --muted: rgba(15, 23, 42, 0.62);
+        --line: rgba(15, 23, 42, 0.10);
+        --card: rgba(255, 255, 255, 0.92);
+        --shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
+        --radius: 16px;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
-      html,
-      body {
-        height: 100%;
-      }
+      html, body { height: 100%; }
 
       body {
         margin: 0;
         font-family: var(--font);
         color: var(--text);
-        background: radial-gradient(620px 440px at 50% 14%, rgba(123, 115, 241, 0.07), transparent 60%), var(--bg);
+        background:
+          radial-gradient(900px 560px at 50% -8%, rgba(123,115,241,.16), rgba(255,255,255,0) 65%),
+          radial-gradient(700px 420px at 20% 0%, rgba(123,115,241,.10), rgba(255,255,255,0) 60%),
+          var(--bg);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
 
+      .topline {
+        height: 3px;
+        background: rgba(123,115,241,.85);
+      }
+
       .wrap {
-        min-height: 100%;
+        min-height: calc(100vh - 3px);
         display: flex;
         flex-direction: column;
       }
 
       .topbar {
-        height: 56px;
+        height: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        color: rgba(17, 24, 39, 0.75);
-        font-weight: 600;
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(229, 231, 235, 0.75);
+        gap: 10px;
+        color: rgba(15,23,42,.75);
+        font-weight: 550;
+        letter-spacing: 0.01em;
+        background: transparent;
       }
 
       .lock {
         width: 18px;
         height: 18px;
         display: inline-block;
-        opacity: 0.7;
+        opacity: 0.9;
       }
 
       .stage {
         width: 100%;
         max-width: 520px;
         margin: 0 auto;
-        padding: 18px 16px 22px;
+        padding: 12px 14px 22px;
         flex: 1;
       }
 
       .summary {
-        border: 1px solid var(--line);
+        margin-top: 6px;
+        background: rgba(255,255,255,.84);
+        border: 1px solid rgba(15,23,42,.08);
         border-radius: 12px;
-        background: #fff;
         overflow: hidden;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 10px 28px rgba(15,23,42,.06);
       }
 
       .sumRow {
@@ -96,50 +104,60 @@
         justify-content: space-between;
         padding: 12px 14px;
         font-size: 15px;
-        border-top: 1px solid rgba(229, 231, 235, 0.75);
       }
 
-      .sumRow:first-child {
-        border-top: 0;
+      .sumRow + .sumRow {
+        border-top: 1px solid rgba(15,23,42,.08);
       }
 
       .sumLeft {
-        color: rgba(17, 24, 39, 0.75);
-        font-weight: 600;
+        color: rgba(15,23,42,.72);
+        font-weight: 550;
       }
 
       .sumRight {
-        font-weight: 700;
-        color: rgba(17, 24, 39, 0.9);
+        font-weight: 650;
+        color: rgba(15,23,42,.92);
       }
 
       h1 {
-        margin: 18px 2px 14px;
+        margin: 24px 2px 14px;
         font-size: 22px;
         line-height: 1.2;
         letter-spacing: -0.01em;
-        font-weight: 600;
-        color: #111827;
+        font-weight: 550;
+        color: rgba(15,23,42,.92);
         text-align: center;
       }
 
       .sectionTitle {
         margin: 14px 2px 10px;
-        font-size: 15px;
-        font-weight: 700;
-        color: rgba(17, 24, 39, 0.88);
+        font-size: 14px;
+        font-weight: 550;
+        color: rgba(15,23,42,.72);
       }
 
       .pmCard {
         background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
+        border: 1px solid rgba(15,23,42,.10);
+        border-radius: 16px;
         padding: 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        box-shadow: none;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .pmCard:before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 16px;
+        pointer-events: none;
+        border: 1px solid rgba(123,115,241,.28);
+        opacity: 0.65;
       }
 
       .pmLeft {
@@ -154,7 +172,7 @@
         height: 44px;
         border-radius: 999px;
         background: rgba(15, 23, 42, 0.04);
-        border: 1px solid rgba(229, 231, 235, 0.9);
+        border: 1px solid rgba(15,23,42,.10);
         display: grid;
         place-items: center;
         overflow: hidden;
@@ -176,8 +194,8 @@
 
       .pmMain {
         font-size: 16px;
-        font-weight: 700;
-        color: rgba(17, 24, 39, 0.92);
+        font-weight: 650;
+        color: rgba(15,23,42,.92);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -185,118 +203,145 @@
 
       .pmSub {
         font-size: 14px;
-        font-weight: 600;
-        color: rgba(17, 24, 39, 0.55);
+        font-weight: 550;
+        color: rgba(15,23,42,.55);
       }
 
       .pmRight a {
-        color: #3b82f6;
-        font-weight: 700;
+        color: rgba(123,115,241,.95);
+        font-weight: 650;
         text-decoration: none;
       }
 
+      .pmRight a:active {
+        opacity: 0.85;
+      }
+
       .helpTitle {
-        margin: 18px 2px 6px;
+        margin: 28px 2px 6px;
         font-size: 18px;
-        font-weight: 700;
-        color: #111827;
+        font-weight: 650;
+        color: rgba(15,23,42,.92);
       }
 
       .helpSub {
         margin: 0 2px 12px;
-        color: rgba(107, 114, 128, 0.95);
+        color: rgba(15,23,42,.62);
         font-size: 14px;
         line-height: 1.35;
-        font-weight: 500;
+        font-weight: 550;
       }
 
       .emailBox {
         background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
+        border: 1px solid rgba(15,23,42,.10);
+        border-radius: 16px;
         padding: 14px;
-        box-shadow: none;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .emailBox:before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 16px;
+        pointer-events: none;
+        border: 1px solid rgba(123,115,241,.24);
+        opacity: 0.55;
       }
 
       label {
         display: block;
         font-size: 14px;
-        font-weight: 700;
-        color: rgba(17, 24, 39, 0.88);
+        font-weight: 550;
+        color: rgba(15,23,42,.72);
         margin-bottom: 8px;
       }
 
       input {
         width: 100%;
-        border-radius: 10px;
-        border: 1px solid rgba(209, 213, 219, 0.95);
-        padding: 14px 14px;
+        height: 52px;
+        border-radius: 12px;
+        border: 1px solid rgba(15,23,42,.14);
+        padding: 0 14px;
         font-size: 16px;
         outline: none;
-        background: #fff;
-        color: var(--text);
+        background: rgba(255,255,255,.94);
+        color: rgba(15,23,42,.92);
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
 
+      input::placeholder { color: rgba(15,23,42,.34); }
+
       input:focus {
-        border-color: rgba(59, 130, 246, 0.75);
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+        border-color: rgba(123,115,241,.55);
+        box-shadow: 0 0 0 4px rgba(123,115,241,.14);
       }
 
       .btnPrimary {
         margin-top: 16px;
         width: 100%;
-        background: #3b82f6;
+        height: 56px;
+        background: rgba(123,115,241,.95);
         color: #fff;
         border: 0;
-        border-radius: 10px;
-        padding: 16px 14px;
+        border-radius: 12px;
+        padding: 0 14px;
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 650;
         cursor: pointer;
-        box-shadow: none;
-        transition: transform 0.12s ease;
+        box-shadow: 0 18px 38px rgba(123,115,241,.30);
+        transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+      }
+
+      .btnPrimary:hover {
+        transform: translateY(-1px);
+        background: rgba(123,115,241,1);
+        box-shadow: 0 22px 46px rgba(123,115,241,.36);
       }
 
       .btnPrimary:active {
-        transform: scale(0.99);
+        transform: translateY(0);
       }
 
       .btnPrimary[disabled] {
         opacity: 0.7;
         cursor: not-allowed;
+        box-shadow: none;
       }
 
       .alert {
         margin-top: 12px;
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 12px 12px;
         font-size: 14px;
         line-height: 1.35;
         display: none;
-        border: 1px solid rgba(229, 231, 235, 0.95);
-        background: #fff;
+        border: 1px solid rgba(15,23,42,.10);
+        background: rgba(255,255,255,.8);
       }
 
-      .alert.show {
-        display: block;
-      }
+      .alert.show { display: block; }
 
       .alert.bad {
-        border-color: rgba(239, 68, 68, 0.35);
-        background: rgba(239, 68, 68, 0.06);
+        border-color: rgba(239, 68, 68, 0.28);
+        background: rgba(239, 68, 68, 0.08);
+        color: rgba(127, 29, 29, 0.92);
       }
 
       .alert.ok {
-        border-color: rgba(34, 197, 94, 0.35);
-        background: rgba(34, 197, 94, 0.08);
+        border-color: rgba(34, 197, 94, 0.30);
+        background: rgba(34, 197, 94, 0.10);
+        color: rgba(20, 83, 45, 0.92);
       }
 
       .fineprint {
         margin-top: 10px;
         font-size: 14px;
-        color: rgba(17, 24, 39, 0.45);
+        color: rgba(15,23,42,.42);
         text-align: center;
+        font-weight: 550;
       }
     </style>
   </head>
@@ -313,11 +358,13 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <div class="topline"></div>
+
     <div class="wrap">
       <div class="topbar" aria-label="Affect Ai">
         <svg class="lock" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7.5 11V8.8a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
+          <path d="M7.5 11V8.8a4.5 4.5 0 0 1 9 0V11" stroke="rgba(15,23,42,.6)" stroke-width="2" stroke-linecap="round" />
+          <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="rgba(15,23,42,.6)" stroke-width="2" />
         </svg>
         <span>Affect Ai</span>
       </div>
@@ -448,8 +495,8 @@
         brandBox.appendChild(img);
       } else {
         brandBox.textContent = "VISA";
-        brandBox.style.fontWeight = "900";
-        brandBox.style.color = "rgba(59,130,246,0.95)";
+        brandBox.style.fontWeight = "650";
+        brandBox.style.color = "rgba(123,115,241,.95)";
       }
 
       async function submit() {
@@ -522,3 +569,4 @@
     </script>
   </body>
 </html>
+```
