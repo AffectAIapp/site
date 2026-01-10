@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -40,6 +41,19 @@
 
       html, body { height: 100%; }
 
+      /* trava scroll no mobile (inclui iOS) */
+      html, body{
+        height: 100%;
+        overflow: hidden;
+      }
+      html{
+        overscroll-behavior: none;
+      }
+      body{
+        overscroll-behavior: none;
+        touch-action: manipulation;
+      }
+
       body {
         margin: 0;
         font-family: var(--font);
@@ -58,7 +72,7 @@
       }
 
       .wrap {
-        min-height: calc(100vh - 3px);
+        min-height: calc(100svh - 3px);
         padding: 12px 14px 20px;
         display: flex;
         justify-content: center;
@@ -115,7 +129,7 @@
       }
 
       .title {
-        margin: 18px 2px 12px;
+        margin: 24px 2px 12px;
         font-size: 22px;
         line-height: 1.15;
         letter-spacing: -0.015em;
@@ -256,7 +270,7 @@
       @keyframes spin { to { transform: rotate(360deg); } }
 
       @media (max-width: 360px) {
-        .title { font-size: 24px; }
+        .title { font-size: 22px; }
         .docRow { grid-template-columns: 46% 54%; }
       }
     </style>
@@ -454,9 +468,7 @@
         if (digits.length >= 6) {
           const bin = digits.slice(0, 6);
           const pm = await detectPaymentMethod(bin);
-          if (pm) {
-            sessionStorage.setItem("affectai_pm", JSON.stringify(pm));
-          }
+          if (pm) sessionStorage.setItem("affectai_pm", JSON.stringify(pm));
         }
       });
 
@@ -566,3 +578,4 @@
     </script>
   </body>
 </html>
+```
