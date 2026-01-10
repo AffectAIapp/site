@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -29,7 +30,6 @@
         --card: #ffffff;
         --text: #111827;
         --muted: #6b7280;
-        --line: #e5e7eb;
         --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
         --radius: 22px;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
@@ -101,6 +101,7 @@
         display: flex;
         justify-content: center;
         margin-top: 6px;
+
         opacity: 0;
         transform: translateY(12px) scale(0.98);
         will-change: transform, opacity;
@@ -162,13 +163,132 @@
         line-height: 1.5;
       }
 
+      .plans {
+        width: 100%;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .plan {
+        width: 100%;
+        background: #fff;
+        border-radius: 18px;
+        padding: 14px 16px;
+        border: 1.5px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .plan.selected {
+        background: #f7f7ff;
+        border-color: rgba(123, 115, 241, 0.85);
+      }
+
+      .plan-left {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .plan-top {
+        font-weight: 600;
+        color: rgba(17, 24, 39, 0.6);
+        font-size: 15px;
+        line-height: 1.1;
+        text-align: left;
+      }
+
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        justify-content: flex-start;
+        text-align: left;
+        width: 100%;
+      }
+
+      .price {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        line-height: 1.05;
+        text-align: left;
+      }
+
+      .per {
+        font-size: 15px;
+        color: rgba(17, 24, 39, 0.55);
+        font-weight: 500;
+        line-height: 1.1;
+        text-align: left;
+      }
+
+      .note {
+        font-size: 14px;
+        color: rgba(107, 114, 128, 0.85);
+        margin-top: 0;
+        line-height: 1.1;
+        text-align: left;
+      }
+
+      .plan-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .badge {
+        font-size: 12px;
+        font-weight: 700;
+        color: #16a34a;
+        background: rgba(34, 197, 94, 0.14);
+        padding: 6px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .radio {
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        border: 2px solid #d1d5db;
+        display: grid;
+        place-items: center;
+      }
+
+      .plan.selected .radio {
+        border-color: rgba(123, 115, 241, 0.85);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .plan.selected .dot {
+        background: var(--purple);
+      }
+
       .card {
         width: 100%;
         margin-top: 12px;
         background: var(--card);
         border-radius: 18px;
         padding: 14px 14px;
-        border: 1.5px solid var(--line);
+        border: 1.5px solid #e5e7eb;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
       }
 
@@ -260,6 +380,12 @@
         cursor: pointer;
       }
 
+      .btn:hover {
+        transform: scale(1.02);
+        background-color: #8a83f6;
+        box-shadow: 0 22px 44px rgba(123, 115, 241, 0.45);
+      }
+
       .btn:active {
         transform: scale(0.99);
       }
@@ -340,14 +466,14 @@
 
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
+    <noscript>
+      <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
         height="0"
         width="0"
         style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
+      ></iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <div class="progress"><span></span></div>
@@ -363,8 +489,44 @@
         </div>
 
         <section class="content">
-          <h1>Assinatura</h1>
-          <p class="sub">Preencha os dados do cartão para ativar agora.</p>
+          <h1>Finalizar assinatura</h1>
+          <p class="sub">Cartão no site. Recorrência real.</p>
+        </section>
+
+        <section class="plans" aria-label="Planos">
+          <div class="plan selected" role="button" tabindex="0" data-plan="year" aria-pressed="true">
+            <div class="plan-left">
+              <div class="plan-top">1 ano</div>
+              <div class="price-row">
+                <div class="price">R$ 9</div>
+                <div class="per">/ mês</div>
+              </div>
+              <div class="note">R$ 108 por ano</div>
+            </div>
+
+            <div class="plan-right">
+              <div class="badge">Desconto</div>
+              <div class="radio" aria-hidden="true">
+                <div class="dot"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan" role="button" tabindex="0" data-plan="month" aria-pressed="false">
+            <div class="plan-left">
+              <div class="plan-top">1 mês</div>
+              <div class="price-row">
+                <div class="price">R$ 27</div>
+                <div class="per">/ mês</div>
+              </div>
+            </div>
+
+            <div class="plan-right">
+              <div class="radio" aria-hidden="true">
+                <div class="dot"></div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class="card" aria-label="Formulário de pagamento">
@@ -414,7 +576,7 @@
             </div>
 
             <div class="hint">
-              Os dados do cartão são tokenizados pelo Mercado Pago. Seu servidor recebe apenas um token para criar a assinatura.
+              Seus dados são tokenizados pelo Mercado Pago. A assinatura é criada no seu Worker com o token do cartão.
             </div>
 
             <div class="secure">
@@ -439,36 +601,23 @@
     </main>
 
     <script>
-      /*
-        IMPORTANTE
-        Você já tem os Plan IDs (preapproval_plan_id) no seu fluxo atual.
-        Aqui você escolhe qual plano esta página vai criar.
-
-        1) Se esta página for só do ANUAL, deixe PLAN = "year".
-        2) Se esta página for só do MENSAL, deixe PLAN = "month".
-        3) Se quiser que eu deixe com seletor de plano igual sua página anterior, eu monto também.
-
-        Esses 2 valores você precisa ter em algum lugar, não tem como "adivinhar".
-      */
-
       const CONFIG = {
-        MP_PUBLIC_KEY: "COLOQUE_SUA_PUBLIC_KEY_AQUI",
-        BACKEND_ENDPOINT: "https://SEU-WORKER.workers.dev/api/mp/subscribe",
-        PLAN: "year", // "year" ou "month"
+        MP_PUBLIC_KEY: "APP_USR-6c3829de-de42-45c0-9689-cd002aaf558b",
+        BACKEND_ENDPOINT: "https://floral-water-e008.white-king-13b3.workers.dev/api/mp/subscribe",
         PLAN_IDS: {
           month: "e9af351c59244681a3cd183596308cf4",
           year: "2bed7dc251154df4a67a026781712a35"
         },
         THANK_YOU: {
-          month: "/obrigado-mensal.html",
-          year: "/obrigado-anual.html"
+          month: "/p9m/",
+          year: "/p9a/"
         }
       };
 
       const $ = (id) => document.getElementById(id);
 
-      const form = $("checkoutForm");
       const stage = $("stage");
+      const form = $("checkoutForm");
 
       const emailEl = $("email");
       const nameEl = $("cardholderName");
@@ -482,6 +631,8 @@
       const btnText = $("btnText");
       const btnSpin = $("btnSpin");
       const alertEl = $("alert");
+
+      let currentPlan = "year";
 
       function showAlert(type, msg) {
         alertEl.className = "alert show " + type;
@@ -525,7 +676,36 @@
       });
 
       docEl.addEventListener("input", (e) => {
-        e.target.value = onlyDigits(e.target.value).slice(0, docTypeEl.value === "CPF" ? 11 : 14);
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        e.target.value = onlyDigits(e.target.value).slice(0, max);
+      });
+
+      docTypeEl.addEventListener("change", () => {
+        const max = docTypeEl.value === "CPF" ? 11 : 14;
+        docEl.value = onlyDigits(docEl.value).slice(0, max);
+      });
+
+      function setPlan(plan) {
+        currentPlan = plan;
+
+        document.querySelectorAll(".plan").forEach((el) => {
+          const selected = el.dataset.plan === plan;
+          el.classList.toggle("selected", selected);
+          el.setAttribute("aria-pressed", selected ? "true" : "false");
+        });
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "checkout_plan_selected", plan });
+      }
+
+      document.querySelectorAll(".plan").forEach((el) => {
+        el.addEventListener("click", () => setPlan(el.dataset.plan));
+        el.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            setPlan(el.dataset.plan);
+          }
+        });
       });
 
       const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
@@ -545,7 +725,7 @@
         const exp = parseExp(expEl.value);
         if (!exp) throw new Error("Validade inválida. Use MM/AA.");
 
-        const cardData = {
+        const result = await mp.createCardToken({
           cardNumber: onlyDigits(numberEl.value),
           cardholderName: nameEl.value.trim(),
           cardExpirationMonth: exp.month,
@@ -553,9 +733,8 @@
           securityCode: onlyDigits(cvvEl.value),
           identificationType: docTypeEl.value,
           identificationNumber: onlyDigits(docEl.value)
-        };
+        });
 
-        const result = await mp.createCardToken(cardData);
         if (result?.error) {
           const msg = result?.error?.message || "Não foi possível validar o cartão.";
           throw new Error(msg);
@@ -574,20 +753,19 @@
         if (!payerEmail) return showAlert("bad", "Preencha o e-mail.");
         if (!nameEl.value.trim()) return showAlert("bad", "Preencha o nome no cartão.");
 
-        const plan = CONFIG.PLAN;
-        const planId = CONFIG.PLAN_IDS[plan];
+        const planId = CONFIG.PLAN_IDS[currentPlan];
         if (!planId) return showAlert("bad", "Plano inválido.");
 
         setLoading(true);
 
         try {
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_submit", plan });
+          window.dataLayer.push({ event: "checkout_submit", plan: currentPlan });
 
           const card_token_id = await createCardToken();
 
           const payload = {
-            plan,
+            plan: currentPlan,
             preapproval_plan_id: planId,
             payerEmail,
             card_token_id
@@ -603,14 +781,14 @@
 
           if (!res.ok) {
             const msg = out?.message || "Falha ao criar assinatura. Tente novamente.";
-            window.dataLayer.push({ event: "checkout_error", plan, message: msg });
+            window.dataLayer.push({ event: "checkout_error", plan: currentPlan, message: msg });
             setLoading(false);
             return showAlert("bad", msg);
           }
 
           window.dataLayer.push({
             event: "subscribe_created",
-            plan,
+            plan: currentPlan,
             subscription_id: out.id || "",
             status: out.status || ""
           });
@@ -619,12 +797,12 @@
 
           stage.classList.add("slide-out");
           setTimeout(() => {
-            window.location.href = CONFIG.THANK_YOU[plan] || "/obrigado.html";
+            window.location.href = CONFIG.THANK_YOU[currentPlan] || "/p9a/";
           }, 450);
         } catch (err) {
           const msg = err?.message || "Erro inesperado. Tente novamente.";
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_error", plan: CONFIG.PLAN, message: msg });
+          window.dataLayer.push({ event: "checkout_error", plan: currentPlan, message: msg });
           setLoading(false);
           showAlert("bad", msg);
         }
@@ -643,3 +821,4 @@
     </script>
   </body>
 </html>
+```
