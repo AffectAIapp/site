@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="pt-br">
   <head>
@@ -17,272 +18,247 @@
     <!-- End Google Tag Manager -->
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Affect Ai | Confirmar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Affect Ai | Checkout</title>
+
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 
     <style>
       :root {
-        --text: #111827;
-        --muted: #6b7280;
-        --line: #e5e7eb;
+        --purple: #7b73f1;
+        --bg: #f5f6fb;
         --card: #ffffff;
-        --blue: #3b82f6;
+        --text: #111827;
+        --muted: rgba(17, 24, 39, 0.6);
+        --line: rgba(229, 231, 235, 0.9);
+        --radius: 12px;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
-      * { box-sizing: border-box; }
-      html, body { height: 100%; }
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
 
       body {
         margin: 0;
         font-family: var(--font);
         color: var(--text);
-        background:
-          radial-gradient(640px 420px at 50% 0%, rgba(123,115,241,0.07) 0%, rgba(255,255,255,0) 70%),
-          linear-gradient(180deg, #fbfbff 0%, #f3f4f6 55%, #f3f4f6 100%);
+        background: radial-gradient(620px 440px at 50% 14%, rgba(123, 115, 241, 0.07), transparent 60%), var(--bg);
         -webkit-font-smoothing: antialiased;
-        text-rendering: geometricPrecision;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .wrap {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
       }
 
       .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        height: 52px;
-        background: rgba(255,255,255,0.92);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(229,231,235,0.9);
-        display: grid;
-        place-items: center;
-      }
-
-      .brand {
-        display: inline-flex;
+        height: 56px;
+        display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        gap: 8px;
+        color: rgba(17, 24, 39, 0.75);
         font-weight: 600;
-        color: #111827;
-        font-size: 16px;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.75);
       }
 
       .lock {
-        width: 22px;
-        height: 22px;
-        border-radius: 999px;
-        border: 1px solid rgba(209,213,219,0.9);
-        display: grid;
-        place-items: center;
-        background: #fff;
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        opacity: 0.7;
       }
 
-      .lock svg { width: 14px; height: 14px; opacity: 0.75; }
-
-      .wrap {
+      .stage {
         width: 100%;
-        max-width: 720px;
+        max-width: 520px;
         margin: 0 auto;
-        padding: 12px 14px 140px;
+        padding: 18px 16px 22px;
+        flex: 1;
       }
 
       .summary {
-        background: rgba(255,255,255,0.8);
-        border: 1px solid rgba(229,231,235,0.9);
-        border-radius: 10px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
         overflow: hidden;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
       }
 
       .sumRow {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 12px;
+        padding: 12px 14px;
         font-size: 15px;
+        border-top: 1px solid rgba(229, 231, 235, 0.75);
       }
 
-      .sumRow strong { font-weight: 600; }
-      .divider { height: 1px; background: rgba(229,231,235,0.9); }
+      .sumRow:first-child {
+        border-top: 0;
+      }
 
-      h1 {
-        margin: 16px 2px 12px;
-        font-size: 22px;
+      .sumLeft {
+        color: rgba(17, 24, 39, 0.75);
+        font-weight: 600;
+      }
+
+      .sumRight {
+        font-weight: 700;
+        color: rgba(17, 24, 39, 0.9);
+      }
+
+      .title {
+        margin: 18px 2px 14px;
+        font-size: 24px;
         line-height: 1.2;
         letter-spacing: -0.01em;
-        font-weight: 700;
-        color: #111827;
-        text-align: center;
-      }
-
-      .sectionTitle {
-        margin: 14px 2px 8px;
-        font-size: 16px;
-        font-weight: 700;
-        color: #111827;
-      }
-
-      .pmCard {
-        background: var(--card);
-        border: 1px solid rgba(229,231,235,0.9);
-        border-radius: 10px;
-        padding: 12px 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-      }
-
-      .pmLeft {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 0;
-      }
-
-      .visa {
-        width: 42px;
-        height: 42px;
-        border-radius: 999px;
-        border: 1px solid rgba(229,231,235,0.9);
-        background: #fff;
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-        color: #1d4ed8;
-        letter-spacing: 0.02em;
-        font-size: 13px;
-      }
-
-      .pmText { min-width: 0; }
-      .pmMain {
-        font-size: 16px;
-        font-weight: 700;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .pmSub {
-        font-size: 14px;
-        color: rgba(17,24,39,0.55);
         font-weight: 600;
-        margin-top: 2px;
-      }
-
-      .change {
-        border: 0;
-        background: transparent;
-        color: #3b82f6;
-        font-weight: 700;
-        font-size: 16px;
-        cursor: pointer;
-      }
-
-      .helpTitle {
-        margin: 16px 2px 6px;
-        font-size: 18px;
-        font-weight: 700;
         color: #111827;
       }
 
-      .helpSub {
-        margin: 0 2px 12px;
-        color: rgba(107,114,128,0.95);
-        font-size: 14px;
-        line-height: 1.35;
-        font-weight: 600;
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
       }
 
-      .emailBox {
-        background: var(--card);
-        border: 1px solid rgba(229,231,235,0.9);
-        border-radius: 10px;
-        padding: 12px;
-        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
       }
 
       label {
-        display: block;
         font-size: 14px;
-        font-weight: 700;
-        color: #111827;
-        margin-bottom: 8px;
+        font-weight: 600;
+        color: rgba(17, 24, 39, 0.82);
       }
 
-      input {
+      input,
+      select {
         width: 100%;
-        border: 1px solid rgba(209,213,219,0.95);
-        border-radius: 8px;
-        padding: 14px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(209, 213, 219, 0.95);
+        padding: 14px 14px;
         font-size: 16px;
         outline: none;
         background: #fff;
-        color: #111827;
+        color: var(--text);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
 
-      input:focus {
-        border-color: rgba(59,130,246,0.9);
-        box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+      input:focus,
+      select:focus {
+        border-color: rgba(123, 115, 241, 0.75);
+        box-shadow: 0 0 0 4px rgba(123, 115, 241, 0.12);
       }
 
-      .alert {
-        display: none;
-        margin-top: 12px;
-        padding: 12px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(239, 68, 68, 0.28);
-        background: rgba(239, 68, 68, 0.06);
-        color: #111827;
-        font-size: 14px;
-        line-height: 1.35;
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
       }
-      .alert.show { display: block; }
+
+      .docRow {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+        align-items: end;
+      }
 
       .footer {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 60;
-        background: rgba(255,255,255,0.92);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(229,231,235,0.9);
-        padding: 12px 14px calc(14px + env(safe-area-inset-bottom));
-      }
-
-      .footerInner {
-        max-width: 720px;
-        margin: 0 auto;
-        display: grid;
-        gap: 10px;
-        text-align: center;
+        margin-top: 18px;
       }
 
       .btnPrimary {
         width: 100%;
+        background: #3b82f6;
+        color: #fff;
         border: 0;
         border-radius: 10px;
         padding: 16px 14px;
         font-size: 18px;
         font-weight: 700;
-        background: var(--blue);
-        color: #fff;
         cursor: pointer;
-        box-shadow: 0 14px 26px rgba(59,130,246,0.22);
+        box-shadow: none;
+        transition: transform 0.12s ease;
       }
 
-      .btnPrimary:active { transform: scale(0.99); }
+      .btnPrimary:active {
+        transform: scale(0.99);
+      }
 
       .btnPrimary[disabled] {
         opacity: 0.7;
         cursor: not-allowed;
-        box-shadow: none;
       }
 
-      .footNote {
+      .spinner {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: rgba(255, 255, 255, 0.95);
+        animation: spin 0.9s linear infinite;
+        display: none;
+        margin-left: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .alert {
+        margin-top: 12px;
+        border-radius: 10px;
+        padding: 12px 12px;
         font-size: 14px;
-        color: rgba(107,114,128,0.95);
-        font-weight: 600;
+        line-height: 1.35;
+        display: none;
+        border: 1px solid rgba(229, 231, 235, 0.95);
+        background: #fff;
       }
 
-      .money { font-variant-numeric: tabular-nums; }
+      .alert.show {
+        display: block;
+      }
+
+      .alert.bad {
+        border-color: rgba(239, 68, 68, 0.35);
+        background: rgba(239, 68, 68, 0.06);
+      }
+
+      .fineprint {
+        margin-top: 10px;
+        font-size: 14px;
+        color: rgba(17, 24, 39, 0.45);
+        text-align: center;
+      }
+
+      @media (max-width: 360px) {
+        .docRow {
+          grid-template-columns: 110px 1fr;
+        }
+        .title {
+          font-size: 22px;
+        }
+      }
     </style>
   </head>
 
@@ -296,69 +272,728 @@
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-    <header class="topbar">
-      <div class="brand">
-        <span class="lock" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7.5 11V8.8C7.5 6.15 9.6 4 12.2 4c2.6 0 4.7 2.15 4.7 4.8V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
-          </svg>
-        </span>
+    <div class="wrap">
+      <div class="topbar" aria-label="Affect Ai">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7.5 11V8.8a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
+        </svg>
         <span>Affect Ai</span>
       </div>
-    </header>
 
-    <main class="wrap">
-      <section class="summary" aria-label="Resumo">
-        <div class="sumRow">
-          <span id="productName">AffectAI Anual</span>
-          <strong class="money" id="productPrice">R$ 108,00</strong>
-        </div>
-        <div class="divider"></div>
-        <div class="sumRow">
-          <strong>Total</strong>
-          <strong class="money" id="totalPrice">108,00</strong>
-        </div>
-      </section>
-
-      <h1>Confirme a sua assinatura</h1>
-
-      <div class="sectionTitle">Meio de pagamento</div>
-      <div class="pmCard" role="group" aria-label="Cartão cadastrado">
-        <div class="pmLeft">
-          <div class="visa" aria-hidden="true">VISA</div>
-          <div class="pmText">
-            <div class="pmMain" id="pmMain">Cartão ****</div>
-            <div class="pmSub">Visa Crédito</div>
+      <main class="stage">
+        <div class="summary" aria-label="Resumo">
+          <div class="sumRow">
+            <div class="sumLeft" id="productName">AffectAI Anual</div>
+            <div class="sumRight" id="productPrice">R$ 108,00</div>
+          </div>
+          <div class="sumRow">
+            <div class="sumLeft">Total</div>
+            <div class="sumRight" id="totalPrice">108,00</div>
           </div>
         </div>
-        <button class="change" id="changeBtn" type="button">Alterar</button>
+
+        <h1 class="title">Preencha os dados do seu cartão</h1>
+
+        <section class="card" aria-label="Dados do cartão">
+          <form id="cardForm" autocomplete="on">
+            <div class="field">
+              <label for="cardNumber">Número do cartão</label>
+              <input
+                id="cardNumber"
+                name="cardNumber"
+                type="text"
+                inputmode="numeric"
+                autocomplete="cc-number"
+                placeholder="1234 1234 1234 1234"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="cardholderName">Nome do titular</label>
+              <input
+                id="cardholderName"
+                name="cardholderName"
+                type="text"
+                autocomplete="cc-name"
+                placeholder="Ex.: Maria Lopes"
+                required
+              />
+            </div>
+
+            <div class="two">
+              <div class="field">
+                <label for="expiration">Vencimento</label>
+                <input
+                  id="expiration"
+                  name="expiration"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="cc-exp"
+                  placeholder="MM/AA"
+                  required
+                />
+              </div>
+
+              <div class="field">
+                <label for="cvv">Código de segurança</label>
+                <input
+                  id="cvv"
+                  name="cvv"
+                  type="password"
+                  inputmode="numeric"
+                  autocomplete="cc-csc"
+                  placeholder="Ex.: 123"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field" style="margin-top: 2px;">
+              <label>Documento do titular</label>
+              <div class="docRow">
+                <select id="docType" name="docType" required>
+                  <option value="CPF">CPF</option>
+                  <option value="CNPJ">CNPJ</option>
+                </select>
+
+                <input
+                  id="docNumber"
+                  name="docNumber"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  placeholder="999.999.999-99"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="footer">
+              <button class="btnPrimary" id="continueBtn" type="submit">
+                <span id="btnText">Continuar</span>
+                <span id="btnSpin" class="spinner" aria-hidden="true"></span>
+              </button>
+
+              <div id="alert" class="alert"></div>
+
+              <div class="fineprint">Você pode cancelar quando quiser</div>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const CONFIG = {
+        MP_PUBLIC_KEY: "APP_USR-6c3829de-de42-45c0-9689-cd002aaf558b",
+        EMAIL_PAGE: "/checkout-email.html",
+        PLAN_META: {
+          month: { name: "AffectAI Mensal", displayPrice: "R$ 27,00", total: "27,00" },
+          year: { name: "AffectAI Anual", displayPrice: "R$ 108,00", total: "108,00" }
+        }
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      const productNameEl = $("productName");
+      const productPriceEl = $("productPrice");
+      const totalPriceEl = $("totalPrice");
+
+      const form = $("cardForm");
+      const cardNumberEl = $("cardNumber");
+      const nameEl = $("cardholderName");
+      const expEl = $("expiration");
+      const cvvEl = $("cvv");
+      const docTypeEl = $("docType");
+      const docEl = $("docNumber");
+
+      const continueBtn = $("continueBtn");
+      const btnText = $("btnText");
+      const btnSpin = $("btnSpin");
+      const alertEl = $("alert");
+
+      function showAlert(msg) {
+        alertEl.className = "alert show bad";
+        alertEl.textContent = msg;
+      }
+
+      function clearAlert() {
+        alertEl.className = "alert";
+        alertEl.textContent = "";
+      }
+
+      function setLoading(on) {
+        continueBtn.disabled = on;
+        btnSpin.style.display = on ? "inline-block" : "none";
+        btnText.textContent = on ? "Processando..." : "Continuar";
+      }
+
+      function onlyDigits(s) {
+        return (s || "").replace(/\D+/g, "");
+      }
+
+      function formatCardNumber(v) {
+        const d = onlyDigits(v).slice(0, 19);
+        const parts = [];
+        for (let i = 0; i < d.length; i += 4) parts.push(d.slice(i, i + 4));
+        return parts.join(" ");
+      }
+
+      function formatExpiration(v) {
+        const d = onlyDigits(v).slice(0, 4);
+        if (d.length <= 2) return d;
+        return d.slice(0, 2) + "/" + d.slice(2);
+      }
+
+      function formatDoc(v, type) {
+        const d = onlyDigits(v);
+        if (type === "CPF") {
+          const x = d.slice(0, 11);
+          const p1 = x.slice(0, 3);
+          const p2 = x.slice(3, 6);
+          const p3 = x.slice(6, 9);
+          const p4 = x.slice(9, 11);
+          let out = p1;
+          if (p2) out += "." + p2;
+          if (p3) out += "." + p3;
+          if (p4) out += "-" + p4;
+          return out;
+        } else {
+          const x = d.slice(0, 14);
+          const p1 = x.slice(0, 2);
+          const p2 = x.slice(2, 5);
+          const p3 = x.slice(5, 8);
+          const p4 = x.slice(8, 12);
+          const p5 = x.slice(12, 14);
+          let out = p1;
+          if (p2) out += "." + p2;
+          if (p3) out += "." + p3;
+          if (p4) out += "/" + p4;
+          if (p5) out += "-" + p5;
+          return out;
+        }
+      }
+
+      function parseExp(mmYY) {
+        const clean = onlyDigits(mmYY);
+        const mm = clean.slice(0, 2);
+        const yy = clean.slice(2, 4);
+        if (mm.length !== 2 || yy.length !== 2) return null;
+        const month = Number(mm);
+        if (Number.isNaN(month) || month < 1 || month > 12) return null;
+        const year = 2000 + Number(yy);
+        return { month: String(month), year: String(year) };
+      }
+
+      function getPlanFromUrlOrStorage() {
+        const url = new URL(window.location.href);
+        const planQ = url.searchParams.get("plan");
+        const stored = sessionStorage.getItem("aa_plan");
+        const plan = planQ || stored || "year";
+        if (plan !== "month" && plan !== "year") return "year";
+        return plan;
+      }
+
+      const currentPlan = getPlanFromUrlOrStorage();
+      sessionStorage.setItem("aa_plan", currentPlan);
+
+      const meta = CONFIG.PLAN_META[currentPlan] || CONFIG.PLAN_META.year;
+      productNameEl.textContent = meta.name;
+      productPriceEl.textContent = meta.displayPrice;
+      totalPriceEl.textContent = meta.total;
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "checkout_card_view", plan: currentPlan });
+
+      cardNumberEl.addEventListener("input", (e) => {
+        e.target.value = formatCardNumber(e.target.value);
+      });
+
+      expEl.addEventListener("input", (e) => {
+        e.target.value = formatExpiration(e.target.value);
+      });
+
+      docEl.addEventListener("input", (e) => {
+        e.target.value = formatDoc(e.target.value, docTypeEl.value);
+      });
+
+      docTypeEl.addEventListener("change", () => {
+        docEl.value = formatDoc(docEl.value, docTypeEl.value);
+        docEl.placeholder = docTypeEl.value === "CPF" ? "999.999.999-99" : "99.999.999/9999-99";
+      });
+
+      const mp = new MercadoPago(CONFIG.MP_PUBLIC_KEY, { locale: "pt-BR" });
+
+      let pmCache = { id: "", name: "", thumbnail: "" };
+
+      async function tryFetchPaymentMethod() {
+        const digits = onlyDigits(cardNumberEl.value);
+        if (digits.length < 6) return;
+        const bin = digits.slice(0, 6);
+
+        try {
+          const res = await mp.getPaymentMethods({ bin });
+          const pm = res?.results?.[0];
+          if (!pm) return;
+          pmCache = {
+            id: pm.id || "",
+            name: pm.name || "",
+            thumbnail: pm.thumbnail || ""
+          };
+        } catch (e) {}
+      }
+
+      cardNumberEl.addEventListener("keyup", () => {
+        tryFetchPaymentMethod();
+      });
+
+      async function createCardToken() {
+        const exp = parseExp(expEl.value);
+        if (!exp) throw new Error("Validade inválida. Use MM/AA.");
+
+        const payload = {
+          cardNumber: onlyDigits(cardNumberEl.value),
+          cardholderName: nameEl.value.trim(),
+          cardExpirationMonth: exp.month,
+          cardExpirationYear: exp.year,
+          securityCode: onlyDigits(cvvEl.value),
+          identificationType: docTypeEl.value,
+          identificationNumber: onlyDigits(docEl.value)
+        };
+
+        const result = await mp.createCardToken(payload);
+
+        if (result?.error) {
+          const msg = result?.error?.message || "Não foi possível validar o cartão.";
+          throw new Error(msg);
+        }
+
+        const token = result?.id;
+        if (!token) throw new Error("Token não gerado. Revise os dados do cartão.");
+        return token;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        if (onlyDigits(cardNumberEl.value).length < 12) return showAlert("Preencha o número do cartão.");
+        if (!nameEl.value.trim()) return showAlert("Preencha o nome do titular.");
+        if (!parseExp(expEl.value)) return showAlert("Preencha o vencimento.");
+        if (onlyDigits(cvvEl.value).length < 3) return showAlert("Preencha o código de segurança.");
+        if (onlyDigits(docEl.value).length < (docTypeEl.value === "CPF" ? 11 : 14)) return showAlert("Preencha o documento do titular.");
+
+        setLoading(true);
+
+        try {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "checkout_card_submit", plan: currentPlan });
+
+          await tryFetchPaymentMethod();
+
+          const card_token_id = await createCardToken();
+
+          const digits = onlyDigits(cardNumberEl.value);
+          const last4 = digits.slice(-4);
+
+          sessionStorage.setItem("aa_card_token_id", card_token_id);
+          sessionStorage.setItem("aa_card_last4", last4);
+          sessionStorage.setItem("aa_doc_type", docTypeEl.value);
+          sessionStorage.setItem("aa_doc_number", onlyDigits(docEl.value));
+          sessionStorage.setItem("aa_pm_id", pmCache.id || "");
+          sessionStorage.setItem("aa_pm_name", pmCache.name || "");
+          sessionStorage.setItem("aa_pm_thumb", pmCache.thumbnail || "");
+
+          window.location.href = CONFIG.EMAIL_PAGE + "?plan=" + encodeURIComponent(currentPlan);
+        } catch (err) {
+          setLoading(false);
+          const msg = err?.message || "Erro inesperado. Tente novamente.";
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: "checkout_card_error", plan: currentPlan, message: msg });
+          showAlert(msg);
+        }
+      });
+    </script>
+  </body>
+</html>
+```
+
+```html
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-K9TFCGX9");
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Affect Ai | Checkout</title>
+
+    <style>
+      :root {
+        --bg: #f5f6fb;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: rgba(107, 114, 128, 0.95);
+        --line: rgba(229, 231, 235, 0.9);
+        --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        color: var(--text);
+        background: radial-gradient(620px 440px at 50% 14%, rgba(123, 115, 241, 0.07), transparent 60%), var(--bg);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .wrap {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: rgba(17, 24, 39, 0.75);
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.75);
+      }
+
+      .lock {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        opacity: 0.7;
+      }
+
+      .stage {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 18px 16px 22px;
+        flex: 1;
+      }
+
+      .summary {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      }
+
+      .sumRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        font-size: 15px;
+        border-top: 1px solid rgba(229, 231, 235, 0.75);
+      }
+
+      .sumRow:first-child {
+        border-top: 0;
+      }
+
+      .sumLeft {
+        color: rgba(17, 24, 39, 0.75);
+        font-weight: 600;
+      }
+
+      .sumRight {
+        font-weight: 700;
+        color: rgba(17, 24, 39, 0.9);
+      }
+
+      h1 {
+        margin: 18px 2px 14px;
+        font-size: 22px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        font-weight: 600;
+        color: #111827;
+        text-align: center;
+      }
+
+      .sectionTitle {
+        margin: 14px 2px 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: rgba(17, 24, 39, 0.88);
+      }
+
+      .pmCard {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        box-shadow: none;
+      }
+
+      .pmLeft {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.04);
+        border: 1px solid rgba(229, 231, 235, 0.9);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        flex: 0 0 auto;
+      }
+
+      .brand img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+      }
+
+      .pmText {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .pmMain {
+        font-size: 16px;
+        font-weight: 700;
+        color: rgba(17, 24, 39, 0.92);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .pmSub {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(17, 24, 39, 0.55);
+      }
+
+      .pmRight a {
+        color: #3b82f6;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .helpTitle {
+        margin: 18px 2px 6px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .helpSub {
+        margin: 0 2px 12px;
+        color: rgba(107, 114, 128, 0.95);
+        font-size: 14px;
+        line-height: 1.35;
+        font-weight: 500;
+      }
+
+      .emailBox {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        box-shadow: none;
+      }
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        color: rgba(17, 24, 39, 0.88);
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid rgba(209, 213, 219, 0.95);
+        padding: 14px 14px;
+        font-size: 16px;
+        outline: none;
+        background: #fff;
+        color: var(--text);
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      input:focus {
+        border-color: rgba(59, 130, 246, 0.75);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      }
+
+      .btnPrimary {
+        margin-top: 16px;
+        width: 100%;
+        background: #3b82f6;
+        color: #fff;
+        border: 0;
+        border-radius: 10px;
+        padding: 16px 14px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: none;
+        transition: transform 0.12s ease;
+      }
+
+      .btnPrimary:active {
+        transform: scale(0.99);
+      }
+
+      .btnPrimary[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .alert {
+        margin-top: 12px;
+        border-radius: 10px;
+        padding: 12px 12px;
+        font-size: 14px;
+        line-height: 1.35;
+        display: none;
+        border: 1px solid rgba(229, 231, 235, 0.95);
+        background: #fff;
+      }
+
+      .alert.show {
+        display: block;
+      }
+
+      .alert.bad {
+        border-color: rgba(239, 68, 68, 0.35);
+        background: rgba(239, 68, 68, 0.06);
+      }
+
+      .alert.ok {
+        border-color: rgba(34, 197, 94, 0.35);
+        background: rgba(34, 197, 94, 0.08);
+      }
+
+      .fineprint {
+        margin-top: 10px;
+        font-size: 14px;
+        color: rgba(17, 24, 39, 0.45);
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="wrap">
+      <div class="topbar" aria-label="Affect Ai">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7.5 11V8.8a4.5 4.5 0 0 1 9 0V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M6.5 11h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" />
+        </svg>
+        <span>Affect Ai</span>
       </div>
 
-      <div class="helpTitle">Insira seu e-mail</div>
-      <p class="helpSub">Você receberá os detalhes do seu pagamento que servirão como comprovante.</p>
+      <main class="stage">
+        <div class="summary" aria-label="Resumo">
+          <div class="sumRow">
+            <div class="sumLeft" id="productName">AffectAI Anual</div>
+            <div class="sumRight" id="productPrice">R$ 108,00</div>
+          </div>
+          <div class="sumRow">
+            <div class="sumLeft">Total</div>
+            <div class="sumRight" id="totalPrice">108,00</div>
+          </div>
+        </div>
 
-      <section class="emailBox" aria-label="E-mail">
-        <form id="emailForm">
+        <h1>Confirme a sua assinatura</h1>
+
+        <div class="sectionTitle">Meio de pagamento</div>
+        <div class="pmCard" aria-label="Meio de pagamento">
+          <div class="pmLeft">
+            <div class="brand" id="brandBox" aria-hidden="true"></div>
+            <div class="pmText">
+              <div class="pmMain" id="pmMain">Cartão ****</div>
+              <div class="pmSub" id="pmSub">Crédito</div>
+            </div>
+          </div>
+          <div class="pmRight">
+            <a href="/checkout-card.html" id="changeLink">Alterar</a>
+          </div>
+        </div>
+
+        <div class="helpTitle">Insira seu e-mail</div>
+        <div class="helpSub">Você receberá os detalhes do seu pagamento que servirão como comprovante.</div>
+
+        <div class="emailBox" aria-label="E-mail">
           <label for="email">E-mail</label>
           <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Ex.: nome@email.com" required />
-          <div id="alert" class="alert"></div>
-        </form>
-      </section>
-    </main>
+        </div>
 
-    <footer class="footer" aria-label="Ações">
-      <div class="footerInner">
-        <button class="btnPrimary" id="payBtn" type="submit" form="emailForm">Pagar assinatura</button>
-        <div class="footNote">Você pode cancelar quando quiser</div>
-      </div>
-    </footer>
+        <button class="btnPrimary" id="payBtn" type="button">Pagar assinatura</button>
+
+        <div id="alert" class="alert"></div>
+
+        <div class="fineprint">Você pode cancelar quando quiser</div>
+      </main>
+    </div>
 
     <script>
       const CONFIG = {
         BACKEND_ENDPOINT: "https://floral-water-e008.white-king-13b3.workers.dev/api/mp/subscribe",
-        BACK_TO_CARD: "/checkout-card.html",
         PLAN_IDS: {
           month: "e9af351c59244681a3cd183596308cf4",
           year: "2bed7dc251154df4a67a026781712a35"
@@ -367,96 +1002,91 @@
           month: "/p9m/",
           year: "/p9a/"
         },
-        PRICES: {
-          year: { name: "AffectAI Anual", priceText: "R$ 108,00", totalText: "108,00" },
-          month: { name: "AffectAI Mensal", priceText: "R$ 27,00", totalText: "27,00" }
+        PLAN_META: {
+          month: { name: "AffectAI Mensal", displayPrice: "R$ 27,00", total: "27,00" },
+          year: { name: "AffectAI Anual", displayPrice: "R$ 108,00", total: "108,00" }
         }
       };
 
       const $ = (id) => document.getElementById(id);
 
-      const form = $("emailForm");
-      const emailEl = $("email");
-      const alertEl = $("alert");
-      const payBtn = $("payBtn");
-      const changeBtn = $("changeBtn");
-
       const productNameEl = $("productName");
       const productPriceEl = $("productPrice");
       const totalPriceEl = $("totalPrice");
-      const pmMainEl = $("pmMain");
 
-      function showAlert(msg) {
+      const brandBox = $("brandBox");
+      const pmMainEl = $("pmMain");
+      const pmSubEl = $("pmSub");
+
+      const emailEl = $("email");
+      const payBtn = $("payBtn");
+      const alertEl = $("alert");
+
+      function showAlert(type, msg) {
+        alertEl.className = "alert show " + type;
         alertEl.textContent = msg;
-        alertEl.classList.add("show");
       }
 
       function clearAlert() {
+        alertEl.className = "alert";
         alertEl.textContent = "";
-        alertEl.classList.remove("show");
-      }
-
-      function setLoading(on) {
-        payBtn.disabled = on;
-        payBtn.textContent = on ? "Processando..." : "Pagar assinatura";
       }
 
       function getPlan() {
         const url = new URL(window.location.href);
-        const fromUrl = url.searchParams.get("plan");
-        const fromSession = sessionStorage.getItem("affect_plan");
-        const fromLocal = localStorage.getItem("affect_plan");
-        return fromUrl || fromSession || fromLocal || "year";
+        const planQ = url.searchParams.get("plan");
+        const stored = sessionStorage.getItem("aa_plan");
+        const plan = planQ || stored || "year";
+        if (plan !== "month" && plan !== "year") return "year";
+        return plan;
       }
 
-      function getToken() {
-        return sessionStorage.getItem("affect_card_token") || "";
+      const plan = getPlan();
+      sessionStorage.setItem("aa_plan", plan);
+
+      const meta = CONFIG.PLAN_META[plan] || CONFIG.PLAN_META.year;
+      productNameEl.textContent = meta.name;
+      productPriceEl.textContent = meta.displayPrice;
+      totalPriceEl.textContent = meta.total;
+
+      const token = sessionStorage.getItem("aa_card_token_id") || "";
+      const last4 = sessionStorage.getItem("aa_card_last4") || "";
+      const pmName = sessionStorage.getItem("aa_pm_name") || "";
+      const pmThumb = sessionStorage.getItem("aa_pm_thumb") || "";
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "checkout_email_view", plan });
+
+      if (!token) {
+        showAlert("bad", "Sessão expirou. Volte e preencha os dados do cartão novamente.");
+        payBtn.disabled = true;
       }
 
-      function getLast4() {
-        return sessionStorage.getItem("affect_card_last4") || "";
+      pmMainEl.textContent = last4 ? "Cartão Mercado **** " + last4 : "Cartão ****";
+      pmSubEl.textContent = pmName ? (pmName + " Crédito") : "Crédito";
+
+      if (pmThumb) {
+        const img = document.createElement("img");
+        img.src = pmThumb;
+        img.alt = "";
+        brandBox.innerHTML = "";
+        brandBox.appendChild(img);
+      } else {
+        brandBox.textContent = "VISA";
+        brandBox.style.fontWeight = "900";
+        brandBox.style.color = "rgba(59,130,246,0.95)";
       }
 
-      function applySummary(plan) {
-        const info = CONFIG.PRICES[plan] || CONFIG.PRICES.year;
-        productNameEl.textContent = info.name;
-        productPriceEl.textContent = info.priceText;
-        totalPriceEl.textContent = info.totalText;
-      }
-
-      function applyPaymentMethod() {
-        const last4 = getLast4();
-        pmMainEl.textContent = last4 ? ("Cartão Mercado **** " + last4) : "Cartão Mercado ****";
-      }
-
-      function goBackToCard(plan) {
-        window.location.href = CONFIG.BACK_TO_CARD + "?plan=" + encodeURIComponent(plan || "year");
-      }
-
-      changeBtn.addEventListener("click", () => goBackToCard(getPlan()));
-
-      window.addEventListener("load", () => {
-        const plan = getPlan();
-        sessionStorage.setItem("affect_plan", plan);
-        applySummary(plan);
-        applyPaymentMethod();
-      });
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      async function submit() {
         clearAlert();
 
-        const plan = getPlan();
-        const token = getToken();
-        const payerEmail = emailEl.value.trim();
+        const payerEmail = (emailEl.value || "").trim();
+        if (!payerEmail) return showAlert("bad", "Preencha este campo.");
 
-        if (!payerEmail) return showAlert("Preencha este campo.");
-        if (!token) return showAlert("Volte e preencha os dados do cartão novamente.");
+        const preapproval_plan_id = CONFIG.PLAN_IDS[plan];
+        if (!preapproval_plan_id) return showAlert("bad", "Plano inválido.");
 
-        const planId = CONFIG.PLAN_IDS[plan];
-        if (!planId) return showAlert("Plano inválido.");
-
-        setLoading(true);
+        payBtn.disabled = true;
 
         try {
           window.dataLayer = window.dataLayer || [];
@@ -464,7 +1094,7 @@
 
           const payload = {
             plan,
-            preapproval_plan_id: planId,
+            preapproval_plan_id,
             payerEmail,
             card_token_id: token
           };
@@ -479,9 +1109,9 @@
 
           if (!res.ok) {
             const msg = out?.message || "Falha ao criar assinatura. Tente novamente.";
-            setLoading(false);
             window.dataLayer.push({ event: "checkout_error", plan, message: msg });
-            return showAlert(msg);
+            payBtn.disabled = false;
+            return showAlert("bad", msg);
           }
 
           window.dataLayer.push({
@@ -491,17 +1121,30 @@
             status: out.status || ""
           });
 
-          sessionStorage.removeItem("affect_card_token");
+          showAlert("ok", "Assinatura criada.");
 
-          window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
+          sessionStorage.removeItem("aa_card_token_id");
+
+          setTimeout(() => {
+            window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
+          }, 300);
         } catch (err) {
           const msg = err?.message || "Erro inesperado. Tente novamente.";
-          setLoading(false);
           window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: "checkout_error", plan: getPlan(), message: msg });
-          showAlert(msg);
+          window.dataLayer.push({ event: "checkout_error", plan, message: msg });
+          payBtn.disabled = false;
+          showAlert("bad", msg);
+        }
+      }
+
+      payBtn.addEventListener("click", submit);
+      emailEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submit();
         }
       });
     </script>
   </body>
 </html>
+```
