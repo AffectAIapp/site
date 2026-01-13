@@ -23,14 +23,10 @@
     <style>
       :root {
         --purple: #7b73f1;
-        --purple2: rgba(123, 115, 241, 0.18);
         --bg: #f5f6fb;
         --text: #0f172a;
-        --muted: rgba(15, 23, 42, 0.62);
-        --line: rgba(15, 23, 42, 0.10);
         --card: rgba(255, 255, 255, 0.92);
         --shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
-        --radius: 16px;
         --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial;
       }
 
@@ -59,11 +55,11 @@
       }
 
       .topline { height: 3px; background: rgba(123,115,241,.85); }
+
       .wrap { height: calc(100vh - 3px); display: flex; flex-direction: column; }
 
       .topbar {
         height: 46px;
-        flex: 0 0 auto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -71,7 +67,6 @@
         color: rgba(15,23,42,.75);
         font-weight: 550;
         letter-spacing: 0.01em;
-        background: transparent;
       }
 
       .lock { width: 18px; height: 18px; display: inline-block; opacity: 0.9; }
@@ -95,7 +90,6 @@
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 10px 28px rgba(15,23,42,.06);
-        flex: 0 0 auto;
       }
 
       .sumRow {
@@ -105,7 +99,6 @@
         padding: 12px 14px;
         font-size: 15px;
       }
-
       .sumRow + .sumRow { border-top: 1px solid rgba(15,23,42,.08); }
 
       .sumLeft { color: rgba(15,23,42,.72); font-weight: 550; }
@@ -119,7 +112,6 @@
         font-weight: 550;
         color: rgba(15,23,42,.92);
         text-align: center;
-        flex: 0 0 auto;
       }
 
       .sectionTitle {
@@ -127,7 +119,6 @@
         font-size: 14px;
         font-weight: 550;
         color: rgba(15,23,42,.72);
-        flex: 0 0 auto;
       }
 
       .pmCard {
@@ -141,7 +132,6 @@
         gap: 12px;
         box-shadow: var(--shadow);
         position: relative;
-        flex: 0 0 auto;
       }
 
       .pmCard:before {
@@ -191,7 +181,6 @@
         font-size: 18px;
         font-weight: 650;
         color: rgba(15,23,42,.92);
-        flex: 0 0 auto;
       }
 
       .helpSub {
@@ -200,7 +189,6 @@
         font-size: 14px;
         line-height: 1.35;
         font-weight: 550;
-        flex: 0 0 auto;
       }
 
       .emailBox {
@@ -210,7 +198,6 @@
         padding: 14px;
         box-shadow: var(--shadow);
         position: relative;
-        flex: 0 0 auto;
       }
 
       .emailBox:before {
@@ -265,7 +252,6 @@
         cursor: pointer;
         box-shadow: 0 18px 38px rgba(123,115,241,.30);
         transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-        flex: 0 0 auto;
       }
 
       .btnPrimary:hover {
@@ -291,7 +277,6 @@
         display: none;
         border: 1px solid rgba(15,23,42,.10);
         background: rgba(255,255,255,.8);
-        flex: 0 0 auto;
       }
 
       .alert.show { display: block; }
@@ -314,12 +299,6 @@
         color: rgba(15,23,42,.42);
         text-align: center;
         font-weight: 550;
-        flex: 0 0 auto;
-      }
-
-      @media (max-height: 720px) {
-        .helpTitle { margin-top: 22px; }
-        .stage { padding-bottom: 16px; }
       }
     </style>
   </head>
@@ -437,9 +416,10 @@
       }
 
       function getPlan() {
-        const plan = sessionStorage.getItem("affectai_plan_final")
-          || sessionStorage.getItem("affectai_plan")
-          || "year";
+        const plan =
+          (sessionStorage.getItem("affectai_plan_final") || "").toLowerCase() ||
+          (sessionStorage.getItem("affectai_plan") || "").toLowerCase() ||
+          "year";
         return plan === "month" ? "month" : "year";
       }
 
@@ -453,6 +433,7 @@
       const token = sessionStorage.getItem("affectai_token") || "";
       const last4 = sessionStorage.getItem("affectai_last4") || "";
       const planIdStored = sessionStorage.getItem("affectai_plan_id") || "";
+
       const pmRaw = sessionStorage.getItem("affectai_pm") || "";
       const pm = pmRaw ? safeJsonParse(pmRaw) : null;
 
@@ -477,6 +458,14 @@
         brandBox.textContent = "MP";
         brandBox.style.fontWeight = "650";
         brandBox.style.color = "rgba(123,115,241,.95)";
+      }
+
+      function pickErrorMessage(out) {
+        if (!out) return "Falha ao criar assinatura. Tente novamente.";
+        if (out.message) return String(out.message);
+        if (out.error) return String(out.error);
+        if (out.details && out.details.message) return String(out.details.message);
+        return "Falha ao criar assinatura. Tente novamente.";
       }
 
       async function submit() {
@@ -509,7 +498,7 @@
           const out = await res.json().catch(() => ({}));
 
           if (!res.ok) {
-            const msg = out && out.message ? out.message : "Falha ao criar assinatura. Tente novamente.";
+            const msg = pickErrorMessage(out);
             window.dataLayer.push({ event: "checkout_error", plan, step: "email", message: msg });
             payBtn.disabled = false;
             return showAlert("bad", msg);
