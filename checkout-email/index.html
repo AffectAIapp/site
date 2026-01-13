@@ -35,7 +35,6 @@
       }
 
       * { box-sizing: border-box; }
-
       html, body { height: 100%; }
 
       html {
@@ -60,7 +59,6 @@
       }
 
       .topline { height: 3px; background: rgba(123,115,241,.85); }
-
       .wrap { height: calc(100vh - 3px); display: flex; flex-direction: column; }
 
       .topbar {
@@ -111,7 +109,6 @@
       .sumRow + .sumRow { border-top: 1px solid rgba(15,23,42,.08); }
 
       .sumLeft { color: rgba(15,23,42,.72); font-weight: 550; }
-
       .sumRight { font-weight: 650; color: rgba(15,23,42,.92); }
 
       h1 {
@@ -170,6 +167,8 @@
         overflow: hidden;
         flex: 0 0 auto;
       }
+
+      .brand img { width: 30px; height: 30px; object-fit: contain; }
 
       .pmText { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
@@ -326,6 +325,7 @@
   </head>
 
   <body>
+    <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
@@ -334,6 +334,7 @@
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <div class="topline"></div>
 
@@ -370,7 +371,7 @@
             </div>
           </div>
           <div class="pmRight">
-            <a href="/checkout-card.html" id="changeLink">Alterar</a>
+            <a href="/checkout" id="changeLink">Alterar</a>
           </div>
         </div>
 
@@ -425,50 +426,58 @@
         alertEl.className = "alert show " + type;
         alertEl.textContent = msg;
       }
+
       function clearAlert() {
         alertEl.className = "alert";
         alertEl.textContent = "";
       }
 
-      function getParam(name){
-        const url = new URL(location.href);
-        return url.searchParams.get(name) || "";
+      function safeJsonParse(s) {
+        try { return JSON.parse(s); } catch { return null; }
       }
 
       function getPlan() {
-        const planQ = getParam("plan");
-        const stored = sessionStorage.getItem("aa_plan");
-        const plan = planQ || stored || "year";
-        if (plan !== "month" && plan !== "year") return "year";
-        return plan;
+        const plan = sessionStorage.getItem("affectai_plan_final")
+          || sessionStorage.getItem("affectai_plan")
+          || "year";
+        return plan === "month" ? "month" : "year";
       }
 
       const plan = getPlan();
-      sessionStorage.setItem("aa_plan", plan);
 
       const meta = CONFIG.PLAN_META[plan] || CONFIG.PLAN_META.year;
       productNameEl.textContent = meta.name;
       productPriceEl.textContent = meta.displayPrice;
       totalPriceEl.textContent = meta.total;
 
-      const sid = getParam("sid");
-      const last4 = getParam("last4") || sessionStorage.getItem("aa_card_last4") || "";
-      const brand = getParam("brand") || sessionStorage.getItem("aa_pm_name") || "";
+      const token = sessionStorage.getItem("affectai_token") || "";
+      const last4 = sessionStorage.getItem("affectai_last4") || "";
+      const planIdStored = sessionStorage.getItem("affectai_plan_id") || "";
+      const pmRaw = sessionStorage.getItem("affectai_pm") || "";
+      const pm = pmRaw ? safeJsonParse(pmRaw) : null;
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "checkout_email_view", plan });
 
-      if (!sid) {
+      if (!token) {
         showAlert("bad", "Sessão expirou. Volte e preencha os dados do cartão novamente.");
         payBtn.disabled = true;
       }
 
       pmMainEl.textContent = last4 ? ("Cartão Mercado **** " + last4) : "Cartão ****";
-      pmSubEl.textContent = brand ? (brand + " Crédito") : "Crédito";
+      pmSubEl.textContent = pm && pm.name ? (pm.name + " Crédito") : "Crédito";
 
-      brandBox.textContent = brand ? brand : "CARTÃO";
-      brandBox.style.fontWeight = "650";
-      brandBox.style.color = "rgba(123,115,241,.95)";
+      if (pm && pm.thumbnail) {
+        const img = document.createElement("img");
+        img.src = pm.thumbnail;
+        img.alt = "";
+        brandBox.innerHTML = "";
+        brandBox.appendChild(img);
+      } else {
+        brandBox.textContent = "MP";
+        brandBox.style.fontWeight = "650";
+        brandBox.style.color = "rgba(123,115,241,.95)";
+      }
 
       async function submit() {
         clearAlert();
@@ -476,7 +485,7 @@
         const payerEmail = (emailEl.value || "").trim();
         if (!payerEmail) return showAlert("bad", "Preencha este campo.");
 
-        const preapproval_plan_id = CONFIG.PLAN_IDS[plan];
+        const preapproval_plan_id = planIdStored || CONFIG.PLAN_IDS[plan];
         if (!preapproval_plan_id) return showAlert("bad", "Plano inválido.");
 
         payBtn.disabled = true;
@@ -488,7 +497,7 @@
             plan,
             preapproval_plan_id,
             payerEmail,
-            sid
+            card_token_id: token
           };
 
           const res = await fetch(CONFIG.BACKEND_ENDPOINT, {
@@ -501,7 +510,7 @@
 
           if (!res.ok) {
             const msg = out && out.message ? out.message : "Falha ao criar assinatura. Tente novamente.";
-            window.dataLayer.push({ event: "checkout_error", plan, message: msg });
+            window.dataLayer.push({ event: "checkout_error", plan, step: "email", message: msg });
             payBtn.disabled = false;
             return showAlert("bad", msg);
           }
@@ -515,12 +524,14 @@
 
           showAlert("ok", "Assinatura criada.");
 
+          sessionStorage.removeItem("affectai_token");
+
           setTimeout(() => {
             window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
-          }, 250);
+          }, 300);
         } catch (err) {
           const msg = err && err.message ? err.message : "Erro inesperado. Tente novamente.";
-          window.dataLayer.push({ event: "checkout_error", plan, message: msg });
+          window.dataLayer.push({ event: "checkout_error", plan, step: "email", message: msg });
           payBtn.disabled = false;
           showAlert("bad", msg);
         }
