@@ -59,16 +59,9 @@
         -moz-osx-font-smoothing: grayscale;
       }
 
-      .topline {
-        height: 3px;
-        background: rgba(123,115,241,.85);
-      }
+      .topline { height: 3px; background: rgba(123,115,241,.85); }
 
-      .wrap {
-        height: calc(100vh - 3px);
-        display: flex;
-        flex-direction: column;
-      }
+      .wrap { height: calc(100vh - 3px); display: flex; flex-direction: column; }
 
       .topbar {
         height: 46px;
@@ -83,12 +76,7 @@
         background: transparent;
       }
 
-      .lock {
-        width: 18px;
-        height: 18px;
-        display: inline-block;
-        opacity: 0.9;
-      }
+      .lock { width: 18px; height: 18px; display: inline-block; opacity: 0.9; }
 
       .stage {
         width: 100%;
@@ -120,23 +108,14 @@
         font-size: 15px;
       }
 
-      .sumRow + .sumRow {
-        border-top: 1px solid rgba(15,23,42,.08);
-      }
+      .sumRow + .sumRow { border-top: 1px solid rgba(15,23,42,.08); }
 
-      .sumLeft {
-        color: rgba(15,23,42,.72);
-        font-weight: 550;
-      }
+      .sumLeft { color: rgba(15,23,42,.72); font-weight: 550; }
 
-      .sumRight {
-        font-weight: 650;
-        color: rgba(15,23,42,.92);
-      }
+      .sumRight { font-weight: 650; color: rgba(15,23,42,.92); }
 
-      /* acima maior, abaixo menor */
       h1 {
-        margin: 36px 2px 10px; /* antes: 27px 2px 14px */
+        margin: 36px 2px 10px;
         font-size: 22px;
         line-height: 1.2;
         letter-spacing: -0.01em;
@@ -147,7 +126,7 @@
       }
 
       .sectionTitle {
-        margin: 10px 2px 4px; /* sobe a seção junto (antes 14px 2px 10px) */
+        margin: 10px 2px 4px;
         font-size: 14px;
         font-weight: 550;
         color: rgba(15,23,42,.72);
@@ -178,12 +157,7 @@
         opacity: 0.65;
       }
 
-      .pmLeft {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 0;
-      }
+      .pmLeft { display: flex; align-items: center; gap: 12px; min-width: 0; }
 
       .brand {
         width: 44px;
@@ -197,18 +171,7 @@
         flex: 0 0 auto;
       }
 
-      .brand img {
-        width: 30px;
-        height: 30px;
-        object-fit: contain;
-      }
-
-      .pmText {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-      }
+      .pmText { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
       .pmMain {
         font-size: 16px;
@@ -219,18 +182,9 @@
         text-overflow: ellipsis;
       }
 
-      .pmSub {
-        font-size: 14px;
-        font-weight: 550;
-        color: rgba(15,23,42,.55);
-      }
+      .pmSub { font-size: 14px; font-weight: 550; color: rgba(15,23,42,.55); }
 
-      .pmRight a {
-        color: rgba(123,115,241,.95);
-        font-weight: 650;
-        text-decoration: none;
-      }
-
+      .pmRight a { color: rgba(123,115,241,.95); font-weight: 650; text-decoration: none; }
       .pmRight a:active { opacity: 0.85; }
 
       .helpTitle {
@@ -372,7 +326,6 @@
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-K9TFCGX9"
@@ -381,7 +334,6 @@
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
     <div class="topline"></div>
 
@@ -473,15 +425,18 @@
         alertEl.className = "alert show " + type;
         alertEl.textContent = msg;
       }
-
       function clearAlert() {
         alertEl.className = "alert";
         alertEl.textContent = "";
       }
 
+      function getParam(name){
+        const url = new URL(location.href);
+        return url.searchParams.get(name) || "";
+      }
+
       function getPlan() {
-        const url = new URL(window.location.href);
-        const planQ = url.searchParams.get("plan");
+        const planQ = getParam("plan");
         const stored = sessionStorage.getItem("aa_plan");
         const plan = planQ || stored || "year";
         if (plan !== "month" && plan !== "year") return "year";
@@ -496,33 +451,24 @@
       productPriceEl.textContent = meta.displayPrice;
       totalPriceEl.textContent = meta.total;
 
-      const token = sessionStorage.getItem("aa_card_token_id") || "";
-      const last4 = sessionStorage.getItem("aa_card_last4") || "";
-      const pmName = sessionStorage.getItem("aa_pm_name") || "";
-      const pmThumb = sessionStorage.getItem("aa_pm_thumb") || "";
+      const sid = getParam("sid");
+      const last4 = getParam("last4") || sessionStorage.getItem("aa_card_last4") || "";
+      const brand = getParam("brand") || sessionStorage.getItem("aa_pm_name") || "";
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "checkout_email_view", plan });
 
-      if (!token) {
+      if (!sid) {
         showAlert("bad", "Sessão expirou. Volte e preencha os dados do cartão novamente.");
         payBtn.disabled = true;
       }
 
-      pmMainEl.textContent = last4 ? "Cartão Mercado **** " + last4 : "Cartão ****";
-      pmSubEl.textContent = pmName ? (pmName + " Crédito") : "Crédito";
+      pmMainEl.textContent = last4 ? ("Cartão Mercado **** " + last4) : "Cartão ****";
+      pmSubEl.textContent = brand ? (brand + " Crédito") : "Crédito";
 
-      if (pmThumb) {
-        const img = document.createElement("img");
-        img.src = pmThumb;
-        img.alt = "";
-        brandBox.innerHTML = "";
-        brandBox.appendChild(img);
-      } else {
-        brandBox.textContent = "VISA";
-        brandBox.style.fontWeight = "650";
-        brandBox.style.color = "rgba(123,115,241,.95)";
-      }
+      brandBox.textContent = brand ? brand : "CARTÃO";
+      brandBox.style.fontWeight = "650";
+      brandBox.style.color = "rgba(123,115,241,.95)";
 
       async function submit() {
         clearAlert();
@@ -536,14 +482,13 @@
         payBtn.disabled = true;
 
         try {
-          window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({ event: "checkout_email_submit", plan });
 
           const payload = {
             plan,
             preapproval_plan_id,
             payerEmail,
-            card_token_id: token
+            sid
           };
 
           const res = await fetch(CONFIG.BACKEND_ENDPOINT, {
@@ -555,7 +500,7 @@
           const out = await res.json().catch(() => ({}));
 
           if (!res.ok) {
-            const msg = out?.message || "Falha ao criar assinatura. Tente novamente.";
+            const msg = out && out.message ? out.message : "Falha ao criar assinatura. Tente novamente.";
             window.dataLayer.push({ event: "checkout_error", plan, message: msg });
             payBtn.disabled = false;
             return showAlert("bad", msg);
@@ -570,14 +515,11 @@
 
           showAlert("ok", "Assinatura criada.");
 
-          sessionStorage.removeItem("aa_card_token_id");
-
           setTimeout(() => {
             window.location.href = CONFIG.THANK_YOU[plan] || "/p9a/";
-          }, 300);
+          }, 250);
         } catch (err) {
-          const msg = err?.message || "Erro inesperado. Tente novamente.";
-          window.dataLayer = window.dataLayer || [];
+          const msg = err && err.message ? err.message : "Erro inesperado. Tente novamente.";
           window.dataLayer.push({ event: "checkout_error", plan, message: msg });
           payBtn.disabled = false;
           showAlert("bad", msg);
